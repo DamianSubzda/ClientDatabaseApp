@@ -22,13 +22,17 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <Grid Grid.Row ="1" Grid.ColumnSpan="3">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="61*"/>
+                            <ColumnDefinition Width="332*"/>
+                        </Grid.ColumnDefinitions>
                         <!-- DataGrid -->
-                        <DataGrid MaxColumnWidth="300" x:Name="dataGrid" AutoGenerateColumns="True" CanUserReorderColumns="True" CanUserSortColumns="True" CanUserResizeColumns="True" Margin="10"/>
+                        <DataGrid MaxColumnWidth="300"  IsReadOnly= "False" x:Name="dataGrid" CanUserReorderColumns="True" CanUserSortColumns="True" CanUserResizeColumns="True" Margin="10" Grid.ColumnSpan="2"/>
 
                     </Grid>
                     <StackPanel Grid.Row ="2"  Orientation="Horizontal" Margin="10,0,10,0" Height="50" VerticalAlignment="Center" Grid.ColumnSpan="3">
                         <Button Content="Pokaż więcej" Click="ShowMoreDetails" Margin="5" Width="150"/>
-                        <Button Content="Edytuj" Click="EditSelected" Margin="5" Width="150"/>
+                        <Button Content="Dodaj FollowUp" Click="AddFolowUp" Margin="5" Width="150"/>
                         <Button Content="Usuń zaznaczony" Click="RemoveSelected" Margin="5" Width="150"/>
                     </StackPanel>
                 </Grid>
