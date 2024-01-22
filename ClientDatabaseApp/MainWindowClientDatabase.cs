@@ -38,6 +38,12 @@ namespace ClientDatabaseApp
         {
 
         }
+
+        private void AddFolowUp(object sender, RoutedEventArgs e)
+        {
+
+        }
+
     }
 }
 
