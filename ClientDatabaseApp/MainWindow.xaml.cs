@@ -23,7 +23,7 @@ namespace ClientDatabaseApp
             db = new DatabaseConnector();
             connection = db.ConnectToDatabase();
 
-            
+
             followups[0] = new FollowUpData(1, "jeden", "dwa");
             followups[1] = new FollowUpData(2, "dwa", "trzy");
             followups[2] = new FollowUpData(3, "trzy", "cztery", "piec");
@@ -31,8 +31,8 @@ namespace ClientDatabaseApp
 
             using (var context = new hvacClientsContext())
             {
-                var clients = context.Clients.ToList();
-                var followUps = context.Follow_Ups.ToList();
+                //var clients = context.ClientsDBSet.ToList();
+                //var followUps = context.FollowUpsDBSet.ToList();
             }
 
 

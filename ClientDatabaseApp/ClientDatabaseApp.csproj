@@ -153,8 +153,9 @@
     <Compile Include="DatabaseConnector.cs" />
     <Compile Include="DataModel\FollowUpData.cs" />
     <Compile Include="DataModel\hvacClientsContext.cs" />
-    <Compile Include="DataModel\hvacclients\Clients.cs" />
-    <Compile Include="DataModel\hvacclients\Follow_ups.cs" />
+    <Compile Include="DataModel\hvacclients\Client.cs" />
+    <Compile Include="DataModel\hvacclients\FollowUp.cs" />
+    <Compile Include="DBConfiguration.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
