@@ -150,18 +150,18 @@ namespace ClientDatabaseApp
                     try
                     {
                         int day_number = int.Parse((string)label.Content);
-                        FollowUpData followUp = followups[day_number - 1];
-                        if (followUp == null)
-                        {
-                            return;
-                        }
+                        //FollowUpData followUp = followups[day_number - 1];
+                        //if (followUp == null)
+                        //{
+                        //    return;
+                        //}
 
-                        List<string> cos = followUp.Task;
+                        //List<string> cos = followUp.Task;
 
-                        foreach (string item in cos)
-                        {
-                            listbox_todolist.Items.Add(item);
-                        }
+                        //foreach (string item in cos)
+                        //{
+                        //    listbox_todolist.Items.Add(item);
+                        //}
                     }
                     catch { }
                 }

@@ -17,17 +17,12 @@ namespace ClientDatabaseApp
 
         private DatabaseConnector db;
         private MySqlConnection connection;
-        FollowUpData[] followups = new FollowUpData[31];
 
         public MainWindow()
         {
             db = new DatabaseConnector();
             connection = db.ConnectToDatabase();
 
-
-            followups[0] = new FollowUpData(1, "jeden", "dwa");
-            followups[1] = new FollowUpData(2, "dwa", "trzy");
-            followups[2] = new FollowUpData(3, "trzy", "cztery", "piec");
             GetDaysFromMonth();
 
             using (var context = new DBContextHVAC())
@@ -50,7 +45,7 @@ namespace ClientDatabaseApp
                 };
 
                 context.ClientDBSet.Add(c1);
-                context.SaveChanges();
+                //context.SaveChanges();
 
                 //AddClient();
 
@@ -83,6 +78,16 @@ namespace ClientDatabaseApp
                     InitializeClientsGrid();
                 }
             }
+
+        }
+
+        private void GetDataFromCSV(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void PassDataToDatabase(object sender, RoutedEventArgs e)
+        {
 
         }
     }

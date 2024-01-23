@@ -63,31 +63,37 @@
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <Label Grid.Row ="0" Grid.Column ="0" Content="NIP:" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                        <TextBox Grid.Row ="0" Name="NipTextBox" Grid.Column="1" Width="200"/>
+                        <TextBox Grid.Row ="0" Grid.Column="1" Name="NipTextBox" Width="200"/>
 
                         <Label Grid.Row ="1" Grid.Column ="0" Content="Nazwa Klienta:" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                        <TextBox Grid.Row ="1" Name="NazwaKlientaTextBox" Grid.Column="1" Width="200" Margin="0,1,0,1"/>
+                        <TextBox Grid.Row ="1" Grid.Column="1" Name="NazwaKlientaTextBox" Width="200" Margin="0,1,0,1"/>
 
-                        <Label Grid.Row ="2" Grid.Column ="0" Content="Strona Klienta:" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                        <TextBox Grid.Row ="2" Name="ClientPageTextBox" Grid.Column="1" Width="200" Margin="0,1,0,1"/>
+                        <Label Grid.Row ="2" Grid.Column ="0" Content="Telefon:" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        <TextBox Grid.Row ="2" Grid.Column="1" Name="PhoneTextBox" Width="200" Margin="0,1,0,1"/>
 
-                        <Label Grid.Row ="3" Grid.Column ="0" Content="Telefon:" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                        <TextBox Grid.Row ="3" Name="PhoneTextBox" Grid.Column="1" Width="200" Margin="0,1,0,1"/>
+                        <Label Grid.Row ="3" Grid.Column ="0" Content="Email:" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        <TextBox Grid.Row ="3" Grid.Column="1" Width="200" Margin="0,1,0,1"/>
 
-                        <Label Grid.Row ="4" Grid.Column ="0" Content="Facebook/Instagram:" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                        <TextBox Grid.Row ="4" Name="FbIgTextBox" Grid.Column="1" Width="200" Margin="0,1,0,1"/>
+                        <Label Grid.Row ="4" Grid.Column ="0" Content="Miasto:" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        <TextBox Grid.Row ="4" Grid.Column="1" Name="CityTextBox" Width="200" Margin="0,1,0,1"/>
 
-                        <Label Grid.Row ="5" Grid.Column ="0" Content="Miasto:" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                        <TextBox Grid.Row ="5" Name="CityTextBox" Grid.Column="1" Width="200" Margin="0,1,0,1"/>
+                        <Label Grid.Row ="5" Grid.Column ="0" Content="Facebookm:" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        <TextBox Grid.Row ="5" Grid.Column="1" Name="FbTextBox" Width="200" Margin="0,1,0,1"/>
+                        
+                        <Label Grid.Row ="6" Grid.Column ="0" Content="Instagram:" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        <TextBox Grid.Row ="6" Grid.Column="1" Name="IgTextBox" Width="200" Margin="0,1,0,1"/>
 
-                        <Label Grid.Row ="6" Grid.Column ="0" Content="Data:" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                        <DatePicker Name="ClientDataPicker" Grid.Row ="6" Grid.Column="1" Width="200" Margin="0,1,0,1"></DatePicker>
+                        <Label Grid.Row ="7" Grid.Column ="0" Content="Strona Klienta:" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        <TextBox Grid.Row ="7" Grid.Column="1" Name="ClientPageTextBox" Width="200" Margin="0,1,0,1"/>
 
-                        <Label Grid.Row ="7" Grid.Column ="0" Content="Imię Właściciela:" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                        <TextBox Grid.Row ="7" Name="OwnerTextBox" Grid.Column="1" Width="200" Margin="0,1,0,1"/>
+                        <Label Grid.Row ="0" Grid.Column ="3" Content="Data:" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        <DatePicker Grid.Row ="0" Grid.Column="4" Name="ClientDataPicker"  Width="200" Margin="0,1,0,1"></DatePicker>
 
-                        <Label Grid.Row ="0" Grid.Column ="3" Content="Status:"  HorizontalAlignment="Left"/>
-                        <ComboBox Grid.Column="4" x:Name="statusCombobox" Width="100px" HorizontalAlignment="Left" Margin="0,1,0,1">
+                        <Label Grid.Row ="1" Grid.Column ="3" Content="Imię Właściciela:" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        <TextBox Grid.Row ="1" Grid.Column="4" Name="OwnerTextBox" Width="200" Margin="0,1,0,1"/>
+
+                        <Label Grid.Row ="2" Grid.Column ="3" Content="Status:"  HorizontalAlignment="Left"/>
+                        <ComboBox Grid.Row ="2" Grid.Column="4" x:Name="statusCombobox" Width="100px" HorizontalAlignment="Left" Margin="0,1,0,1">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Description}" Foreground="White" />
@@ -107,7 +113,7 @@
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
-                        <Label Grid.Column ="0" Content="Uwagi:" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+                        <Label Grid.Column ="0" Content="Notatka:" HorizontalAlignment="Left" VerticalAlignment="Top"/>
                         <RichTextBox Name="NotesRichTextBox" Grid.Column="1" Width="500"/>
 
                         <Button Grid.Row ="8" Grid.Column="4" Width="150" Height="50" VerticalAlignment="Center" HorizontalAlignment="Center" Click="AddClientToDatabase" >Dodaj</Button>
