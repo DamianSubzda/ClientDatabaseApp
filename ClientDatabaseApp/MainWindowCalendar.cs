@@ -22,7 +22,7 @@ namespace ClientDatabaseApp
 
         private enum DaysEnum
         {
-            Poniedziałek = 1, Wtorek, Środa, Czwartek, Piątek, Sobota, Niedziela
+            Monday = 1, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday
         }
 
         private string month = ((MonthEnum)DateTime.Now.Month).ToString() + " " + DateTime.Now.Year.ToString();
@@ -102,11 +102,16 @@ namespace ClientDatabaseApp
         {
             int days = DateTime.DaysInMonth(monthToDisplay.Year, monthToDisplay.Month);
             DayOfWeek dayOfWeek = monthToDisplay.DayOfWeek;
-            DaysEnum enumStart = (DaysEnum)dayOfWeek;
+            int nr = (int)(DaysEnum)dayOfWeek;
+
+            if (dayOfWeek == DayOfWeek.Sunday)
+            {
+                nr = 7;
+            }
 
             List<string> listOfDays = new List<string>();
 
-            for (int i = 1; i < (int)enumStart; i++)
+            for (int i = 1; i < nr; i++)
             {
                 listOfDays.Add("");
             }

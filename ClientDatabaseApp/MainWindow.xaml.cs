@@ -28,7 +28,7 @@ namespace ClientDatabaseApp
             using (var context = new DBContextHVAC())
             {
                 var clients = context.ClientDBSet.ToList();
-                //var followUps = context.FollowUpsDBSet.ToList();
+                var followUps = context.FollowUpDBSet.ToList();
 
                 Client c1 = new Client
                 {
@@ -49,13 +49,9 @@ namespace ClientDatabaseApp
 
                 //AddClient();
 
-
                 clients = context.ClientDBSet.ToList();
             }
             
-
-
-
             InitializeComponent();
             InitializeCreatedElements();
 
@@ -78,16 +74,6 @@ namespace ClientDatabaseApp
                     InitializeClientsGrid();
                 }
             }
-
-        }
-
-        private void GetDataFromCSV(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void PassDataToDatabase(object sender, RoutedEventArgs e)
-        {
 
         }
     }

@@ -135,7 +135,15 @@
                     </Grid.RowDefinitions>
 
                     <!-- DataGrid -->
-                    <DataGrid x:Name="dataGridPreview" AutoGenerateColumns="True" CanUserAddRows="True" CanUserDeleteRows="True" CanUserResizeColumns="True" Margin="10,10,10,10" Grid.ColumnSpan="4"/>
+                    <DataGrid x:Name="dataGridPreview" CanUserAddRows="True" CanUserDeleteRows="True" CanUserResizeColumns="True" Margin="10,10,10,10" Grid.ColumnSpan="4">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ClientName" Width="auto"/>
+                            <DataGridTextColumn Header="Phonenumber" Width="auto"/>
+                            <DataGridTextColumn Header="Email" Width="auto"/>
+                            <DataGridTextColumn Header="Data" Width="auto"/>
+                            <DataGridTextColumn Header="Owner" Width="auto"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
 
                     <!-- Przyciski -->
                     <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="214,0,0,0" Grid.Column="3">

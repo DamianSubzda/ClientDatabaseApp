@@ -14,7 +14,8 @@ namespace ClientDatabaseApp
 
         private void InitializeClientsGrid()
         {
-            string selectQuery = "SELECT * FROM Client";
+            string selectQuery = "SELECT ClientId as `Id`, ClientName as `Klient`, Phonenumber as `Numer telefonu` FROM Client";
+
             using (MySqlDataAdapter adapter = new MySqlDataAdapter(selectQuery, connection))
             {
                 DataTable dataTable = new DataTable();

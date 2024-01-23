@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClientDatabaseApp.DataModel.hvacclients;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -107,33 +108,30 @@ namespace ClientDatabaseApp
         }
         private void AddClientToDatabase(object sender, RoutedEventArgs e)
         {
-            //ClientData client = new ClientData();
-            //client.Klient = NipTextBox.Text;
-            //client.StronaURL = ClientPageTextBox.Text;
-            //client.Telefon = PhoneTextBox.Text.Trim();
-            //client.FacebookURL = FbIgTextBox.Text.Trim();
-            //client.Miasto = CityTextBox.Text;
-            //client.Data = ClientDataPicker.Text;
-            //client.Wlasciciel = OwnerTextBox.Text;
-            //client.FollowUp1 = null;
-            //client.FollowUp2 = null;
-            //client.Notatki = StringFromRichTextBox(NotesRichTextBox);
+            Client client = new Client();
+            client.ClientName = NipTextBox.Text;
+            client.PageURL = ClientPageTextBox.Text;
+            client.Phonenumber = PhoneTextBox.Text.Trim();
+            client.Facebook = FbTextBox.Text.Trim();
+            client.City = CityTextBox.Text;
+            client.Data = DateTime.Parse(ClientDataPicker.Text);
+            client.Owner = OwnerTextBox.Text;
+            client.Note = StringFromRichTextBox(NotesRichTextBox);
 
-
-            //if (!CheckIfClientIsInDatabase(client))
-            //{
-            //    AddClientToDatabase(client);
-            //}
-            //else
-            //{
-            //    MessageBoxResult dialog = MessageBox.Show($"Klient {client.Klient} o numerze telefonu " +
-            //                                        $"{client.Telefon} bądź podanej stronie Facebook już " +
-            //                                        $"istnieje w bazie! Na pewno chcesz go dodać?", "Uwaga!", MessageBoxButton.YesNo);
-            //    if (dialog == MessageBoxResult.Yes)
-            //    {
-            //        AddClientToDatabase(client);
-            //    }
-            //}
+            if (!CheckIfClientIsInDatabase(client))
+            {
+                AddClientToDatabase(client);
+            }
+            else
+            {
+                MessageBoxResult dialog = MessageBox.Show($"Klient {client.ClientName} o numerze telefonu " +
+                                                    $"{client.Phonenumber} bądź podanej stronie Facebook już " +
+                                                    $"istnieje w bazie! Na pewno chcesz go dodać?", "Uwaga!", MessageBoxButton.YesNo);
+                if (dialog == MessageBoxResult.Yes)
+                {
+                    AddClientToDatabase(client);
+                }
+            }
         }
 
         string StringFromRichTextBox(RichTextBox rtb)
