@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace ClientDatabaseApp.DataModel
 {
-    public class hvacClientsContext : DbContext
+    public class DBContextHVAC : DbContext
     {
-        public hvacClientsContext() : base("name=hvacContext")
+        public DbSet<Client> ClientDBSet { get; set; }
+        public DbSet<FollowUp> FollowUpDBSet { get; set; }
+
+        public DBContextHVAC() : base("name=hvacConnectionString")
         {
 
         }
-
-        public DbSet<Client> ClientsDBSet { get; set; }
-        public DbSet<FollowUp> FollowUpsDBSet { get; set; }
     }
 }

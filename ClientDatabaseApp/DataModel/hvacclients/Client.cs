@@ -1,19 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ClientDatabaseApp.DataModel.hvacclients
 {
+    [Table("Client")]
     public class Client
     {
         [Key]
         public int ClientId { get; set; }
         [MaxLength(200)]
         public string ClientName { get; set; }
-        [MaxLength(40)]
+        [MaxLength(30)]
         public string Phonenumber { get; set; }
         [MaxLength(40)]
         public string Email { get; set; }
@@ -31,7 +33,7 @@ namespace ClientDatabaseApp.DataModel.hvacclients
         [MaxLength(2000)]
         public string Note { get; set; }
 
-        public virtual List<FollowUp> FollowUps { get; set; }
+        public virtual List<FollowUp> FollowUp { get; set; }
 
     }
 }

@@ -149,11 +149,11 @@
     <Compile Include="CalendarControl.xaml.cs">
       <DependentUpon>CalendarControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DataModel\hvacclients\Client.cs" />
     <Compile Include="DataModel\ClientData.cs" />
     <Compile Include="DatabaseConnector.cs" />
     <Compile Include="DataModel\FollowUpData.cs" />
-    <Compile Include="DataModel\hvacClientsContext.cs" />
-    <Compile Include="DataModel\hvacclients\Client.cs" />
+    <Compile Include="DataModel\DBContextHVAC.cs" />
     <Compile Include="DataModel\hvacclients\FollowUp.cs" />
     <Compile Include="DBConfiguration.cs" />
     <Compile Include="MainWindow.xaml.cs">

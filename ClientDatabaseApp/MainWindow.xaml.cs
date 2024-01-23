@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using ClientDatabaseApp.DataModel.hvacclients;
 
 namespace ClientDatabaseApp
 {
@@ -29,11 +30,35 @@ namespace ClientDatabaseApp
             followups[2] = new FollowUpData(3, "trzy", "cztery", "piec");
             GetDaysFromMonth();
 
-            using (var context = new hvacClientsContext())
+            using (var context = new DBContextHVAC())
             {
-                //var clients = context.ClientsDBSet.ToList();
+                var clients = context.ClientDBSet.ToList();
                 //var followUps = context.FollowUpsDBSet.ToList();
+
+                Client c1 = new Client
+                {
+                    ClientName = "Pierwszy klient",
+                    Phonenumber = "100100100",
+                    Email = "@wp.pl",
+                    City = "Wawa",
+                    Facebook = ".pl",
+                    Instagram = ".pl",
+                    PageURL = ".pl",
+                    Data = DateTime.Now,
+                    Owner = "Ja",
+                    Note = "notatka"
+                };
+
+                context.ClientDBSet.Add(c1);
+                context.SaveChanges();
+
+                //AddClient();
+
+
+                clients = context.ClientDBSet.ToList();
             }
+            
+
 
 
             InitializeComponent();
