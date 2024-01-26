@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ClientDatabaseApp.DataModel.hvacclients
+namespace ClientDatabaseApp.Model
 {
     [Table("FollowUp")]
     public class FollowUp

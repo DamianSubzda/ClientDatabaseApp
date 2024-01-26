@@ -8,16 +8,27 @@ using System.Windows;
 using System;
 using System.Linq;
 using MySqlConnector;
-using ClientDatabaseApp.DataModel.hvacclients;
+using ClientDatabaseApp.View;
+using ClientDatabaseApp.Model;
+using System.Windows.Input;
 
-namespace ClientDatabaseApp
+namespace ClientDatabaseApp.ViewModel
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public class MVLoadCSVMainWindow
     {
-        private void GetDataFromCSV(object sender, RoutedEventArgs e)
+        public ICommand GetDataFromCSVCommand { get; set; }
+        public ICommand PassDataToDatabaseCoomand { get; set; }
+
+        private MySqlConnection conn = DatabaseConnector.connection;
+        public MVLoadCSVMainWindow()
+        {
+            GetDataFromCSVCommand = new DelegateCommand<RoutedEventArgs>(GetDataFromCSV);
+            PassDataToDatabaseCoomand = new DelegateCommand<RoutedEventArgs>(PassDataToDatabase);
+        }
+        private void GetDataFromCSV(RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog
             {
@@ -34,46 +45,46 @@ namespace ClientDatabaseApp
                 {
 
                     var records = csv.GetRecords<Client>().ToList();
-                    dataGridPreview.ItemsSource = records;
+                    //dataGridPreview.ItemsSource = records;
                 }
             }
-            dataGridPreview.LayoutUpdated += CheckGridColumnAfterLoad;
+            //dataGridPreview.LayoutUpdated += CheckGridColumnAfterLoad;
         }
 
-        private void PassDataToDatabase(object sender, RoutedEventArgs e)
+        private void PassDataToDatabase(RoutedEventArgs e)
         {
-            int counter = 0;
-            if (connection != null)
-            {
-                connection.Open();
-                if (dataGridPreview.ItemsSource is IEnumerable<Client> items)
-                {
-                    foreach (var item in items)
-                    {
-                        if (!CheckIfClientIsInDatabase(item))
-                        {
-                            if (AddClientToDatabase(item))
-                            {
-                                counter++;
-                            }
-                        }
-                    }
-                }
-                connection.Close();
-                MessageBox.Show($"Dodano {counter}/{dataGridPreview.Items.Count}", "Notka");
-            }
-            else
-            {
-                MessageBox.Show("Brak połączenia z bazą danych");
-                return;
-            }
+            //int counter = 0;
+            //if (conn != null)
+            //{
+            //    conn.Open();
+            //    if (dataGridPreview.ItemsSource is IEnumerable<Client> items)
+            //    {
+            //        foreach (var item in items)
+            //        {
+            //            if (!CheckIfClientIsInDatabase(item))
+            //            {
+            //                if (AddClientToDatabase(item))
+            //                {
+            //                    counter++;
+            //                }
+            //            }
+            //        }
+            //    }
+            //    conn.Close();
+            //    //MessageBox.Show($"Dodano {counter}/{dataGridPreview.Items.Count}", "Notka");
+            //}
+            //else
+            //{
+            //    MessageBox.Show("Brak połączenia z bazą danych");
+            //    return;
+            //}
         }
 
         private bool CheckIfClientIsInDatabase(Client record)
         {
             string selectQuery = "SELECT * FROM clients" +
                                   " WHERE FacebookURL = @FacebookURL AND Telefon = @Telefon";
-            using (MySqlCommand command = new MySqlCommand(selectQuery, connection))
+            using (MySqlCommand command = new MySqlCommand(selectQuery, conn))
             {
                 command.Parameters.Clear();
                 command.Parameters.AddWithValue("@FacebookURL", record.Facebook);
@@ -102,7 +113,7 @@ namespace ClientDatabaseApp
                                    (ClientName, PageURL, Phonenumber, Facebook, City, Data, Owner, Note)
                                    VALUES
                                    (@Klient, @StronaURL, @Telefon, @FacebookURL, @Miasto, @Data, @Wlasciciel, @Notatki)";
-            using (MySqlCommand command = new MySqlCommand(insertQuery, connection))
+            using (MySqlCommand command = new MySqlCommand(insertQuery, conn))
             {
                 command.Parameters.Clear();
 
@@ -137,15 +148,15 @@ namespace ClientDatabaseApp
 
         private void CheckGridColumnAfterLoad(object sender, EventArgs e)
         {
-            foreach (var column in dataGridPreview.Columns)
-            {
-                column.MaxWidth = 800;
-                if (column is DataGridTextColumn textColumn && textColumn.ActualWidth > 150)
-                {
-                    textColumn.Width = new DataGridLength(150);
-                }
-            }
-            dataGridPreview.LayoutUpdated -= CheckGridColumnAfterLoad;
+            //foreach (var column in dataGridPreview.Columns)
+            //{
+            //    column.MaxWidth = 800;
+            //    if (column is DataGridTextColumn textColumn && textColumn.ActualWidth > 150)
+            //    {
+            //        textColumn.Width = new DataGridLength(150);
+            //    }
+            //}
+            //dataGridPreview.LayoutUpdated -= CheckGridColumnAfterLoad;
         }
     }
 }

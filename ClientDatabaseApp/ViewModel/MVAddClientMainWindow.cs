@@ -1,17 +1,25 @@
-﻿using ClientDatabaseApp.DataModel.hvacclients;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Media;
+using ClientDatabaseApp.Model;
 
-namespace ClientDatabaseApp
+namespace ClientDatabaseApp.ViewModel
 {
-    public partial class MainWindow : Window
+    public class MVAddClientMainWindow
     {
+        private ICommand AddClientToDatabaseCommand { get; set; }
+
+        public MVAddClientMainWindow()
+        {
+            AddClientToDatabaseCommand = new DelegateCommand<RoutedEventArgs>(AddClientToDatabase);
+        }
+
         private void InitializeComboBoxStatus()
         {
             var statusItems = StatusEnumValues.Select(status => new StatusItem
@@ -21,7 +29,7 @@ namespace ClientDatabaseApp
                 Color = GetBackgroundForStatus(status)
             }).ToList();
 
-            statusCombobox.ItemsSource = statusItems;
+            //statusCombobox.ItemsSource = statusItems;
         }
         public class StatusItem
         {
@@ -106,32 +114,32 @@ namespace ClientDatabaseApp
 
 
         }
-        private void AddClientToDatabase(object sender, RoutedEventArgs e)
+        private void AddClientToDatabase(RoutedEventArgs e)
         {
             Client client = new Client();
-            client.ClientName = NipTextBox.Text;
-            client.PageURL = ClientPageTextBox.Text;
-            client.Phonenumber = PhoneTextBox.Text.Trim();
-            client.Facebook = FbTextBox.Text.Trim();
-            client.City = CityTextBox.Text;
-            client.Data = DateTime.Parse(ClientDataPicker.Text);
-            client.Owner = OwnerTextBox.Text;
-            client.Note = StringFromRichTextBox(NotesRichTextBox);
+            //client.ClientName = NipTextBox.Text;
+            //client.PageURL = ClientPageTextBox.Text;
+            //client.Phonenumber = PhoneTextBox.Text.Trim();
+            //client.Facebook = FbTextBox.Text.Trim();
+            //client.City = CityTextBox.Text;
+            //client.Data = DateTime.Parse(ClientDataPicker.Text);
+            //client.Owner = OwnerTextBox.Text;
+            //client.Note = StringFromRichTextBox(NotesRichTextBox);
 
-            if (!CheckIfClientIsInDatabase(client))
-            {
-                AddClientToDatabase(client);
-            }
-            else
-            {
-                MessageBoxResult dialog = MessageBox.Show($"Klient {client.ClientName} o numerze telefonu " +
-                                                    $"{client.Phonenumber} bądź podanej stronie Facebook już " +
-                                                    $"istnieje w bazie! Na pewno chcesz go dodać?", "Uwaga!", MessageBoxButton.YesNo);
-                if (dialog == MessageBoxResult.Yes)
-                {
-                    AddClientToDatabase(client);
-                }
-            }
+            //if (!CheckIfClientIsInDatabase(client))
+            //{
+            //    AddClientToDatabase(client);
+            //}
+            //else
+            //{
+            //    MessageBoxResult dialog = MessageBox.Show($"Klient {client.ClientName} o numerze telefonu " +
+            //                                        $"{client.Phonenumber} bądź podanej stronie Facebook już " +
+            //                                        $"istnieje w bazie! Na pewno chcesz go dodać?", "Uwaga!", MessageBoxButton.YesNo);
+            //    if (dialog == MessageBoxResult.Yes)
+            //    {
+            //        AddClientToDatabase(client);
+            //    }
+            //}
         }
 
         string StringFromRichTextBox(RichTextBox rtb)

@@ -1,8 +1,7 @@
-﻿using System.Data.Entity;
-using MySql.Data.EntityFramework;
+﻿using MySql.Data.EntityFramework;
 using MySql.Data.MySqlClient;
 
-namespace ClientDatabaseApp
+namespace ClientDatabaseApp.ViewModel
 {
     public class DbConfiguration : System.Data.Entity.DbConfiguration
     {
@@ -11,7 +10,7 @@ namespace ClientDatabaseApp
             SetProviderServices("MySql.Data.MySqlClient", new MySqlProviderServices());
             SetDefaultConnectionFactory(new MySqlConnectionFactory());
             SetMigrationSqlGenerator(
-            "MySql.Data.MySqlClient", 
+            "MySql.Data.MySqlClient",
             () => new MySqlMigrationSqlGenerator());
         }
     }

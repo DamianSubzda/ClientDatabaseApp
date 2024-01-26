@@ -6,13 +6,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ClientDatabaseApp.DataModel.hvacclients
+namespace ClientDatabaseApp.Model
 {
     [Table("Client")]
     public class Client
     {
         [Key]
         public int ClientId { get; set; }
+
         [MaxLength(200)]
         public string ClientName { get; set; }
         [MaxLength(30)]
