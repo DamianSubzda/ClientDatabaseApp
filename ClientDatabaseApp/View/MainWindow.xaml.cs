@@ -1,6 +1,7 @@
 ﻿using MySqlConnector;
 using System.Windows;
 using ClientDatabaseApp.ViewModel;
+using ClientDatabaseApp.Service;
 
 namespace ClientDatabaseApp.View
 {

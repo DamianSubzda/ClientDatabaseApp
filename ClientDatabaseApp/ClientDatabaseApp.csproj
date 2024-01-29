@@ -137,6 +137,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Service\DbConfiguration.cs" />
+    <Compile Include="ViewModel\DayVisibilityConverter.cs" />
     <Compile Include="View\ToDo.xaml.cs">
       <DependentUpon>ToDo.xaml</DependentUpon>
     </Compile>
@@ -169,12 +171,11 @@
     <Compile Include="Model\MCalendar.cs" />
     <Compile Include="Model\MClientDatabase.cs" />
     <Compile Include="Model\MLoadCSV.cs" />
-    <Compile Include="ViewModel\DatabaseConnector.cs" />
-    <Compile Include="ViewModel\DBContextHVAC.cs" />
+    <Compile Include="Service\DatabaseConnector.cs" />
+    <Compile Include="Service\DBContextHVAC.cs" />
     <Compile Include="Model\FollowUp.cs" />
-    <Compile Include="ViewModel\DBConfiguration.cs" />
     <Compile Include="ViewModel\MVMainWindow.cs" />
-    <Compile Include="ViewModel\RelayCommand .cs" />
+    <Compile Include="Service\DelegateCommand.cs" />
     <Compile Include="View\AddClient.xaml.cs">
       <DependentUpon>AddClient.xaml</DependentUpon>
     </Compile>
@@ -191,6 +192,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\ResourceDic.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\ToDo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
