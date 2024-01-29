@@ -1,70 +1,88 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data.Entity;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 using ClientDatabaseApp.Model;
+using ClientDatabaseApp.Service;
 
 namespace ClientDatabaseApp.ViewModel
 {
     public class MVCalendarMainWindow : INotifyPropertyChanged
     {
-        public ICommand MouseEnterCommand { get; private set; }
-        public ICommand MouseLeaveCommand { get; private set; }
+
+        private MCalendar calendarModel = new MCalendar();
         public ICommand MouseClickCommand { get; private set; }
         public ICommand Button_Click_PrevMonthCommand { get; private set; }
         public ICommand Button_Click_NextMonthCommand { get; private set; }
+
+        public enum MonthEnum
+        {
+            Styczeń = 1, Luty, Marzec, Kwiecień, Maj, Czerwiec, Lipiec, Sierpień, Wrzesień, Październik, Listopad, Grudzień
+        }
+
+        public enum DaysEnum
+        {
+            Monday = 1, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public List<DayInfo> Days
+        {
+            get => calendarModel.DaysOfCurrentMonth;
+            set
+            {
+                if (calendarModel.DaysOfCurrentMonth != value)
+                {
+                    calendarModel.DaysOfCurrentMonth = value;
+                    OnPropertyChanged(nameof(Days));
+                }
+            }
+        }
+
+        public string DataToDisplay
+        {
+            get => calendarModel.HeaderToDisplay;
+            set
+            {
+                if (calendarModel.HeaderToDisplay != value)
+                {
+                    calendarModel.HeaderToDisplay = value;
+                    OnPropertyChanged(nameof(DataToDisplay));
+                }
+            }
+        }
+
+        private List<string> _followUp;
+        public List<string> FollowUp
+        {
+            get { return _followUp; }
+            set
+            {
+                _followUp = value;
+                OnPropertyChanged(nameof(FollowUp));
+            }
+        }
+
 
         public MVCalendarMainWindow()
         {
             Button_Click_PrevMonthCommand = new DelegateCommand<RoutedEventArgs>(Button_Click_PrevMonth);
             Button_Click_NextMonthCommand = new DelegateCommand<RoutedEventArgs>(Button_Click_NextMonth);
-            MouseEnterCommand = new DelegateCommand<MouseEventArgs>(OnMouseEnter);
-            MouseLeaveCommand = new DelegateCommand<MouseEventArgs>(OnMouseLeave);
-            MouseClickCommand = new DelegateCommand<MouseButtonEventArgs>(OnMouseClick);
-        }
-        private enum MonthEnum
-        {
-            Styczeń = 1, Luty, Marzec, Kwiecień, Maj, Czerwiec, Lipiec, Sierpień, Wrzesień, Październik, Listopad, Grudzień
-        }
+            MouseClickCommand = new DelegateCommand<string>(OnMouseClick);
 
-        private enum DaysEnum
-        {
-            Monday = 1, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday
+            calendarModel.HeaderToDisplay = ((MonthEnum)DateTime.Now.Month).ToString() + " " + DateTime.Now.Year.ToString();
+            calendarModel.DateToDisplay = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+
+            InitialCalendar();
         }
 
-        private string month = ((MonthEnum)DateTime.Now.Month).ToString() + " " + DateTime.Now.Year.ToString();
-        private DateTime monthToDisplay = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public string Month
+        private void InitialCalendar()
         {
-            get => month;
-            set
-            {
-                if (month != value)
-                {
-                    month = value;
-                    OnPropertyChanged(nameof(Month));
-                }
-            }
-        }
-
-        private List<DayInfo> days;
-        public List<DayInfo> Days
-        {
-            get => days;
-            set
-            {
-                if (days != value)
-                {
-                    days = value;
-                    OnPropertyChanged(nameof(Days));
-                }
-            }
+            GetDaysFromMonth();
         }
 
         protected virtual void OnPropertyChanged(string propertyName)
@@ -85,22 +103,43 @@ namespace ClientDatabaseApp.ViewModel
 
         private void ChangeMonth(int amountOfMonthToChange)
         {
-            monthToDisplay = monthToDisplay.AddMonths(amountOfMonthToChange);
-            Month = (MonthEnum)(monthToDisplay.Month) + " " + monthToDisplay.Year.ToString();
+            calendarModel.DateToDisplay = calendarModel.DateToDisplay.AddMonths(amountOfMonthToChange);
+            DataToDisplay = (MonthEnum)calendarModel.DateToDisplay.Month + " " + calendarModel.DateToDisplay.Year.ToString();
 
             GetDaysFromMonth();
         }
 
-        private void InitialCalendar()
+
+
+        private async void OnMouseClick(string dayNumber)
         {
-            GetDaysFromMonth();
-        }
+            if (Days.Any(dayinfo => dayinfo.DayNumber == dayNumber))
+            {
+                try
+                {
+                    int day_number = int.Parse(dayNumber);
+                    var context = new DBContextHVAC();
+                    var followUp = await context.FollowUpDBSet
+                        .Where(line => line.DateOfAction.Year == calendarModel.DateToDisplay.Year
+                                    && line.DateOfAction.Month == calendarModel.DateToDisplay.Month
+                                    && line.DateOfAction.Day == day_number)
+                        .ToListAsync();
 
+                    FollowUp = followUp.Select(line => line.Note).ToList();
+                }
+                catch (Exception ex)
+                {
+                    _ = MessageBox.Show(ex.Message);
+                }
+                
+            }
+        }
         private void GetDaysFromMonth()
         {
             var context = new DBContextHVAC();
             var followUps = context.FollowUpDBSet
-                .Where(line => line.DateOfAction.Year == monthToDisplay.Year && line.DateOfAction.Month == monthToDisplay.Month)
+                .Where(line => line.DateOfAction.Year == calendarModel.DateToDisplay.Year &&
+                               line.DateOfAction.Month == calendarModel.DateToDisplay.Month)
                 .ToList();
 
             var followUpCounts = followUps
@@ -108,8 +147,8 @@ namespace ClientDatabaseApp.ViewModel
                 .Select(group => new { Day = group.Key, Count = group.Count() })
                 .ToList();
 
-            int days = DateTime.DaysInMonth(monthToDisplay.Year, monthToDisplay.Month);
-            DayOfWeek dayOfWeek = monthToDisplay.DayOfWeek;
+            int days = DateTime.DaysInMonth(calendarModel.DateToDisplay.Year, calendarModel.DateToDisplay.Month);
+            DayOfWeek dayOfWeek = calendarModel.DateToDisplay.DayOfWeek;
             int nr = (int)(DaysEnum)dayOfWeek;
 
             if (dayOfWeek == DayOfWeek.Sunday)
@@ -139,114 +178,10 @@ namespace ClientDatabaseApp.ViewModel
                 });
             }
 
-
             Days = listOfDays;
         }
 
-        private void OnMouseEnter(MouseEventArgs e)
-        {
-
-            //StackPanel stackPanel = (StackPanel)sender;
-            //Label label = FindChild<Label>(stackPanel, "DayNumber");
-
-            //if (label != null && !string.IsNullOrEmpty((string)label.Content))
-            //{
-            //    stackPanel.Background = new SolidColorBrush(Colors.LightGray);
-            //}
-        }
-
-        private void OnMouseLeave(MouseEventArgs e)
-        {
-            //StackPanel stackPanel = (StackPanel)sender;
-            //stackPanel.Background = Brushes.Transparent;
-        }
-
-        private void OnMouseClick(MouseButtonEventArgs e)
-        {
-            //listbox_todolist.Items.Clear();
-            //StackPanel stackPanel = (StackPanel)sender;
-            //Label label = FindChild<Label>(stackPanel, "DayNumber");
-
-            //if (label != null && !string.IsNullOrEmpty((string)label.Content))
-            //{
-            //    if (Days.Any(dayinfo => dayinfo.DayNumber == (string)label.Content))
-            //    {
-            //        try
-            //        {
-            //            int day_number = int.Parse((string)label.Content);
-            //            var context = new DBContextHVAC();
-            //            var followUp = context.FollowUpDBSet
-            //                .Where(line => line.DateOfAction.Year == monthToDisplay.Year
-            //                            && line.DateOfAction.Month == monthToDisplay.Month
-            //                            && line.DateOfAction.Day == day_number)
-            //                .ToList();
-
-            //            if (!followUp.Any())
-            //            {
-            //                return;
-            //            }
-
-            //            foreach (var item in followUp)
-            //            {
-            //                //listbox_todolist.Items.Add(item.Note);
-            //            }
-            //        }
-            //        catch (Exception ex)
-            //        {
-            //            MessageBox.Show(ex.Message);
-            //        }
-            //    }
-            //}
-        }
-
-        private T FindChild<T>(DependencyObject parent, string childName) where T : DependencyObject
-        {
-            if (parent == null)
-            {
-                return null;
-            }
-
-            T foundChild = null;
-
-            int childrenCount = VisualTreeHelper.GetChildrenCount(parent);
-            for (int i = 0; i < childrenCount; i++)
-            {
-                DependencyObject child = VisualTreeHelper.GetChild(parent, i);
-                T childType = (T)child;
-
-                if (childType == null)
-                {
-                    foundChild = FindChild<T>(child, childName);
-
-                    if (foundChild != null)
-                    {
-                        break;
-                    }
-                }
-                else if (!string.IsNullOrEmpty(childName))
-                {
-                    FrameworkElement frameworkElement = (FrameworkElement)child;
-                    if (frameworkElement != null && frameworkElement.Name == childName)
-                    {
-                        foundChild = (T)child;
-                        break;
-                    }
-                }
-                else
-                {
-                    foundChild = (T)child;
-                    break;
-                }
-            }
-
-            return foundChild;
-        }
-
     }
-    public class DayInfo //Lista followUp'ów 
-    {
-        public string DayNumber { get; set; }
-        public int FollowUpCount { get; set; }
-    }
+
 
 }

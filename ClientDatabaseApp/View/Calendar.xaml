@@ -4,9 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-             xmlns:local="clr-namespace:ClientDatabaseApp.View"
+             xmlns:local="clr-namespace:ClientDatabaseApp.View" xmlns:local1="clr-namespace:ClientDatabaseApp.ViewModel"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <local1:DayVisibilityConverter x:Key="DayVisibilityConverter" />
+    </UserControl.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -25,7 +29,7 @@
                 </Grid.RowDefinitions>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <Button Width="auto" Padding="4" Content="Prev" Command="{Binding Button_Click_PrevMonthCommand}"/>
-                    <Label Content="{Binding Path=Month}" MinWidth="160" FontSize="20" HorizontalContentAlignment="Center"/>
+                    <Label Content="{Binding Path=DataToDisplay}" MinWidth="160" FontSize="20" HorizontalContentAlignment="Center"/>
                     <Button Width="auto" Padding="4" Content="Next" Command="{Binding Button_Click_NextMonthCommand}"/>
                 </StackPanel>
                 <UniformGrid Grid.Row="1" Columns="7" HorizontalAlignment="Stretch" Margin="10,0,10,0">
@@ -46,27 +50,29 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Border BorderBrush="Black" Margin="2" BorderThickness="1">
+                            <Border BorderBrush="Black" Margin="2" BorderThickness="1" Visibility="{Binding DayNumber, Converter={StaticResource DayVisibilityConverter}}">
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="MouseLeftButtonDown">
+                                        <i:InvokeCommandAction CommandParameter="{Binding DayNumber}" Command="{Binding DataContext.MouseClickCommand, RelativeSource={RelativeSource AncestorType={x:Type UserControl}}}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                                <Border.Style>
+                                    <Style TargetType="Border">
+                                        <Setter Property="Background" Value="Transparent"/>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="LightGray"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Border.Style>
                                 <Border.Effect>
-                                                <DropShadowEffect ShadowDepth="3" Color="Gray" Opacity="0.5"/>
-                                            </Border.Effect>
+                                    <DropShadowEffect ShadowDepth="3" Color="Gray" Opacity="0.5"/>
+                                </Border.Effect>
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Width="70" Height="50">
-                                    <i:Interaction.Triggers>
-                                        <i:EventTrigger EventName="MouseEnter">
-                                            <i:InvokeCommandAction Command="{Binding MouseEnterCommand}" />
-                                        </i:EventTrigger>
-                                        <i:EventTrigger EventName="MouseLeave">
-                                            <i:InvokeCommandAction Command="{Binding MouseLeaveCommand}" />
-                                        </i:EventTrigger>
-                                        <i:EventTrigger EventName="MouseLeftButtonDown">
-                                            <i:InvokeCommandAction Command="{Binding MouseClickCommand}" />
-                                        </i:EventTrigger>
-                                    </i:Interaction.Triggers>
-
                                     <Label Name="DayNumber" Width="50" Content="{Binding DayNumber}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="28"/>
                                     <Label Content="{Binding FollowUpCount}" Width="20" HorizontalContentAlignment="Right" VerticalContentAlignment="Top"/>
                                 </StackPanel>
-
                             </Border>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
@@ -74,8 +80,8 @@
             </Grid>
         </Border>
         <StackPanel Grid.Column="1">
-            <Label Content="TODO:"/>
-            <ListBox Name="listbox_todolist" Height="200"></ListBox>
+            <Label Content="Lista zadań:"/>
+            <ListBox Name="listbox_todolist" Height="200" ItemsSource="{Binding FollowUp}" />
         </StackPanel>
     </Grid>
 </UserControl>

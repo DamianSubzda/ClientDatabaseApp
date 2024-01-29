@@ -8,8 +8,8 @@ using System.Windows;
 using System;
 using System.Linq;
 using MySqlConnector;
-using ClientDatabaseApp.View;
 using ClientDatabaseApp.Model;
+using ClientDatabaseApp.Service;
 using System.Windows.Input;
 
 namespace ClientDatabaseApp.ViewModel

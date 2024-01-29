@@ -8,6 +8,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using ClientDatabaseApp.Model;
+using ClientDatabaseApp.Service;
 
 namespace ClientDatabaseApp.ViewModel
 {

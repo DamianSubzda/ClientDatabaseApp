@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:ClientDatabaseApp.View"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="#FFE5E5E5">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="101*"/>
             <ColumnDefinition Width="9*"/>
