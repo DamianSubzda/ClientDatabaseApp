@@ -1,10 +1,9 @@
-﻿using MySqlConnector;
+﻿using ClientDatabaseApp.Model;
+using ClientDatabaseApp.Service;
+using MySqlConnector;
 using System;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
-using ClientDatabaseApp.Model;
-using ClientDatabaseApp.Service;
 using System.Windows.Input;
 
 namespace ClientDatabaseApp.ViewModel
@@ -36,7 +35,7 @@ namespace ClientDatabaseApp.ViewModel
 
         private void ShowMoreDetails(RoutedEventArgs e)
         {
-            
+
         }
 
         private void RemoveSelected(RoutedEventArgs e)

@@ -1,7 +1,6 @@
-﻿using MySqlConnector;
-using System.Windows;
+﻿using ClientDatabaseApp.Service;
 using ClientDatabaseApp.ViewModel;
-using ClientDatabaseApp.Service;
+using System.Windows;
 
 namespace ClientDatabaseApp.View
 {
@@ -12,11 +11,9 @@ namespace ClientDatabaseApp.View
     {
         public MainWindow()
         {
-            _ = DatabaseConnector.GetInstance();
+            DatabaseConnector.GetInstance();
             DataContext = new MVMainWindow();
             InitializeComponent();
         }
-
-
     }
 }

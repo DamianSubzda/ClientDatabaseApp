@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ClientDatabaseApp.Model;
+using ClientDatabaseApp.Service;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -7,8 +9,6 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using ClientDatabaseApp.Model;
-using ClientDatabaseApp.Service;
 
 namespace ClientDatabaseApp.ViewModel
 {
@@ -62,7 +62,7 @@ namespace ClientDatabaseApp.ViewModel
 
         private static string GetEnumDescription(Status value)
         {
-            var field = value.GetType().GetField(value.ToString()); 
+            var field = value.GetType().GetField(value.ToString());
             object attribute = Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute));
 
             if (attribute != null && attribute is DescriptionAttribute descriptionAttribute)

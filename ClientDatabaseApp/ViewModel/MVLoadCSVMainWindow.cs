@@ -1,15 +1,13 @@
-﻿using CsvHelper;
+﻿using ClientDatabaseApp.Model;
+using ClientDatabaseApp.Service;
+using CsvHelper;
 using Microsoft.Win32;
-using System.Collections.Generic;
+using MySqlConnector;
+using System;
 using System.Globalization;
 using System.IO;
-using System.Windows.Controls;
-using System.Windows;
-using System;
 using System.Linq;
-using MySqlConnector;
-using ClientDatabaseApp.Model;
-using ClientDatabaseApp.Service;
+using System.Windows;
 using System.Windows.Input;
 
 namespace ClientDatabaseApp.ViewModel

@@ -1,13 +1,11 @@
 ﻿using MySqlConnector;
-using System;
-using System.Windows;
 using System.Configuration;
 
 namespace ClientDatabaseApp.Service
 {
     public sealed class DatabaseConnector
     {
-        private readonly string connectionString = ConfigurationManager.ConnectionStrings["hvacConnectionString"].ConnectionString;
+        private readonly string connectionString = ConfigurationManager.ConnectionStrings["MyConnectionString"].ConnectionString;
         private static DatabaseConnector _instance;
         public static MySqlConnection connection;
 

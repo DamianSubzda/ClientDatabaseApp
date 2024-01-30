@@ -21,7 +21,7 @@
                     <i:InvokeCommandAction Command="{Binding TabSelectionChangedCommand}" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
-
+            
             <TabItem  Header="Baza klientów">
                 <local1:ClientDatabase/>
             </TabItem>

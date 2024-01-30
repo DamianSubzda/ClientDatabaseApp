@@ -137,7 +137,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Service\DbConfiguration.cs" />
+    <Compile Include="Service\DBContextHVAC.cs" />
     <Compile Include="ViewModel\DayVisibilityConverter.cs" />
     <Compile Include="View\ToDo.xaml.cs">
       <DependentUpon>ToDo.xaml</DependentUpon>
@@ -172,7 +172,6 @@
     <Compile Include="Model\MClientDatabase.cs" />
     <Compile Include="Model\MLoadCSV.cs" />
     <Compile Include="Service\DatabaseConnector.cs" />
-    <Compile Include="Service\DBContextHVAC.cs" />
     <Compile Include="Model\FollowUp.cs" />
     <Compile Include="ViewModel\MVMainWindow.cs" />
     <Compile Include="Service\DelegateCommand.cs" />

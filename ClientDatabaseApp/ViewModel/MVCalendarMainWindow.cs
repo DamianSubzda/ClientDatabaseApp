@@ -1,12 +1,12 @@
-﻿using System;
+﻿using ClientDatabaseApp.Model;
+using ClientDatabaseApp.Service;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.Entity;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
-using ClientDatabaseApp.Model;
-using ClientDatabaseApp.Service;
 
 namespace ClientDatabaseApp.ViewModel
 {
@@ -131,7 +131,7 @@ namespace ClientDatabaseApp.ViewModel
                 {
                     _ = MessageBox.Show(ex.Message);
                 }
-                
+
             }
         }
         private void GetDaysFromMonth()
