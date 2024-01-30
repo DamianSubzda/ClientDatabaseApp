@@ -32,8 +32,8 @@
 
          <!--Przyciski--> 
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="214,0,0,0" Grid.Column="3">
-            <Button Content="Wybierz i podejrzyj plik" Margin="5" Command="{Binding GetDataFromCSVCommand}" Width="150" Height="30.2"/>
-            <Button Content="Wczytaj dane" Command="{Binding PassDataToDatabaseCoomand}" Margin="5"  Width="100" Height="30"/>
+            <Button Content="Wybierz i podejrzyj plik" Margin="0,0,10,0" Command="{Binding GetDataFromCSVCommand}"/>
+            <Button Content="Wczytaj dane" Command="{Binding PassDataToDatabaseCoomand}"/>
         </StackPanel>
     </Grid>
 </UserControl>

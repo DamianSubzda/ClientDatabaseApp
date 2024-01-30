@@ -7,12 +7,6 @@
         xmlns:local="clr-namespace:ClientDatabaseApp" xmlns:local1="clr-namespace:ClientDatabaseApp.View"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <!-- Do przemyślenia \/ -->
-    <Window.Resources>
-        <Style TargetType="Button">
-            <Setter Property="Background" Value="LightGray"/>
-        </Style>
-    </Window.Resources>
     <Grid>
 
         <TabControl>
@@ -22,7 +16,7 @@
                 </i:EventTrigger>
             </i:Interaction.Triggers>
             
-            <TabItem  Header="Baza klientów">
+            <TabItem Header="Baza klientów">
                 <local1:ClientDatabase/>
             </TabItem>
             <TabItem  Header="Dodaj klienta">

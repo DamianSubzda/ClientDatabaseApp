@@ -2,10 +2,12 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
     <!-- Brushes-->
-    <SolidColorBrush x:Key="Color1" Color="#3E3232"/>
-    <SolidColorBrush x:Key="Color2" Color="#3E3232"/>
-    <SolidColorBrush x:Key="Color3" Color="#7E6363"/>
-    <SolidColorBrush x:Key="Color4" Color="#A87C7C"/>
+    <SolidColorBrush x:Key="Color1" Color="#121212"/>
+    <SolidColorBrush x:Key="Color2" Color="#282828"/>
+    <SolidColorBrush x:Key="Color3" Color="#3f3f3f"/>
+    <SolidColorBrush x:Key="Color4" Color="#575757"/>
+    <SolidColorBrush x:Key="Color5" Color="#717171"/>
+    <SolidColorBrush x:Key="Color6" Color="#8b8b8b"/>
     
     <LinearGradientBrush x:Key="GradientBrush" StartPoint="0,0" EndPoint="1,1">
         <GradientStop Color="#FF6200EE" Offset="0.0"/>
@@ -19,15 +21,30 @@
     
     <!--Controls-->
     <Style TargetType="TabItem">
-        <Setter Property="Background" Value="{StaticResource Color1}"/>
-        <Setter Property="Foreground" Value="White"/>
-        <Style.Triggers>
-            <Trigger Property="IsSelected" Value="True">
-                <Setter Property="Background" Value="{StaticResource Color3}"/>
-                <Setter Property="Foreground" Value="White"/>
-            </Trigger>
-        </Style.Triggers>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TabItem">
+                    <Border x:Name="Border" BorderThickness="1,1,1,0" CornerRadius="5,5,0,0"
+                        Padding="25,5,25,5" Margin="0,2,1,0" BorderBrush="white">
+                        <ContentPresenter x:Name="ContentSite" ContentSource="Header" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="TextElement.Foreground" TargetName="ContentSite" Value="White"/>
+                            <Setter TargetName="Border" Property="Background" Value="{StaticResource Color6}"/>
+                            <Setter TargetName="ContentSite" Property="TextElement.FontSize" Value="14"/>
+                        </Trigger>
+                        <Trigger Property="IsSelected" Value="False">
+                            <Setter Property="TextElement.Foreground" TargetName="ContentSite" Value="White"/>
+                            <Setter TargetName="Border" Property="Background" Value="{StaticResource Color1}" />
+                            <Setter TargetName="ContentSite" Property="TextElement.FontSize" Value="12"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
+    
     <Style TargetType="TabControl">
         <Setter Property="Background" Value="{StaticResource Color1}"/>
     </Style>
@@ -36,15 +53,70 @@
     </Style>
 
     <Style TargetType="Button">
-        <Setter Property="Background" Value="{StaticResource Color3}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="Border" BorderThickness="1" CornerRadius="5" Padding="25,5,25,5" BorderBrush="White">
+                        <ContentPresenter x:Name="ContentSite" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="ContentSite" Property="TextElement.Foreground" Value="White"/>
+                            <Setter TargetName="Border" Property="Background" Value="{StaticResource Color6}"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="False">
+                            <Setter TargetName="ContentSite" Property="TextElement.Foreground" Value="White"/>
+                            <Setter TargetName="Border" Property="Background" Value="{StaticResource Color5}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+    <Style TargetType="Border">
+        <Setter Property="BorderBrush" Value="{StaticResource Color6}"/>
     </Style>
 
     <Style TargetType="Label">
-        <Setter Property="Foreground" Value="#ffffff"/>
+        <Setter Property="Foreground" Value="White"/>
     </Style>
 
     <Style TargetType="TextBox">
-        
+        <Setter Property="Background" Value="{StaticResource Color2}"/>
+        <Setter Property="Foreground" Value="White"/>
+    </Style>
+
+    <Style TargetType="ListBox">
+        <Setter Property="Background" Value="{StaticResource Color2}"/>
+        <Setter Property="Foreground" Value="White"/>
+    </Style>
+    
+    <Style TargetType="RichTextBox">
+        <Setter Property="Padding" Value="2"/>
+        <Setter Property="Background" Value="{StaticResource Color2}"/>
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="2"/>
+        <Style.Triggers>
+            <EventTrigger RoutedEvent="MouseEnter">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <ColorAnimation To="Blue" Duration="0:0:0.5"
+                                    Storyboard.TargetProperty="BorderBrush.Color"/>
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+            <EventTrigger RoutedEvent="MouseLeave">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <ColorAnimation To="Transparent" Duration="0:0:0.5"
+                                    Storyboard.TargetProperty="BorderBrush.Color"/>
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+        </Style.Triggers>
     </Style>
 
 </ResourceDictionary>

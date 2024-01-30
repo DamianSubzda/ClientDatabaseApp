@@ -83,7 +83,7 @@
             <Label Grid.Column ="0" Content="Notatka:" HorizontalAlignment="Left" VerticalAlignment="Top"/>
             <RichTextBox Name="NotesRichTextBox" Grid.Column="1" Width="500"/>
 
-            <Button Grid.Row ="8" Grid.Column="4" Width="150" Height="50" VerticalAlignment="Center" HorizontalAlignment="Center" Command="{Binding AddClientToDatabaseCommand}" >Dodaj</Button>
+            <Button Grid.Row ="8" Grid.Column="4" Width="150" Height="50" VerticalAlignment="Center" HorizontalAlignment="Center" Command="{Binding AddClientToDatabaseCommand}" Content="Dodaj"></Button>
         </Grid>
     </Grid>
 </UserControl>
