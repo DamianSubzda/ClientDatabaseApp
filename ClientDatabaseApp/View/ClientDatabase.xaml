@@ -23,8 +23,21 @@
                 <ColumnDefinition Width="61*"/>
                 <ColumnDefinition Width="332*"/>
             </Grid.ColumnDefinitions>
-             <!--DataGrid--> 
-            <DataGrid MaxColumnWidth="300"  IsReadOnly= "False" x:Name="dataGrid" CanUserReorderColumns="True" CanUserSortColumns="True" CanUserResizeColumns="True" Margin="10" Grid.ColumnSpan="2"/>
+             <!--DataGrid-->
+            <DataGrid ItemsSource="{Binding Client}" AutoGenerateColumns="False" MaxColumnWidth="300" IsReadOnly= "False" x:Name="dataGrid" CanUserReorderColumns="True" CanUserSortColumns="True" CanUserResizeColumns="True" Margin="10" Grid.ColumnSpan="2">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="ClientName" Binding="{Binding ClientName}"/>
+                    <DataGridTextColumn Header="Phonenumber" Binding="{Binding Phonenumber}"/>
+                    <DataGridTextColumn Header="Email" Binding="{Binding Email}"/>
+                    <DataGridTextColumn Header="City" Binding="{Binding City}"/>
+                    <DataGridTextColumn Header="Facebook" Binding="{Binding Facebook}"/>
+                    <DataGridTextColumn Header="Instagram" Binding="{Binding Instagram}"/>
+                    <DataGridTextColumn Header="PageURL" Binding="{Binding PageURL}"/>
+                    <DataGridTextColumn Header="Data" Binding="{Binding Data, StringFormat=\{0:d\}}"/>
+                    <DataGridTextColumn Header="Owner" Binding="{Binding Owner}"/>
+                    <DataGridTextColumn Header="Note" Binding="{Binding Note}"/>
+                </DataGrid.Columns>
+            </DataGrid>
 
         </Grid>
         <StackPanel Grid.Row ="2"  Orientation="Horizontal" Margin="10,0,10,0" Height="50" VerticalAlignment="Center" Grid.ColumnSpan="4">

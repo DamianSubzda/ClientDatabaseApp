@@ -25,7 +25,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="TabItem">
                     <Border x:Name="Border" BorderThickness="1,1,1,0" CornerRadius="5,5,0,0"
-                        Padding="25,5,25,5" Margin="0,2,1,0" BorderBrush="white">
+                        Padding="20,5,20,5" Margin="0,2,1,0" BorderBrush="white">
                         <ContentPresenter x:Name="ContentSite" ContentSource="Header" />
                     </Border>
                     <ControlTemplate.Triggers>
@@ -48,6 +48,24 @@
     <Style TargetType="TabControl">
         <Setter Property="Background" Value="{StaticResource Color1}"/>
     </Style>
+
+    <Style TargetType="DataGridColumnHeader">
+        <Setter Property="Background" Value="{StaticResource Color2}"/>
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="BorderBrush" Value="White" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Padding" Value="10,3,10,3"/>
+    </Style>
+
+    <Style TargetType="DataGridRow">
+        <Setter Property="Background" Value="{StaticResource Color4}"/>
+        <Setter Property="Foreground" Value="White"/>
+    </Style>
+
+    <Style TargetType="DataGridRowHeader">
+        <Setter Property="Background" Value="White"/>
+    </Style>
+
     <Style TargetType="Grid">
         <Setter Property="Background" Value="{StaticResource Color1}"/>
     </Style>
@@ -56,15 +74,17 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
-                    <Border x:Name="Border" BorderThickness="1" CornerRadius="5" Padding="25,5,25,5" BorderBrush="White">
+                    <Border x:Name="Border" BorderThickness="1" CornerRadius="5" Padding="20,5,20,5" BorderBrush="White">
                         <ContentPresenter x:Name="ContentSite" HorizontalAlignment="Center" VerticalAlignment="Center" />
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="FontFamily" Value="Tahoma"/>
                             <Setter TargetName="ContentSite" Property="TextElement.Foreground" Value="White"/>
                             <Setter TargetName="Border" Property="Background" Value="{StaticResource Color6}"/>
                         </Trigger>
                         <Trigger Property="IsMouseOver" Value="False">
+                            <Setter Property="FontFamily" Value="Tahoma"/>
                             <Setter TargetName="ContentSite" Property="TextElement.Foreground" Value="White"/>
                             <Setter TargetName="Border" Property="Background" Value="{StaticResource Color5}"/>
                         </Trigger>
@@ -80,6 +100,7 @@
     </Style>
 
     <Style TargetType="Label">
+        <Setter Property="FontFamily" Value="Verdana"/>
         <Setter Property="Foreground" Value="White"/>
     </Style>
 
