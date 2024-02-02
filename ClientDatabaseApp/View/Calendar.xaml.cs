@@ -10,7 +10,7 @@ namespace ClientDatabaseApp.View
     {
         public Calendar()
         {
-            DataContext = new MVCalendarMainWindow();
+            DataContext = new MVCalendar();
             InitializeComponent();
         }
     }

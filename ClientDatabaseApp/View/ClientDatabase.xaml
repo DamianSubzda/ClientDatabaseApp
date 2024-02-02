@@ -24,7 +24,7 @@
                 <ColumnDefinition Width="332*"/>
             </Grid.ColumnDefinitions>
              <!--DataGrid-->
-            <DataGrid ItemsSource="{Binding Client}" AutoGenerateColumns="False" MaxColumnWidth="300" IsReadOnly= "False" x:Name="dataGrid" CanUserReorderColumns="True" CanUserSortColumns="True" CanUserResizeColumns="True" Margin="10" Grid.ColumnSpan="2">
+            <DataGrid ItemsSource="{Binding Client}" SelectedItem="{Binding SelectedClient}" AutoGenerateColumns="False" MaxColumnWidth="300" IsReadOnly= "False" x:Name="dataGrid" CanUserReorderColumns="True" CanUserSortColumns="True" CanUserResizeColumns="True" Margin="10" Grid.ColumnSpan="2">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="ClientName" Binding="{Binding ClientName}"/>
                     <DataGridTextColumn Header="Phonenumber" Binding="{Binding Phonenumber}"/>

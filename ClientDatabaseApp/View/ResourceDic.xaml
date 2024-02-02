@@ -44,9 +44,13 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style TargetType="Window">
+        <Setter Property="Background" Value="{StaticResource Color2}"/>
+    </Style>
     
     <Style TargetType="TabControl">
-        <Setter Property="Background" Value="{StaticResource Color1}"/>
+        <Setter Property="Background" Value="{StaticResource Color2}"/>
     </Style>
 
     <Style TargetType="DataGridColumnHeader">
@@ -64,10 +68,6 @@
 
     <Style TargetType="DataGridRowHeader">
         <Setter Property="Background" Value="White"/>
-    </Style>
-
-    <Style TargetType="Grid">
-        <Setter Property="Background" Value="{StaticResource Color1}"/>
     </Style>
 
     <Style TargetType="Button">
@@ -114,11 +114,15 @@
         <Setter Property="Foreground" Value="White"/>
     </Style>
     
+    <Style TargetType="Paragraph">
+        <Setter Property="Margin" Value="0,3,0,3"/>
+    </Style>
+    
     <Style TargetType="RichTextBox">
         <Setter Property="Padding" Value="2"/>
         <Setter Property="Background" Value="{StaticResource Color2}"/>
         <Setter Property="Foreground" Value="White"/>
-        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Color6}"/>
         <Setter Property="BorderThickness" Value="2"/>
         <Style.Triggers>
             <EventTrigger RoutedEvent="MouseEnter">
@@ -138,6 +142,15 @@
                 </BeginStoryboard>
             </EventTrigger>
         </Style.Triggers>
+    </Style>
+
+    <Style TargetType="DatePicker">
+        <Setter Property="Background" Value="{StaticResource Color4}"/>
+        <Setter Property="Foreground" Value="White"/>
+    </Style>
+
+    <Style TargetType="DatePickerTextBox">
+        <Setter Property="Background" Value="{StaticResource Color4}"/>
     </Style>
 
 </ResourceDictionary>

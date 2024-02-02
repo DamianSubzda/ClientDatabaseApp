@@ -1,5 +1,6 @@
 ﻿using ClientDatabaseApp.Model;
 using ClientDatabaseApp.Service;
+using ClientDatabaseApp.View;
 using MySqlConnector;
 using System;
 using System.Collections.Generic;
@@ -7,11 +8,12 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace ClientDatabaseApp.ViewModel
 {
-    public class MVClientDatabaseMainWindow : INotifyPropertyChanged
+    public class MVClientDatabase : INotifyPropertyChanged
     {
         private MySqlConnection conn = DatabaseConnector.connection;
 
@@ -32,7 +34,19 @@ namespace ClientDatabaseApp.ViewModel
             }
         }
 
-        public MVClientDatabaseMainWindow()
+        private Client _selectedClient;
+        public Client SelectedClient
+        {
+            get { return _selectedClient; }
+            set
+            {
+                _selectedClient = value;
+                OnPropertyChanged(nameof(SelectedClient));
+            }
+        }
+
+
+        public MVClientDatabase()
         {
             ShowMoreDetailsCommand = new DelegateCommand<RoutedEventArgs>(ShowMoreDetails);
             RemoveSelectedCommand = new DelegateCommand<RoutedEventArgs>(RemoveSelected);
@@ -56,52 +70,52 @@ namespace ClientDatabaseApp.ViewModel
 
         private void ShowMoreDetails(RoutedEventArgs e)
         {
-
+            DatabaseQuery query = new DatabaseQuery();
         }
 
         private void RemoveSelected(RoutedEventArgs e)
         {
-
+            if (SelectedClient != null)
+            {
+                MessageBoxResult result = MessageBox.Show($"Jesteś pewny usunięcia klienta: {SelectedClient.ClientName}?", "Uwaga", MessageBoxButton.YesNo);
+                if (result == MessageBoxResult.Yes)
+                {
+                    //Usuwanie
+                    DatabaseQuery query = new DatabaseQuery();
+                    string exception = query.DeleteClient(SelectedClient);
+                    if (!string.IsNullOrEmpty(exception))
+                    {
+                        _ = MessageBox.Show(exception);
+                    }
+                    else
+                    {
+                        Client.Remove(SelectedClient);
+                    }
+                    
+                }
+            }
+            else
+            {
+                MessageBox.Show("Brak zaznaczonego klienta w tabeli.");
+            }
         }
 
         private void AddFolowUp(RoutedEventArgs e)
         {
 
-        }
-
-
-        void AddFollowUp()
-        {
-            try
+            if (SelectedClient != null)
             {
-                conn.Open();
+                NewFollowUp newFollowUp = new NewFollowUp();
+                MVNewFollowUp newFollowUpViewModel = new MVNewFollowUp(SelectedClient, () => newFollowUp.Close());
+                newFollowUp.DataContext = newFollowUpViewModel;
+                newFollowUp.ShowDialog();
 
-                string insertQuery = "INSERT INTO `FollowUp` " +
-                    "(`ClientId`, `Note`, `DateOfCreation`, `DateOfAction`) " +
-                    "VALUES " +
-                    "(@ClientId, @Note, @DateOfCreation, @DateOfAction)";
-
-                MySqlCommand cmd = new MySqlCommand(insertQuery, conn);
-                cmd.Parameters.AddWithValue("@ClientId", 1);
-                cmd.Parameters.AddWithValue("@Note", "Notatka dla klienta");
-                cmd.Parameters.AddWithValue("@DateOfCreation", DateTime.Now);
-                cmd.Parameters.AddWithValue("@DateOfAction", DateTime.Now.AddDays(3));
-
-                cmd.ExecuteNonQuery();
-
-                Console.WriteLine("Insert wykonany pomyślnie.");
             }
-            catch (Exception ex)
+            else
             {
-                Console.WriteLine("Błąd: " + ex.Message);
-            }
-            finally
-            {
-                conn.Close();
+                MessageBox.Show("Proszę zaznaczyć klienta w tabeli.");
             }
         }
-
-
     }
 }
 

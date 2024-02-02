@@ -10,7 +10,6 @@ namespace ClientDatabaseApp.Model
     {
         [Key]
         public int ClientId { get; set; }
-
         [MaxLength(200)]
         public string ClientName { get; set; }
         [MaxLength(30)]
@@ -25,11 +24,12 @@ namespace ClientDatabaseApp.Model
         public string Instagram { get; set; }
         [MaxLength(1000)]
         public string PageURL { get; set; }
-        public DateTime? Data { get; set; }
+        public DateTime? Data { get ; set; }
         [MaxLength(50)]
         public string Owner { get; set; }
         [MaxLength(2000)]
         public string Note { get; set; }
+        public int Status { get; set; }
 
         public virtual List<FollowUp> FollowUp { get; set; }
 

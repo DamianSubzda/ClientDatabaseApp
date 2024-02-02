@@ -10,7 +10,7 @@ namespace ClientDatabaseApp.View
     {
         public LoadCSV()
         {
-            DataContext = new MVLoadCSVMainWindow();
+            DataContext = new MVLoadCSV();
             InitializeComponent();
         }
     }

@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:ClientDatabaseApp" xmlns:local1="clr-namespace:ClientDatabaseApp.View"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
+    <Grid Background="{StaticResource Color1}">
 
         <TabControl>
             <i:Interaction.Triggers>

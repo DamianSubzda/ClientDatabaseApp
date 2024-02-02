@@ -10,7 +10,7 @@ using System.Windows.Input;
 
 namespace ClientDatabaseApp.ViewModel
 {
-    public class MVCalendarMainWindow : INotifyPropertyChanged
+    public class MVCalendar : INotifyPropertyChanged
     {
 
         private MCalendar calendarModel = new MCalendar();
@@ -68,7 +68,7 @@ namespace ClientDatabaseApp.ViewModel
         }
 
 
-        public MVCalendarMainWindow()
+        public MVCalendar()
         {
             Button_Click_PrevMonthCommand = new DelegateCommand<RoutedEventArgs>(Button_Click_PrevMonth);
             Button_Click_NextMonthCommand = new DelegateCommand<RoutedEventArgs>(Button_Click_NextMonth);

@@ -19,21 +19,26 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-         <!--DataGrid--> 
-        <DataGrid x:Name="dataGridPreview" AutoGenerateColumns="False" CanUserResizeColumns="True" Margin="10,10,10,10" Grid.ColumnSpan="4">
+         <!--DataGrid-->
+        <DataGrid ItemsSource="{Binding PreviewClients}" x:Name="dataGridPreview" AutoGenerateColumns="False" CanUserResizeColumns="True" Margin="10,10,10,10" Grid.ColumnSpan="4">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="ClientName" Width="auto"/>
-                <DataGridTextColumn Header="Phonenumber" Width="auto"/>
-                <DataGridTextColumn Header="Email" Width="auto"/>
-                <DataGridTextColumn Header="Data" Width="auto"/>
-                <DataGridTextColumn Header="Owner" Width="auto"/>
+                <DataGridTextColumn Header="ClientName" Binding="{Binding ClientName}" Width="*"/>
+                <DataGridTextColumn Header="Phonenumber" Binding="{Binding Phonenumber}" Width="*"/>
+                <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="*"/>
+                <DataGridTextColumn Header="City" Binding="{Binding City}" Width="*"/>
+                <DataGridTextColumn Header="Facebook" Binding="{Binding Facebook}" Width="*"/>
+                <DataGridTextColumn Header="Instagram" Binding="{Binding Instagram}" Width="*"/>
+                <DataGridTextColumn Header="PageURL" Binding="{Binding PageURL}" Width="*"/>
+                <DataGridTextColumn Header="Data" Binding="{Binding Data}" Width="*"/>
+                <DataGridTextColumn Header="Owner" Binding="{Binding Owner}" Width="*"/>
+                <DataGridTextColumn Header="Note" Binding="{Binding Note}" Width="*"/>
             </DataGrid.Columns>
         </DataGrid>
 
          <!--Przyciski--> 
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="214,0,0,0" Grid.Column="3">
-            <Button Content="Wybierz i podejrzyj plik" Margin="0,0,10,0" Command="{Binding GetDataFromCSVCommand}"/>
-            <Button Content="Wczytaj dane" Command="{Binding PassDataToDatabaseCoomand}"/>
+            <Button Content="Wybierz i podejrzyj plik" Margin="0,0,10,0" Command="{Binding GetClientsFromCSVCommand}"/>
+            <Button Content="Wczytaj dane" Command="{Binding AddToDatabaseCommand}"/>
         </StackPanel>
     </Grid>
 </UserControl>

@@ -4,14 +4,16 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-             xmlns:local="clr-namespace:ClientDatabaseApp.View" xmlns:local1="clr-namespace:ClientDatabaseApp.ViewModel"
+             xmlns:local="clr-namespace:ClientDatabaseApp.View" 
+             xmlns:local1="clr-namespace:ClientDatabaseApp.ViewModel"
+             xmlns:local2="clr-namespace:ClientDatabaseApp.Service"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <!-- Do zastanowienia: Ustawić DataContext w View i chyba tak trzeba będzie zrobić ponieważ to dobre dla MVVM-->
     
     <UserControl.Resources>
-        <local1:MVCalendarMainWindow x:Key="MVCalendarMainWindow"/>
-        <local1:DayVisibilityConverter x:Key="DayVisibilityConverter" />
+        <local1:MVCalendar x:Key="MVCalendarMainWindow"/>
+        <local2:DayVisibilityConverter x:Key="DayVisibilityConverter" />
     </UserControl.Resources>
 
     <Grid>
