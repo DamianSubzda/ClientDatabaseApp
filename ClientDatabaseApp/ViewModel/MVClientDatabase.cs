@@ -70,7 +70,18 @@ namespace ClientDatabaseApp.ViewModel
 
         private void ShowMoreDetails(RoutedEventArgs e)
         {
-            DatabaseQuery query = new DatabaseQuery();
+            if (SelectedClient != null)
+            {
+                ShowMore showMore = new ShowMore();
+                MVShowMore showMoreViewModel = new MVShowMore(SelectedClient, () => showMore.Close());
+                showMore.DataContext = showMoreViewModel;
+                showMore.ShowDialog();
+
+            }
+            else
+            {
+                MessageBox.Show("Proszę zaznaczyć klienta w tabeli.");
+            }
         }
 
         private void RemoveSelected(RoutedEventArgs e)

@@ -53,6 +53,10 @@
         <Setter Property="Background" Value="{StaticResource Color2}"/>
     </Style>
 
+    <Style TargetType="DataGrid">
+        <Setter Property="Background" Value="{StaticResource Color1}"/>
+    </Style>
+
     <Style TargetType="DataGridColumnHeader">
         <Setter Property="Background" Value="{StaticResource Color2}"/>
         <Setter Property="Foreground" Value="White" />

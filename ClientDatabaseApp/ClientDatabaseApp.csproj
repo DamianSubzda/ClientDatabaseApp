@@ -143,8 +143,12 @@
     <Compile Include="Service\DayVisibilityConverter.cs" />
     <Compile Include="Service\RichTextBoxHelper.cs" />
     <Compile Include="ViewModel\MVNewFollowUp.cs" />
+    <Compile Include="ViewModel\MVShowMore.cs" />
     <Compile Include="View\NewFollowUp.xaml.cs">
       <DependentUpon>NewFollowUp.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ShowMore.xaml.cs">
+      <DependentUpon>ShowMore.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ToDo.xaml.cs">
       <DependentUpon>ToDo.xaml</DependentUpon>
@@ -200,6 +204,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\ResourceDic.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ShowMore.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
