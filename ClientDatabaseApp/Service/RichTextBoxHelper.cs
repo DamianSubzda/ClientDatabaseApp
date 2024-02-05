@@ -39,14 +39,11 @@ namespace ClientDatabaseApp.Service
 
                     var richTextBox = (RichTextBox)obj;
 
-                // Parse the XAML to a document (or use XamlReader.Parse())
-
                 try
                     {
                         var stream = new MemoryStream(Encoding.UTF8.GetBytes(GetDocumentXaml(richTextBox)));
                         var doc = (FlowDocument)XamlReader.Load(stream);
 
-                    // Set the document
                     richTextBox.Document = doc;
                     }
                     catch (Exception)
@@ -54,7 +51,6 @@ namespace ClientDatabaseApp.Service
                         richTextBox.Document = new FlowDocument();
                     }
 
-                // When the document changes update the source
                 richTextBox.TextChanged += (obj2, e2) =>
                     {
                         RichTextBox richTextBox2 = obj2 as RichTextBox;

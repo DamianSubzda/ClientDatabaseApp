@@ -87,7 +87,7 @@ namespace ClientDatabaseApp.Service
                 command.Parameters.AddWithValue("@Facebook", record.Facebook);
                 command.Parameters.AddWithValue("@Instagram", record.Instagram);
                 command.Parameters.AddWithValue("@PageURL", record.PageURL);
-                command.Parameters.AddWithValue("@Data", record.Data);//DateTime.TryParse(record.Data, out DateTime parsedDate) ? (object)parsedDate : DBNull.Value
+                command.Parameters.AddWithValue("@Data", record.Data);
                 command.Parameters.AddWithValue("@Owner", record.Owner);
                 command.Parameters.AddWithValue("@Note", record.Note);
                 command.Parameters.AddWithValue("@Status", record.Status);
@@ -115,13 +115,10 @@ namespace ClientDatabaseApp.Service
             {
                 conn.Open();
 
-                // Usuwanie klucza obcego
                 using (MySqlCommand command = new MySqlCommand(dropForeignKeyQuery, conn))
                 {
                     command.ExecuteNonQuery();
                 }
-
-                // Dodawanie klucza obcego z opcją CASCADE
                 using (MySqlCommand command = new MySqlCommand(addForeignKeyWithCascadeQuery, conn))
                 {
                     command.ExecuteNonQuery();

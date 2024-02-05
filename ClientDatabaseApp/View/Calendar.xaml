@@ -8,7 +8,7 @@
              xmlns:local1="clr-namespace:ClientDatabaseApp.ViewModel"
              xmlns:local2="clr-namespace:ClientDatabaseApp.Service"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="520" d:DesignWidth="800">
     <!-- Do zastanowienia: Ustawić DataContext w View i chyba tak trzeba będzie zrobić ponieważ to dobre dla MVVM-->
     
     <UserControl.Resources>
@@ -18,12 +18,13 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="582"/>
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
         <Border Grid.Row="0" Grid.Column="0" BorderBrush="Black" BorderThickness="1" Margin="0,10,0,0">
             <Grid>
@@ -74,9 +75,9 @@
                                 <Border.Effect>
                                     <DropShadowEffect ShadowDepth="3" Color="Gray" Opacity="0.5"/>
                                 </Border.Effect>
-                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Width="70" Height="50">
+                                <StackPanel MinHeight="50" MinWidth="70" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                    <Label Opacity="0.8" Content="{Binding FollowUpCount}" Width="auto" VerticalContentAlignment="Top" FontSize="10"/>
                                     <Label Name="DayNumber" Width="50" Content="{Binding DayNumber}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="28"/>
-                                    <Label Content="{Binding FollowUpCount}" Width="20" HorizontalContentAlignment="Right" VerticalContentAlignment="Top"/>
                                 </StackPanel>
                             </Border>
                         </DataTemplate>

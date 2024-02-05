@@ -15,13 +15,7 @@ namespace ClientDatabaseApp.ViewModel
 
         private void TabSelectionChanged(SelectionChangedEventArgs e)
         {
-            //if (e.AddedItems[0] is TabItem selectedTabItem)
-            //{
-            //    if (selectedTabItem.Header.ToString() == "Baza klientów")
-            //    {
-            //        //InitializeClientsGrid();
-            //    }
-            //}
+            
         }
     }
 }

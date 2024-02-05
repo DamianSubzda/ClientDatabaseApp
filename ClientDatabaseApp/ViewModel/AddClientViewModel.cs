@@ -13,7 +13,7 @@ using static ClientDatabaseApp.Service.ComboboxStatus;
 
 namespace ClientDatabaseApp.ViewModel
 {
-    public class AddClientViewModel : INotifyPropertyChanged //Do zastanowienia - zamiast MessageBox dać 
+    public class AddClientViewModel : INotifyPropertyChanged //Do zastanowienia - zamiast MessageBox stworzyć serwis dialogowy
     {
         public ICommand AddClientToDatabaseCommand { get; set; }
 

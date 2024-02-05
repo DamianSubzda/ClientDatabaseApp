@@ -5,56 +5,38 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ClientDatabaseApp.View"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="520" d:DesignWidth="800">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="101*"/>
-            <ColumnDefinition Width="9*"/>
-            <ColumnDefinition Width="253*"/>
-            <ColumnDefinition Width="423*"/>
-        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Grid Grid.Row ="1" Grid.ColumnSpan="4">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="61*"/>
-                <ColumnDefinition Width="332*"/>
-            </Grid.ColumnDefinitions>
-             <!--DataGrid-->
-            <DataGrid ItemsSource="{Binding ClientsView}" SelectedItem="{Binding SelectedClient}" AutoGenerateColumns="False" MaxColumnWidth="300" IsReadOnly= "False" x:Name="dataGrid" CanUserReorderColumns="True" CanUserSortColumns="True" CanUserResizeColumns="True" Margin="10" Grid.ColumnSpan="2">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="ClientName" Binding="{Binding ClientName}" Width="*"/>
-                    <DataGridTextColumn Header="Phonenumber" Binding="{Binding Phonenumber}" Width="*"/>
-                    <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="*"/>
-                    <DataGridTextColumn Header="City" Binding="{Binding City}" Width="*"/>
-                    <DataGridTextColumn Header="Facebook" Binding="{Binding Facebook}" Width="*"/>
-                    <DataGridTextColumn Header="Instagram" Binding="{Binding Instagram}" Width="*"/>
-                    <DataGridTextColumn Header="PageURL" Binding="{Binding PageURL}" Width="*"/>
-                    <DataGridTextColumn Header="Data" Binding="{Binding Data, StringFormat=\{0:dd-MM-yyyy\}}" Width="*"/>
-                    <DataGridTextColumn Header="Owner" Binding="{Binding Owner}" Width="*"/>
-                    <DataGridTextColumn Header="Note" Binding="{Binding Note}" Width="*"/>
-                </DataGrid.Columns>
-            </DataGrid>
-            
 
-        </Grid>
-        <Grid Grid.Row="2" Margin="10,0,10,0" Height="50" Grid.ColumnSpan="4">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
+        <!--DataGrid-->
+        <DataGrid Grid.Row ="0" ItemsSource="{Binding ClientsView}" SelectedItem="{Binding SelectedClient}" AutoGenerateColumns="False" MaxColumnWidth="300" IsReadOnly= "False" x:Name="dataGrid" CanUserReorderColumns="True" CanUserSortColumns="True" CanUserResizeColumns="True" Margin="10">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ClientName" Binding="{Binding ClientName}" Width="*"/>
+                <DataGridTextColumn Header="Phonenumber" Binding="{Binding Phonenumber}" Width="*"/>
+                <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="*"/>
+                <DataGridTextColumn Header="City" Binding="{Binding City}" Width="*"/>
+                <DataGridTextColumn Header="Facebook" Binding="{Binding Facebook}" Width="*"/>
+                <DataGridTextColumn Header="Instagram" Binding="{Binding Instagram}" Width="*"/>
+                <DataGridTextColumn Header="PageURL" Binding="{Binding PageURL}" Width="*"/>
+                <DataGridTextColumn Header="Data" Binding="{Binding Data, StringFormat=\{0:dd-MM-yyyy\}}" Width="*"/>
+                <DataGridTextColumn Header="Owner" Binding="{Binding Owner}" Width="*"/>
+                <DataGridTextColumn Header="Note" Binding="{Binding Note}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
 
-            <StackPanel Orientation="Horizontal" Grid.Column="0">
+        <Grid Grid.Row="1" Margin="10,0,10,0" Height="50">
+
+            <StackPanel Orientation="Horizontal">
                 <Button Content="Pokaż więcej" Command="{Binding ShowMoreDetailsCommand}" Margin="5" Width="150"/>
                 <Button Content="Dodaj FollowUp" Command="{Binding AddFolowUpCommand}" Margin="5" Width="150"/>
                 <Button Content="Usuń zaznaczony" Command="{Binding RemoveSelectedCommand}" Margin="5" Width="150"/>
             </StackPanel>
 
-            <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center">
+            <StackPanel Orientation="Horizontal" Grid.Column="4" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,4">
                 <StackPanel>
                     <ComboBox ItemsSource="{Binding StatusItems}" SelectedItem="{Binding SelectedStatus}" Grid.Row ="2" Grid.Column="4" x:Name="statusCombobox" Width="120" HorizontalAlignment="Left">
                         <ComboBox.ItemTemplate>

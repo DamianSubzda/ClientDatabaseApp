@@ -86,19 +86,51 @@ namespace ClientDatabaseApp.ViewModel
             RemoveSelectedCommand = new DelegateCommand<RoutedEventArgs>(RemoveSelected);
             AddFolowUpCommand = new DelegateCommand<RoutedEventArgs>(AddFolowUp);
             FilterCommand = new DelegateCommand<RoutedEventArgs>(ApplyFilter);
-            InitializeComboBoxStatus();
             LoadClients();
+            InitializeComboBoxStatus();
         }
 
         private void InitializeComboBoxStatus()
         {
             ComboboxStatus combobox = new ComboboxStatus();
             StatusItems = combobox.StatusItems;
-            SelectedStatus = StatusItems[0];
         }
         private void HandleStatusChange()
         {
-            //TODO
+            if (string.IsNullOrEmpty(FilterText))
+            {
+                ClientsView.Filter = (item) =>
+                {
+                    if (item is Client client)
+                    {
+                        return client.Status == (int)SelectedStatus.Value;
+                    }
+                    return false;
+                };
+            }
+            else
+            {
+                ClientsView.Filter = (item) =>
+                {
+                    if (item is Client client)
+                    {
+                        bool isNameMatch = client.ClientName.IndexOf(FilterText, StringComparison.OrdinalIgnoreCase) >= 0;
+                        bool isCityMatch = client.City.IndexOf(FilterText, StringComparison.OrdinalIgnoreCase) >= 0;
+                        bool isDateFilterMatch = false;
+
+                        if (DateTime.TryParseExact(FilterText, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out var filterDate))
+                        {
+                            isDateFilterMatch = client.Data == filterDate.Date;
+                        }
+
+                        return (isNameMatch || isCityMatch || isDateFilterMatch) && client.Status == (int)SelectedStatus.Value;
+                    }
+                    return false;
+                };
+            }
+            
+
+            ClientsView.Refresh();
         }
         protected virtual void OnPropertyChanged(string propertyName)
         {
@@ -134,7 +166,7 @@ namespace ClientDatabaseApp.ViewModel
                         }
 
 
-                        return string.IsNullOrEmpty(FilterText) || isNameMatch || isCityMatch || isDateFilterMatch;
+                        return isNameMatch || isCityMatch || isDateFilterMatch;
                     }
                     return false;
                 };
@@ -183,7 +215,7 @@ namespace ClientDatabaseApp.ViewModel
                     }
                     else
                     {
-                        //Client.Remove(SelectedClient);
+                        _clients.Remove(SelectedClient);
                     }
                     
                 }
