@@ -137,13 +137,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Service\BoolToVisibilityConverter.cs" />
+    <Compile Include="Service\ComboboxStatus.cs" />
     <Compile Include="Service\DatabaseQuery.cs" />
     <Compile Include="Service\DataRowColorConverter.cs" />
     <Compile Include="Service\DBContextHVAC.cs" />
     <Compile Include="Service\DayVisibilityConverter.cs" />
     <Compile Include="Service\RichTextBoxHelper.cs" />
-    <Compile Include="ViewModel\MVNewFollowUp.cs" />
-    <Compile Include="ViewModel\MVShowMore.cs" />
+    <Compile Include="ViewModel\NewFollowUpViewModel.cs" />
+    <Compile Include="ViewModel\ShowMoreViewModel.cs" />
     <Compile Include="View\NewFollowUp.xaml.cs">
       <DependentUpon>NewFollowUp.xaml</DependentUpon>
     </Compile>
@@ -178,10 +180,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Model\Client.cs" />
-    <Compile Include="Model\MCalendar.cs" />
+    <Compile Include="Model\Calendar.cs" />
     <Compile Include="Service\DatabaseConnector.cs" />
     <Compile Include="Model\FollowUp.cs" />
-    <Compile Include="ViewModel\MVMainWindow.cs" />
+    <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="Service\DelegateCommand.cs" />
     <Compile Include="View\AddClient.xaml.cs">
       <DependentUpon>AddClient.xaml</DependentUpon>
@@ -217,10 +219,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ViewModel\MVAddClient.cs" />
-    <Compile Include="ViewModel\MVCalendar.cs" />
-    <Compile Include="ViewModel\MVClientDatabase.cs" />
-    <Compile Include="ViewModel\MVLoadCSV.cs" />
+    <Compile Include="ViewModel\AddClientViewModel.cs" />
+    <Compile Include="ViewModel\CalendarViewModel.cs" />
+    <Compile Include="ViewModel\ClientDatabaseViewModel.cs" />
+    <Compile Include="ViewModel\LoadCSVViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

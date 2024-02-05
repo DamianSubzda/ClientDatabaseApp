@@ -9,10 +9,11 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Xml.Linq;
+using static ClientDatabaseApp.Service.ComboboxStatus;
 
 namespace ClientDatabaseApp.ViewModel
 {
-    public class MVAddClient : INotifyPropertyChanged //Do zastanowienia - zamiast MessageBox dać 
+    public class AddClientViewModel : INotifyPropertyChanged //Do zastanowienia - zamiast MessageBox dać 
     {
         public ICommand AddClientToDatabaseCommand { get; set; }
 
@@ -27,8 +28,9 @@ namespace ClientDatabaseApp.ViewModel
         private string _ownerTextBox;
         private string _richTextContent;
         private StatusItem _selectedStatus;
-
+        
         private ObservableCollection<StatusItem> _statusItems;
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public string ClientNameTextBox
@@ -168,10 +170,9 @@ namespace ClientDatabaseApp.ViewModel
                 OnPropertyChanged(nameof(SelectedStatus));
             }
         }
+        
 
-        public List<Status> StatusEnumValues { get; } = Enum.GetValues(typeof(Status)).Cast<Status>().ToList();
-
-        public MVAddClient()
+        public AddClientViewModel()
         {
             DateTextBox = DateTime.Now;
             AddClientToDatabaseCommand = new DelegateCommand<RoutedEventArgs>(AddClient);
@@ -185,95 +186,12 @@ namespace ClientDatabaseApp.ViewModel
 
         private void InitializeComboBoxStatus()
         {
-            StatusItems = new ObservableCollection<StatusItem>(StatusEnumValues.Select(status => new StatusItem
-            {
-                Description = GetEnumDescription(status),
-                Value = status,
-                Color = GetBackgroundForStatus(status)
-            }).ToList());
+            ComboboxStatus combobox = new ComboboxStatus();
+            StatusItems = combobox.StatusItems;
             SelectedStatus = StatusItems[0];
         }
-        public class StatusItem
-        {
-            public string Description { get; set; }
-            public Status? Value { get; set; }
-            public SolidColorBrush Color { get; set; }
-        }
-        public enum Status
-        {
-            [Description("Trwają rozmowy")]
-            InProgress = 0,
-            [Description("Umówione spotkanie")]
-            ScheduledMeeting = 1,
-            [Description("Nie chcą/mają kogoś")]
-            NotInterested = 2,
-            [Description("Nie odebrane")]
-            MissedCall = 3,
-            [Description("Akcja do zrobienia instant")]
-            ImmediateAction = 4,
-            [Description("Akcja do zrobienia w dłuższym przedziale czasu")]
-            DeferredAction = 5,
-            [Description("Akcja do zrobienia bardzo do przodu")]
-            VeryLongTermAction = 6,
-            [Description("Tak oznaczonych firm nie bierzemy pod uwagę w statystykach")]
-            NotConsideredInStatistics = 7
-        }
 
-        private static string GetEnumDescription(Status value)
-        {
-            var field = value.GetType().GetField(value.ToString());
-            object attribute = Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute));
-
-            if (attribute != null && attribute is DescriptionAttribute descriptionAttribute)
-            {
-                return descriptionAttribute.Description;
-            }
-            else
-            {
-                return value.ToString();
-            }
-        }
-
-        private SolidColorBrush GetBackgroundForStatus(Status status)
-        {
-
-            SolidColorBrush brush;
-
-            switch (status)
-            {
-                case Status.InProgress:
-                    brush = new SolidColorBrush(Color.FromRgb(0, 204, 255));
-                    break;
-                case Status.ScheduledMeeting:
-                    brush = new SolidColorBrush(Color.FromRgb(110, 239, 152));
-                    break;
-                case Status.NotInterested:
-                    brush = new SolidColorBrush(Color.FromRgb(230, 161, 196));
-                    break;
-                case Status.MissedCall:
-                    brush = new SolidColorBrush(Color.FromRgb(237, 242, 143));
-                    break;
-                case Status.ImmediateAction:
-                    brush = new SolidColorBrush(Color.FromRgb(70, 189, 198));
-                    break;
-                case Status.DeferredAction:
-                    brush = new SolidColorBrush(Color.FromRgb(204, 51, 102));
-                    break;
-                case Status.VeryLongTermAction:
-                    brush = new SolidColorBrush(Color.FromRgb(255, 111, 1));
-                    break;
-                case Status.NotConsideredInStatistics:
-                    brush = new SolidColorBrush(Color.FromRgb(255, 0, 0));
-                    break;
-                default:
-                    brush = new SolidColorBrush(Colors.White);
-                    break;
-            }
-
-            return brush;
-
-
-        }
+        
         private void AddClient(RoutedEventArgs e)
         {
             if (string.IsNullOrEmpty(ClientNameTextBox))
@@ -282,17 +200,19 @@ namespace ClientDatabaseApp.ViewModel
                 return;
             }
 
-            Client client = new Client();
-            client.ClientName = ClientNameTextBox;
-            client.Phonenumber = PhonenumberTextBox?.Trim();
-            client.Email = EmailTextBox?.Trim();
-            client.City = CityTextBox;
-            client.Facebook = FacebookTextBox;
-            client.Instagram = InstagramTextBox;
-            client.PageURL = PageURLTextBox;
-            client.Data = DateTextBox;
-            client.Owner = OwnerTextBox;
-            client.Status = (int)SelectedStatus.Value;
+            Client client = new Client
+            {
+                ClientName = ClientNameTextBox,
+                Phonenumber = PhonenumberTextBox?.Trim(),
+                Email = EmailTextBox?.Trim(),
+                City = CityTextBox,
+                Facebook = FacebookTextBox,
+                Instagram = InstagramTextBox,
+                PageURL = PageURLTextBox,
+                Data = DateTextBox,
+                Owner = OwnerTextBox,
+                Status = (int)SelectedStatus.Value
+            };
 
             if (string.IsNullOrEmpty(RichTextContent))
             {

@@ -11,7 +11,7 @@ using System.Windows.Input;
 
 namespace ClientDatabaseApp.ViewModel
 {
-    public class MVShowMore : INotifyPropertyChanged
+    public class ShowMoreViewModel : INotifyPropertyChanged
     {
         public ICommand ExitCommand { get; set; }
 
@@ -35,7 +35,7 @@ namespace ClientDatabaseApp.ViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public MVShowMore(Client client, Action closeAction)
+        public ShowMoreViewModel(Client client, Action closeAction)
         {
             Client = client;
             _closeAction = closeAction;

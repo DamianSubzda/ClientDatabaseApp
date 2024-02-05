@@ -10,7 +10,7 @@ namespace ClientDatabaseApp.View
     {
         public AddClient()
         {
-            DataContext = new MVAddClient();
+            DataContext = new AddClientViewModel();
             InitializeComponent();
         }
     }

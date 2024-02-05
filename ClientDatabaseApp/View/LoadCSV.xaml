@@ -4,41 +4,56 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ClientDatabaseApp.View"
+             xmlns:local1="clr-namespace:ClientDatabaseApp.Service"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="11*"/>
-            <ColumnDefinition Width="14*"/>
-            <ColumnDefinition Width="25*"/>
-            <ColumnDefinition Width="745*"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+    <UserControl.Resources>
+        <local1:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </UserControl.Resources>
+    <Grid >
+        <Grid Margin="0,0,0,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="11*"/>
+                <ColumnDefinition Width="14*"/>
+                <ColumnDefinition Width="25*"/>
+                <ColumnDefinition Width="745*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-        <!--DataGrid-->
-        <DataGrid ItemsSource="{Binding PreviewClients}" x:Name="dataGridPreview" AutoGenerateColumns="False" CanUserResizeColumns="True" Margin="0,10,9,10" Grid.ColumnSpan="3" Grid.Column="1">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="ClientName" Binding="{Binding ClientName}" Width="*"/>
-                <DataGridTextColumn Header="Phonenumber" Binding="{Binding Phonenumber}" Width="*"/>
-                <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="*"/>
-                <DataGridTextColumn Header="City" Binding="{Binding City}" Width="*"/>
-                <DataGridTextColumn Header="Facebook" Binding="{Binding Facebook}" Width="*"/>
-                <DataGridTextColumn Header="Instagram" Binding="{Binding Instagram}" Width="*"/>
-                <DataGridTextColumn Header="PageURL" Binding="{Binding PageURL}" Width="*"/>
-                <DataGridTextColumn Header="Data" Binding="{Binding Data}" Width="*"/>
-                <DataGridTextColumn Header="Owner" Binding="{Binding Owner}" Width="*"/>
-                <DataGridTextColumn Header="Note" Binding="{Binding Note}" Width="*"/>
-            </DataGrid.Columns>
-        </DataGrid>
+            <!--DataGrid-->
+            <DataGrid ItemsSource="{Binding PreviewClients}" x:Name="dataGridPreview" AutoGenerateColumns="False" CanUserResizeColumns="True" Margin="0,10,9,10" Grid.ColumnSpan="3" Grid.Column="1">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="ClientName" Binding="{Binding ClientName}" Width="*"/>
+                    <DataGridTextColumn Header="Phonenumber" Binding="{Binding Phonenumber}" Width="*"/>
+                    <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="*"/>
+                    <DataGridTextColumn Header="City" Binding="{Binding City}" Width="*"/>
+                    <DataGridTextColumn Header="Facebook" Binding="{Binding Facebook}" Width="*"/>
+                    <DataGridTextColumn Header="Instagram" Binding="{Binding Instagram}" Width="*"/>
+                    <DataGridTextColumn Header="PageURL" Binding="{Binding PageURL}" Width="*"/>
+                    <DataGridTextColumn Header="Data" Binding="{Binding Data, StringFormat=\{0:dd-MM-yyyy\}}"  Width="*"/>
+                    <DataGridTextColumn Header="Owner" Binding="{Binding Owner}" Width="*"/>
+                    <DataGridTextColumn Header="Note" Binding="{Binding Note}" Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
 
-        <!--Przyciski-->
-        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="214,0,0,0" Grid.Column="3">
-            <Button Content="Wybierz i podejrzyj plik" Margin="0,0,10,0" Command="{Binding GetClientsFromCSVCommand}"/>
-            <Button Content="Wczytaj dane" Command="{Binding AddToDatabaseCommand}"/>
-        </StackPanel>
+            <!--Przyciski-->
+            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="214,0,0,0" Grid.Column="3">
+                <Button Content="Wybierz i podejrzyj plik" Margin="0,0,10,0" Command="{Binding GetClientsFromCSVCommand}"/>
+                <Button Content="Wczytaj dane" Command="{Binding AddToDatabaseCommand}"/>
+            </StackPanel>
+        </Grid>
+        <!--Overlay-->
+        <Grid x:Name="LoadingOverlay" Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue=Hidden}" Background="#AAFFFFFF">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <ProgressBar IsIndeterminate="true" Width="200" Height="20"/>
+                <TextBlock Text="Ładowanie..." HorizontalAlignment="Center" Margin="10"/>
+            </StackPanel>
+        </Grid>
+
+
     </Grid>
 </UserControl>

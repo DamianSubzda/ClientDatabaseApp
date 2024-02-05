@@ -12,7 +12,7 @@ namespace ClientDatabaseApp.View
         public MainWindow()
         {
             DatabaseConnector.GetInstance();
-            DataContext = new MVMainWindow();
+            DataContext = new MainWindowViewModel();
             InitializeComponent();
         }
     }

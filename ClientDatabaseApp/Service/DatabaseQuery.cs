@@ -73,9 +73,9 @@ namespace ClientDatabaseApp.Service
         public bool AddClient(Client record)
         {
             string insertQuery = @"INSERT INTO Client 
-                                   (ClientName, Phonenumber, Email, City, Facebook, Instagram, PageURL, Data, Owner, Note)
+                                   (ClientName, Phonenumber, Email, City, Facebook, Instagram, PageURL, Data, Owner, Note, Status)
                                    VALUES
-                                   (@ClientName, @Phonenumber, @Email, @City, @Facebook, @Instagram, @PageURL, @Data, @Owner, @Note)";
+                                   (@ClientName, @Phonenumber, @Email, @City, @Facebook, @Instagram, @PageURL, @Data, @Owner, @Note, @Status)";
             using (MySqlCommand command = new MySqlCommand(insertQuery, conn))
             {
                 command.Parameters.Clear();
@@ -90,6 +90,7 @@ namespace ClientDatabaseApp.Service
                 command.Parameters.AddWithValue("@Data", record.Data);//DateTime.TryParse(record.Data, out DateTime parsedDate) ? (object)parsedDate : DBNull.Value
                 command.Parameters.AddWithValue("@Owner", record.Owner);
                 command.Parameters.AddWithValue("@Note", record.Note);
+                command.Parameters.AddWithValue("@Status", record.Status);
 
                 int rowsAffected = 0;
                 try
@@ -105,8 +106,41 @@ namespace ClientDatabaseApp.Service
                 }
             }
         }
+        public void AlterTable() //temp function
+        {
+            string dropForeignKeyQuery = @"ALTER TABLE FollowUp DROP FOREIGN KEY FollowUp_ibfk_1;";
+            string addForeignKeyWithCascadeQuery = @"ALTER TABLE FollowUp ADD CONSTRAINT fk_clientId FOREIGN KEY (ClientId) REFERENCES Client(ClientId) ON DELETE CASCADE;";
 
-        public void ClearClientTable() //Sprawdzać czy posiada followUpy jeśli tak to usuń pierw followUpy
+            try
+            {
+                conn.Open();
+
+                // Usuwanie klucza obcego
+                using (MySqlCommand command = new MySqlCommand(dropForeignKeyQuery, conn))
+                {
+                    command.ExecuteNonQuery();
+                }
+
+                // Dodawanie klucza obcego z opcją CASCADE
+                using (MySqlCommand command = new MySqlCommand(addForeignKeyWithCascadeQuery, conn))
+                {
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"warning alter table: {ex.Message}");
+            }
+            finally
+            {
+                if (conn != null)
+                {
+                    conn.Close();
+                }
+            }
+        }
+
+        public void ClearClientTable()
         {
             string deleteQuery = "DELETE FROM Client";
             try
@@ -126,7 +160,7 @@ namespace ClientDatabaseApp.Service
                 conn.Close();
             }
         }
-        public void ClearFollowUpTable() //Sprawdzać czy posiada followUpy jeśli tak to usuń pierw followUpy
+        public void ClearFollowUpTable()
         {
             string deleteQuery = "DELETE FROM FollowUp";
             try

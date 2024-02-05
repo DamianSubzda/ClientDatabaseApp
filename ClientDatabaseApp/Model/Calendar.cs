@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ClientDatabaseApp.Model
 {
-    public class MCalendar
+    public class Calendar
     {
         public string HeaderToDisplay { get; set; }
         public List<DayInfo> DaysOfCurrentMonth { get; set; }

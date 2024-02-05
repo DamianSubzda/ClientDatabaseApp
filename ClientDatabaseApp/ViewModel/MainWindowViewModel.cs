@@ -4,10 +4,10 @@ using System.Windows.Input;
 
 namespace ClientDatabaseApp.ViewModel
 {
-    public class MVMainWindow
+    public class MainWindowViewModel
     {
         public ICommand TabSelectionChangedCommand { get; private set; }
-        public MVMainWindow()
+        public MainWindowViewModel()
         {
             TabSelectionChangedCommand = new DelegateCommand<SelectionChangedEventArgs>(TabSelectionChanged);
         }

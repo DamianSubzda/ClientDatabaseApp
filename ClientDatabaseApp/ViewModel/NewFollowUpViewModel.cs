@@ -9,7 +9,7 @@ using System.Xml.Linq;
 
 namespace ClientDatabaseApp.ViewModel
 {
-    public class MVNewFollowUp : INotifyPropertyChanged
+    public class NewFollowUpViewModel : INotifyPropertyChanged
     {
         private readonly Action _closeAction;
 
@@ -36,7 +36,7 @@ namespace ClientDatabaseApp.ViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public MVNewFollowUp(Client client, Action closeAction)
+        public NewFollowUpViewModel(Client client, Action closeAction)
         {
             SelectedDate = DateTime.Now;
             this.Client = client;

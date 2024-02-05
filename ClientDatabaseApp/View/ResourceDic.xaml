@@ -132,7 +132,7 @@
             <EventTrigger RoutedEvent="MouseEnter">
                 <BeginStoryboard>
                     <Storyboard>
-                        <ColorAnimation To="Blue" Duration="0:0:0.5"
+                        <ColorAnimation To="LightBlue" Duration="0:0:0.5"
                                     Storyboard.TargetProperty="BorderBrush.Color"/>
                     </Storyboard>
                 </BeginStoryboard>
@@ -140,7 +140,7 @@
             <EventTrigger RoutedEvent="MouseLeave">
                 <BeginStoryboard>
                     <Storyboard>
-                        <ColorAnimation To="Transparent" Duration="0:0:0.5"
+                        <ColorAnimation To="Black" Duration="0:0:0.5"
                                     Storyboard.TargetProperty="BorderBrush.Color"/>
                     </Storyboard>
                 </BeginStoryboard>

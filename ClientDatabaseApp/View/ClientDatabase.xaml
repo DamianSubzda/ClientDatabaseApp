@@ -24,26 +24,59 @@
                 <ColumnDefinition Width="332*"/>
             </Grid.ColumnDefinitions>
              <!--DataGrid-->
-            <DataGrid ItemsSource="{Binding Client}" SelectedItem="{Binding SelectedClient}" AutoGenerateColumns="False" MaxColumnWidth="300" IsReadOnly= "False" x:Name="dataGrid" CanUserReorderColumns="True" CanUserSortColumns="True" CanUserResizeColumns="True" Margin="10" Grid.ColumnSpan="2">
+            <DataGrid ItemsSource="{Binding ClientsView}" SelectedItem="{Binding SelectedClient}" AutoGenerateColumns="False" MaxColumnWidth="300" IsReadOnly= "False" x:Name="dataGrid" CanUserReorderColumns="True" CanUserSortColumns="True" CanUserResizeColumns="True" Margin="10" Grid.ColumnSpan="2">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="ClientName" Binding="{Binding ClientName}"/>
-                    <DataGridTextColumn Header="Phonenumber" Binding="{Binding Phonenumber}"/>
-                    <DataGridTextColumn Header="Email" Binding="{Binding Email}"/>
-                    <DataGridTextColumn Header="City" Binding="{Binding City}"/>
-                    <DataGridTextColumn Header="Facebook" Binding="{Binding Facebook}"/>
-                    <DataGridTextColumn Header="Instagram" Binding="{Binding Instagram}"/>
-                    <DataGridTextColumn Header="PageURL" Binding="{Binding PageURL}"/>
-                    <DataGridTextColumn Header="Data" Binding="{Binding Data, StringFormat=\{0:d\}}"/>
-                    <DataGridTextColumn Header="Owner" Binding="{Binding Owner}"/>
-                    <DataGridTextColumn Header="Note" Binding="{Binding Note}"/>
+                    <DataGridTextColumn Header="ClientName" Binding="{Binding ClientName}" Width="*"/>
+                    <DataGridTextColumn Header="Phonenumber" Binding="{Binding Phonenumber}" Width="*"/>
+                    <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="*"/>
+                    <DataGridTextColumn Header="City" Binding="{Binding City}" Width="*"/>
+                    <DataGridTextColumn Header="Facebook" Binding="{Binding Facebook}" Width="*"/>
+                    <DataGridTextColumn Header="Instagram" Binding="{Binding Instagram}" Width="*"/>
+                    <DataGridTextColumn Header="PageURL" Binding="{Binding PageURL}" Width="*"/>
+                    <DataGridTextColumn Header="Data" Binding="{Binding Data, StringFormat=\{0:dd-MM-yyyy\}}" Width="*"/>
+                    <DataGridTextColumn Header="Owner" Binding="{Binding Owner}" Width="*"/>
+                    <DataGridTextColumn Header="Note" Binding="{Binding Note}" Width="*"/>
                 </DataGrid.Columns>
             </DataGrid>
+            
 
         </Grid>
-        <StackPanel Grid.Row ="2"  Orientation="Horizontal" Margin="10,0,10,0" Height="50" VerticalAlignment="Center" Grid.ColumnSpan="4">
-            <Button Content="Pokaż więcej" Command="{Binding ShowMoreDetailsCommand}" Margin="5" Width="150"/>
-            <Button Content="Dodaj FollowUp" Command="{Binding AddFolowUpCommand}" Margin="5" Width="150"/>
-            <Button Content="Usuń zaznaczony" Command="{Binding RemoveSelectedCommand}" Margin="5" Width="150"/>
-        </StackPanel>
+        <Grid Grid.Row="2" Margin="10,0,10,0" Height="50" Grid.ColumnSpan="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Orientation="Horizontal" Grid.Column="0">
+                <Button Content="Pokaż więcej" Command="{Binding ShowMoreDetailsCommand}" Margin="5" Width="150"/>
+                <Button Content="Dodaj FollowUp" Command="{Binding AddFolowUpCommand}" Margin="5" Width="150"/>
+                <Button Content="Usuń zaznaczony" Command="{Binding RemoveSelectedCommand}" Margin="5" Width="150"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center">
+                <StackPanel>
+                    <ComboBox ItemsSource="{Binding StatusItems}" SelectedItem="{Binding SelectedStatus}" Grid.Row ="2" Grid.Column="4" x:Name="statusCombobox" Width="120" HorizontalAlignment="Left">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Description}" Foreground="{StaticResource Color1}" />
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                        <ComboBox.ItemContainerStyle>
+                            <Style TargetType="ComboBoxItem">
+                                <Setter Property="Background" Value="{Binding Color}" />
+                            </Style>
+                        </ComboBox.ItemContainerStyle>
+                    </ComboBox>
+                    <TextBox Width="120" Margin="0,2,0,0" Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}">
+                        <TextBox.InputBindings>
+                            <KeyBinding Key="Enter" Command="{Binding FilterCommand}"/>
+                        </TextBox.InputBindings>
+                    </TextBox>
+                </StackPanel>
+                <Button Content="Filtruj" Command="{Binding FilterCommand}" Margin="5,0,5,5"/>
+            </StackPanel>
+        </Grid>
+
     </Grid>
 </UserControl>

@@ -12,7 +12,7 @@
     <!-- Do zastanowienia: Ustawić DataContext w View i chyba tak trzeba będzie zrobić ponieważ to dobre dla MVVM-->
     
     <UserControl.Resources>
-        <local1:MVCalendar x:Key="MVCalendarMainWindow"/>
+        <local1:CalendarViewModel x:Key="MVCalendarMainWindow"/>
         <local2:DayVisibilityConverter x:Key="DayVisibilityConverter" />
     </UserControl.Resources>
 
@@ -87,6 +87,9 @@
         <StackPanel Grid.Column="1">
             <Label Content="Lista zadań:"/>
             <ListBox Name="listbox_todolist" Height="200" ItemsSource="{Binding FollowUp}" />
+            <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0, 10, 0, 10" >
+                <Button Content="Wybierz" Command="{Binding PickFollowUpCommand}"/>
+            </WrapPanel>
         </StackPanel>
     </Grid>
 </UserControl>

@@ -10,13 +10,14 @@ using System.Windows.Input;
 
 namespace ClientDatabaseApp.ViewModel
 {
-    public class MVCalendar : INotifyPropertyChanged
+    public class CalendarViewModel : INotifyPropertyChanged
     {
 
-        private MCalendar calendarModel = new MCalendar();
+        private Calendar calendarModel = new Calendar();
         public ICommand MouseClickCommand { get; private set; }
         public ICommand Button_Click_PrevMonthCommand { get; private set; }
         public ICommand Button_Click_NextMonthCommand { get; private set; }
+        public ICommand PickFollowUpCommand { get; private set; }
 
         public enum MonthEnum
         {
@@ -68,10 +69,11 @@ namespace ClientDatabaseApp.ViewModel
         }
 
 
-        public MVCalendar()
+        public CalendarViewModel()
         {
             Button_Click_PrevMonthCommand = new DelegateCommand<RoutedEventArgs>(Button_Click_PrevMonth);
             Button_Click_NextMonthCommand = new DelegateCommand<RoutedEventArgs>(Button_Click_NextMonth);
+            PickFollowUpCommand = new DelegateCommand<RoutedEventArgs>(PickFollowUp);
             MouseClickCommand = new DelegateCommand<string>(OnMouseClick);
 
             calendarModel.HeaderToDisplay = ((MonthEnum)DateTime.Now.Month).ToString() + " " + DateTime.Now.Year.ToString();
@@ -98,6 +100,10 @@ namespace ClientDatabaseApp.ViewModel
         private void Button_Click_PrevMonth(RoutedEventArgs e)
         {
             ChangeMonth(-1);
+        }
+        private void PickFollowUp(RoutedEventArgs e)
+        {
+            // TODO
         }
 
 
