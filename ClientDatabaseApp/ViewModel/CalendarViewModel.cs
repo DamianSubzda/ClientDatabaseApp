@@ -1,10 +1,12 @@
 ﻿using ClientDatabaseApp.Model;
 using ClientDatabaseApp.Service;
+using ClientDatabaseApp.Service.API;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -71,6 +73,9 @@ namespace ClientDatabaseApp.ViewModel
 
         public CalendarViewModel()
         {
+
+            ///IPstackAPIConnector IPstackAPI = new IPstackAPIConnector(iPAddress);
+
             Button_Click_PrevMonthCommand = new DelegateCommand<RoutedEventArgs>(Button_Click_PrevMonth);
             Button_Click_NextMonthCommand = new DelegateCommand<RoutedEventArgs>(Button_Click_NextMonth);
             PickFollowUpCommand = new DelegateCommand<RoutedEventArgs>(PickFollowUp);
@@ -80,6 +85,15 @@ namespace ClientDatabaseApp.ViewModel
             calendarModel.DateToDisplay = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
 
             InitialCalendar();
+            _ = InitializeAsync();
+        }
+
+        public async Task InitializeAsync()
+        {
+            IpifyAPIConnector ipify = new IpifyAPIConnector();
+            await ipify.GetIp();
+            GeolocationAPIConnector geolocation = new GeolocationAPIConnector(ipify.IPAddress);
+            await geolocation.GetCoorAsync();
         }
 
         private void InitialCalendar()

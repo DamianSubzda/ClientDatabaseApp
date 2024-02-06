@@ -3,15 +3,12 @@ using ClientDatabaseApp.Service;
 using ClientDatabaseApp.View;
 using MySqlConnector;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data.Entity;
 using System.Globalization;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using static ClientDatabaseApp.Service.ComboboxStatus;
@@ -81,13 +78,13 @@ namespace ClientDatabaseApp.ViewModel
 
         public ClientDatabaseViewModel()
         {
-
             ShowMoreDetailsCommand = new DelegateCommand<RoutedEventArgs>(ShowMoreDetails);
             RemoveSelectedCommand = new DelegateCommand<RoutedEventArgs>(RemoveSelected);
             AddFolowUpCommand = new DelegateCommand<RoutedEventArgs>(AddFolowUp);
             FilterCommand = new DelegateCommand<RoutedEventArgs>(ApplyFilter);
             LoadClients();
             InitializeComboBoxStatus();
+            
         }
 
         private void InitializeComboBoxStatus()
@@ -95,6 +92,7 @@ namespace ClientDatabaseApp.ViewModel
             ComboboxStatus combobox = new ComboboxStatus();
             StatusItems = combobox.StatusItems;
         }
+
         private void HandleStatusChange()
         {
             if (string.IsNullOrEmpty(FilterText))
