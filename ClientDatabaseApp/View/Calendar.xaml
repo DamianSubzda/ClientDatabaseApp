@@ -86,6 +86,35 @@
             </Grid>
         </Border>
         <StackPanel Grid.Column="1">
+            <StackPanel Margin="0,5" Orientation="Horizontal" HorizontalAlignment="Center">
+                <Label Padding="0,0,0,0" FontSize="10" Content="Aktualna pogoda w "/>
+                <Label Padding="0,0,0,0" FontSize="10" Content="{Binding City, TargetNullValue='--',FallbackValue='--'}"/>
+            </StackPanel>
+            <Grid Margin="5,5,5,10">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" Orientation="Horizontal">
+                    <Label Padding="0,2,0,2" Content="Temperatura "/>
+                    <Label Padding="0,2,0,2"  Content="{Binding Temperature, TargetNullValue='--',FallbackValue='--'}"/>
+                </StackPanel>
+                <StackPanel Grid.Row="1" Orientation="Horizontal">
+                    <Label Padding="0,2,0,2"  Content="Odczuwalna "/>
+                    <Label Padding="0,2,0,2"  Content="{Binding TemperatureFeel,TargetNullValue='--',FallbackValue='--'}"/>
+                </StackPanel>
+                <StackPanel Grid.Row="2" Orientation="Horizontal">
+                    <Label Padding="0,2,0,2"  Content="Wiatr "/>
+                    <Label Padding="0,2,0,2"  Content="{Binding Wind, TargetNullValue='--',FallbackValue='--'}"/>
+                </StackPanel>
+                <StackPanel Grid.Row="3" Orientation="Horizontal">
+                    <Label Padding="0,2,0,2" Content="Pogoda: "/>
+                    <Label Padding="0,2,0,2" Content="{Binding Weather, TargetNullValue='--',FallbackValue='--'}"/>
+                </StackPanel>
+               
+            </Grid>
             <Label Content="Lista zadań:"/>
             <ListBox Name="listbox_todolist" Height="200" ItemsSource="{Binding FollowUp}" />
             <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0, 10, 0, 10" >

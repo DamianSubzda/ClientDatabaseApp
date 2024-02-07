@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 
-namespace ClientDatabaseApp.Service.API
+namespace ClientDatabaseApp.Service.API //Requests -> nolimit
 {
     public class IpifyAPIConnector
     {

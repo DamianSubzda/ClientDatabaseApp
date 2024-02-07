@@ -141,7 +141,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Service\API\IpifyAPIConnector.cs" />
-    <Compile Include="Service\API\WeatherstackAPIConnector.cs" />
+    <Compile Include="Service\API\OpenweatherAPIConnector.cs" />
     <Compile Include="Service\API\GeolocationAPIConnector.cs" />
     <Compile Include="Service\BoolToVisibilityConverter.cs" />
     <Compile Include="Service\ComboboxStatus.cs" />
