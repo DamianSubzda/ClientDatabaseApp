@@ -108,6 +108,11 @@
         <Setter Property="Foreground" Value="White"/>
     </Style>
 
+    <Style TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="Verdana"/>
+        <Setter Property="Foreground" Value="White"/>
+    </Style>
+
     <Style TargetType="TextBox">
         <Setter Property="Background" Value="{StaticResource Color2}"/>
         <Setter Property="Foreground" Value="White"/>

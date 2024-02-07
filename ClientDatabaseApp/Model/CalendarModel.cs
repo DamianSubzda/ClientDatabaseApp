@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace ClientDatabaseApp.Model
 {
-    public class Calendar
+    public class CalendarModel
     {
         public string HeaderToDisplay { get; set; }
-        public List<DayInfo> DaysOfCurrentMonth { get; set; }
+        public ObservableCollection<DayInfo> DaysOfCurrentMonth { get; set; }
         public DateTime DateToDisplay { get; set; }
         public List<FollowUp> FollowUps { get; set; }
     }

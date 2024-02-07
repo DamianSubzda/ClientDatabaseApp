@@ -151,12 +151,16 @@
     <Compile Include="Service\DayVisibilityConverter.cs" />
     <Compile Include="Service\RichTextBoxHelper.cs" />
     <Compile Include="ViewModel\NewFollowUpViewModel.cs" />
-    <Compile Include="ViewModel\ShowMoreViewModel.cs" />
+    <Compile Include="ViewModel\ShowFollowUpViewModel.cs" />
+    <Compile Include="ViewModel\ShowClientViewModel.cs" />
     <Compile Include="View\NewFollowUp.xaml.cs">
       <DependentUpon>NewFollowUp.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ShowMore.xaml.cs">
-      <DependentUpon>ShowMore.xaml</DependentUpon>
+    <Compile Include="View\ShowClient.xaml.cs">
+      <DependentUpon>ShowClient.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ShowFollowUp.xaml.cs">
+      <DependentUpon>ShowFollowUp.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ToDo.xaml.cs">
       <DependentUpon>ToDo.xaml</DependentUpon>
@@ -186,7 +190,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Model\Client.cs" />
-    <Compile Include="Model\Calendar.cs" />
+    <Compile Include="Model\CalendarModel.cs" />
     <Compile Include="Service\DatabaseConnector.cs" />
     <Compile Include="Model\FollowUp.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
@@ -215,7 +219,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\ShowMore.xaml">
+    <Page Include="View\ShowClient.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ShowFollowUp.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

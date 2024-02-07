@@ -186,8 +186,8 @@ namespace ClientDatabaseApp.ViewModel
         {
             if (SelectedClient != null)
             {
-                ShowMore showMore = new ShowMore();
-                ShowMoreViewModel showMoreViewModel = new ShowMoreViewModel(SelectedClient, () => showMore.Close());
+                ShowClient showMore = new ShowClient();
+                ShowClientViewModel showMoreViewModel = new ShowClientViewModel(SelectedClient, () => showMore.Close());
                 showMore.DataContext = showMoreViewModel;
                 showMore.ShowDialog();
 

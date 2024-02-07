@@ -1,0 +1,45 @@
+﻿<Window x:Class="ClientDatabaseApp.View.ShowFollowUp"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ClientDatabaseApp.View"
+        mc:Ignorable="d"
+        Title="ShowFollowUp" Height="450" Width="500">
+    <Grid Background="{StaticResource Color1}">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center">
+            <StackPanel Margin="10,0,10,0" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <TextBlock Text="Client Name:" HorizontalAlignment="Center"/>
+                <TextBox Text="{Binding ClientName}" MinWidth="120" IsEnabled="False"/>
+            </StackPanel>
+            <StackPanel Margin="10,0,10,0" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <TextBlock Text="DateOfCreation:" HorizontalAlignment="Center"/>
+                <TextBox Text="{Binding DateOfCreation, StringFormat=\{0:dd-MM-yyyy\}}" MinWidth="120" IsEnabled="False"/>
+            </StackPanel>
+            <StackPanel Margin="10,0,10,0" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <TextBlock Text="DateOfAction:" HorizontalAlignment="Center"/>
+                <TextBox Text="{Binding DateOfAction, StringFormat=\{0:dd-MM-yyyy\}}" MinWidth="120" IsEnabled="False"/>
+            </StackPanel>
+
+        </StackPanel>
+        <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Center">
+            <TextBlock FontSize="8" Text="Oryginał"/>
+            <Label FontSize="20" Content="{Binding OriginalNote, FallbackValue='Original Note'}"/>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Orientation="Vertical" HorizontalAlignment="Center">
+            <TextBlock FontSize="8" Text="Po edycji"/>
+            <TextBox Width="460" FontSize="20" Text="{Binding EditableNote, FallbackValue='Editable Note'}"/>
+        </StackPanel>
+        <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Margin="5" Content="Edytuj"/>
+            <Button Margin="5" Content="Wyjdź" Command="{Binding ExitCommand}"/>
+        </StackPanel>
+        
+    </Grid>
+</Window>

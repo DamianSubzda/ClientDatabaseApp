@@ -233,5 +233,29 @@ namespace ClientDatabaseApp.Service
             }
         }
 
+        public string DeleteFollowUp(FollowUp SelectedFollowUp)
+        {
+            string deleteQuery = @"DELETE FROM FollowUp WHERE FollowUpId = @FollowUpId";
+            try
+            {
+                conn.Open();
+                using (MySqlCommand command = new MySqlCommand(deleteQuery, conn))
+                {
+                    command.Parameters.Clear();
+                    command.Parameters.AddWithValue("@FollowUpId", SelectedFollowUp.FollowUpId);
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                return $"Błąd przy próbie usunięcia followUp'a: \n {ex.Message}";
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return "";
+        }
+
     }
 }

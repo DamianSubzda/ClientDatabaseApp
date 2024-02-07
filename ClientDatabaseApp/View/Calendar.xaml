@@ -116,9 +116,10 @@
                
             </Grid>
             <Label Content="Lista zadań:"/>
-            <ListBox Name="listbox_todolist" Height="200" ItemsSource="{Binding FollowUp}" />
+            <ListBox Name="listbox_todolist" Height="200" ItemsSource="{Binding FollowUp, Mode=TwoWay}" DisplayMemberPath="Note" SelectedItem="{Binding SelectedFollowUp}"/>
             <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0, 10, 0, 10" >
                 <Button Content="Wybierz" Command="{Binding PickFollowUpCommand}"/>
+                <Button Content="Usuń" Margin="10,0,0,0" Command="{Binding DeleteFollowUpCommand}"/>
             </WrapPanel>
         </StackPanel>
     </Grid>

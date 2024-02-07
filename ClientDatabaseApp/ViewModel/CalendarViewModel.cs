@@ -1,8 +1,10 @@
 ﻿using ClientDatabaseApp.Model;
 using ClientDatabaseApp.Service;
 using ClientDatabaseApp.Service.API;
+using ClientDatabaseApp.View;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data.Entity;
 using System.Linq;
@@ -15,11 +17,12 @@ namespace ClientDatabaseApp.ViewModel
     public class CalendarViewModel : INotifyPropertyChanged
     {
 
-        private Calendar calendarModel = new Calendar();
+        private CalendarModel calendarModel = new CalendarModel();
         public ICommand MouseClickCommand { get; private set; }
         public ICommand Button_Click_PrevMonthCommand { get; private set; }
         public ICommand Button_Click_NextMonthCommand { get; private set; }
         public ICommand PickFollowUpCommand { get; private set; }
+        public ICommand DeleteFollowUpCommand { get; private set; }
 
         public enum MonthEnum
         {
@@ -33,7 +36,7 @@ namespace ClientDatabaseApp.ViewModel
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public List<DayInfo> Days
+        public ObservableCollection<DayInfo> Days
         {
             get => calendarModel.DaysOfCurrentMonth;
             set
@@ -59,8 +62,8 @@ namespace ClientDatabaseApp.ViewModel
             }
         }
 
-        private List<string> _followUp;
-        public List<string> FollowUp
+        private ObservableCollection<FollowUp> _followUp;
+        public ObservableCollection<FollowUp> FollowUp
         {
             get { return _followUp; }
             set
@@ -121,6 +124,17 @@ namespace ClientDatabaseApp.ViewModel
                 OnPropertyChanged(nameof(City));
             }
         }
+        private FollowUp _selectedFollowUp;
+
+        public FollowUp SelectedFollowUp
+        {
+            get => _selectedFollowUp;
+            set
+            {
+                _selectedFollowUp = value;
+                OnPropertyChanged(nameof(SelectedFollowUp));
+            }
+        }
 
         public CalendarViewModel()
         {
@@ -128,6 +142,7 @@ namespace ClientDatabaseApp.ViewModel
             Button_Click_PrevMonthCommand = new DelegateCommand<RoutedEventArgs>(Button_Click_PrevMonth);
             Button_Click_NextMonthCommand = new DelegateCommand<RoutedEventArgs>(Button_Click_NextMonth);
             PickFollowUpCommand = new DelegateCommand<RoutedEventArgs>(PickFollowUp);
+            DeleteFollowUpCommand = new DelegateCommand<RoutedEventArgs>(DeleteFollowUp);
             MouseClickCommand = new DelegateCommand<string>(OnMouseClick);
 
             calendarModel.HeaderToDisplay = ((MonthEnum)DateTime.Now.Month).ToString() + " " + DateTime.Now.Year.ToString();
@@ -173,7 +188,27 @@ namespace ClientDatabaseApp.ViewModel
         }
         private void PickFollowUp(RoutedEventArgs e)
         {
-            // TODO
+            if(SelectedFollowUp != null)
+            {
+                ShowFollowUp showFollowUp = new ShowFollowUp();
+                ShowFollowUpViewModel showFollowUpViewModel = new ShowFollowUpViewModel(SelectedFollowUp, () => showFollowUp.Close());
+                showFollowUp.DataContext = showFollowUpViewModel;
+                showFollowUp.ShowDialog();
+            }
+        }
+        private void DeleteFollowUp(RoutedEventArgs e)
+        {
+            if (SelectedFollowUp != null)
+            {
+                MessageBoxResult result = MessageBox.Show("Czy jesteś pewien, że chcesz usunąć ten followUp?", "Uwaga", MessageBoxButton.YesNo);
+                if(result == MessageBoxResult.Yes)
+                {
+                    DatabaseQuery query = new DatabaseQuery();
+                    query.DeleteFollowUp(SelectedFollowUp);
+                    FollowUp.Remove(SelectedFollowUp);
+                    SelectedFollowUp = null;
+                }
+            }
         }
 
 
@@ -201,7 +236,7 @@ namespace ClientDatabaseApp.ViewModel
                                     && line.DateOfAction.Day == day_number)
                         .ToListAsync();
 
-                    FollowUp = followUp.Select(line => line.Note).ToList();
+                    FollowUp = new ObservableCollection<FollowUp>(followUp);
                 }
                 catch (Exception ex)
                 {
@@ -254,7 +289,7 @@ namespace ClientDatabaseApp.ViewModel
                 });
             }
 
-            Days = listOfDays;
+            Days = new ObservableCollection<DayInfo>(listOfDays);
         }
 
     }

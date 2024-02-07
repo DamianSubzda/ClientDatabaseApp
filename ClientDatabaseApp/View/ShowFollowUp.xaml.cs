@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace ClientDatabaseApp.View
 {
     /// <summary>
-    /// Logika interakcji dla klasy ShowMore.xaml
+    /// Logika interakcji dla klasy ShowFollowUp.xaml
     /// </summary>
-    public partial class ShowMore : Window
+    public partial class ShowFollowUp : Window
     {
-        public ShowMore()
+        public ShowFollowUp()
         {
             InitializeComponent();
         }
