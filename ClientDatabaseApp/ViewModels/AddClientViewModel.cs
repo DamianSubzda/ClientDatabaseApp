@@ -14,7 +14,7 @@ using static ClientDatabaseApp.Service.ComboboxStatus;
 
 namespace ClientDatabaseApp.ViewModel
 {
-    public class AddClientViewModel : INotifyPropertyChanged //Do zastanowienia - zamiast MessageBox stworzyć serwis dialogowy
+    public class AddClientViewModel : INotifyPropertyChanged
     {
         public ICommand AddClientToDatabaseCommand { get; set; }
 
@@ -174,13 +174,15 @@ namespace ClientDatabaseApp.ViewModel
 
 
         private readonly IClientRepo _clientRepo;
-
-        public AddClientViewModel(ClientRepo clientRepo)
+        private readonly IDialogService _dialogService;
+        public AddClientViewModel(IClientRepo clientRepo, IDialogService dialogService)
         {
             _clientRepo = clientRepo;
+            _dialogService = dialogService;
             DateTextBox = DateTime.Now;
             AddClientToDatabaseCommand = new DelegateCommand<RoutedEventArgs>(AddClientAsync);
             InitializeComboBoxStatus();
+            
         }
 
         protected virtual void OnPropertyChanged(string propertyName)
@@ -200,7 +202,7 @@ namespace ClientDatabaseApp.ViewModel
         {
             if (string.IsNullOrEmpty(ClientNameTextBox))
             {
-                _ = MessageBox.Show("Brak nazwy klienta!");
+                _dialogService.ShowMessage("Brak nazwy klienta!");
                 return;
             }
 
@@ -244,7 +246,7 @@ namespace ClientDatabaseApp.ViewModel
             }
             catch
             {
-                //MessageBox
+                _dialogService.ShowMessage($"Wystąpił błąd podczas próby dodania klienta: {client.ClientName}");
             }
             
         }

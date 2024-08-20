@@ -75,18 +75,21 @@ namespace ClientDatabaseApp.ViewModel
         public string FilterText { get; set; }
         private readonly IClientRepo _clientRepo;
         private readonly IActivityRepo _activityRepo;
+        private readonly IDialogService _dialogService;
 
-        public ClientDatabaseViewModel(IClientRepo clientRepo, IActivityRepo activityRepo)
+        public ClientDatabaseViewModel(IClientRepo clientRepo, IActivityRepo activityRepo, IDialogService dialogService)
         {
             _clientRepo = clientRepo;
             _activityRepo = activityRepo;
+            _dialogService = dialogService;
+
             ShowMoreDetailsCommand = new DelegateCommand<RoutedEventArgs>(ShowMoreDetails);
             RemoveSelectedCommand = new DelegateCommand<RoutedEventArgs>(RemoveSelected);
-            AddActivityCommand = new DelegateCommand<RoutedEventArgs>(AddFolowUp);
+            AddActivityCommand = new DelegateCommand<RoutedEventArgs>(AddActivity);
             FilterCommand = new DelegateCommand<RoutedEventArgs>(ApplyFilter);
             LoadClients();
             InitializeComboBoxStatus();
-
+            
         }
 
         private void InitializeComboBoxStatus()
@@ -196,7 +199,7 @@ namespace ClientDatabaseApp.ViewModel
             }
             else
             {
-                MessageBox.Show("Proszę zaznaczyć klienta w tabeli.");
+                _dialogService.ShowMessage("Proszę zaznaczyć klienta w tabeli.");
             }
         }
 
@@ -204,8 +207,8 @@ namespace ClientDatabaseApp.ViewModel
         {
             if (SelectedClient != null)
             {
-                MessageBoxResult result = MessageBox.Show($"Jesteś pewny usunięcia klienta: {SelectedClient.ClientName}?", "Uwaga", MessageBoxButton.YesNo);
-                if (result == MessageBoxResult.Yes)
+                bool result = _dialogService.Confirm($"Jesteś pewny usunięcia klienta: {SelectedClient.ClientName}?");
+                if (result)
                 {
                     try
                     {
@@ -214,18 +217,18 @@ namespace ClientDatabaseApp.ViewModel
                     }
                     catch
                     {
-                        //TODO Exceptions
+                        _dialogService.ShowMessage("Wystąpił błąd podczas usuwania klienta!");
                     }
 
                 }
             }
             else
             {
-                MessageBox.Show("Brak zaznaczonego klienta w tabeli.");
+                _dialogService.ShowMessage("Brak zaznaczonego klienta w tabeli.");
             }
         }
 
-        private void AddFolowUp(RoutedEventArgs e)
+        private void AddActivity(RoutedEventArgs e)
         {
 
             if (SelectedClient != null)
@@ -238,7 +241,7 @@ namespace ClientDatabaseApp.ViewModel
             }
             else
             {
-                MessageBox.Show("Proszę zaznaczyć klienta w tabeli.");
+                _dialogService.ShowMessage("Proszę zaznaczyć klienta w tabeli.");
             }
         }
     }

@@ -138,10 +138,12 @@ namespace ClientDatabaseApp.ViewModel
         }
 
         private readonly IActivityRepo _activityRepo;
+        private readonly IDialogService _dialogService;
 
-        public CalendarViewModel(ActivityRepo activityRepo)
+        public CalendarViewModel(IActivityRepo activityRepo, IDialogService dialogService)
         {
             _activityRepo = activityRepo;
+            _dialogService = dialogService;
             Button_Click_PrevMonthCommand = new DelegateCommand<RoutedEventArgs>(Button_Click_PrevMonth);
             Button_Click_NextMonthCommand = new DelegateCommand<RoutedEventArgs>(Button_Click_NextMonth);
             PickActivityCommand = new DelegateCommand<RoutedEventArgs>(PickActivity);
@@ -203,9 +205,9 @@ namespace ClientDatabaseApp.ViewModel
         {
             if (SelectedActivity != null)
             {
-                MessageBoxResult result = MessageBox.Show("Czy jesteś pewien, że chcesz usunąć te wydarzenie?", "Uwaga", MessageBoxButton.YesNo);
+                bool result = _dialogService.Confirm("Czy jesteś pewien, że chcesz usunąć te wydarzenie?");
 
-                if(result == MessageBoxResult.Yes)
+                if(result)
                 {
                     _activityRepo.DeleteActivity(SelectedActivity);
                     Activity.Remove(SelectedActivity);
@@ -242,7 +244,7 @@ namespace ClientDatabaseApp.ViewModel
                 }
                 catch (Exception ex)
                 {
-                    _ = MessageBox.Show(ex.Message);
+                    _dialogService.ShowMessage(ex.Message);
                 }
 
             }

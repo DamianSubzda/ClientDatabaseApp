@@ -179,46 +179,47 @@
       <DependentUpon>202408200849207_Activities.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Service\APIClients\IpifyAPIConnector.cs" />
-    <Compile Include="Service\APIClients\OpenweatherAPIConnector.cs" />
-    <Compile Include="Service\APIClients\GeolocationAPIConnector.cs" />
-    <Compile Include="Service\Repository\ClientRepo.cs" />
-    <Compile Include="Service\Repository\ActivityRepo.cs" />
-    <Compile Include="Service\Utilities\BoolToVisibilityConverter.cs" />
-    <Compile Include="Service\Utilities\ComboboxStatus.cs" />
-    <Compile Include="Service\Utilities\DataRowColorConverter.cs" />
-    <Compile Include="Service\PostgresContext.cs" />
-    <Compile Include="Service\Utilities\DayVisibilityConverter.cs" />
-    <Compile Include="Service\Utilities\RichTextBoxHelper.cs" />
-    <Compile Include="ViewModel\NewActivityViewModel.cs" />
-    <Compile Include="ViewModel\ShowActivityViewModel.cs" />
-    <Compile Include="ViewModel\ShowClientViewModel.cs" />
-    <Compile Include="View\NewActivity.xaml.cs">
+    <Compile Include="Services\APIClients\IpifyAPIConnector.cs" />
+    <Compile Include="Services\APIClients\OpenweatherAPIConnector.cs" />
+    <Compile Include="Services\APIClients\GeolocationAPIConnector.cs" />
+    <Compile Include="Services\DialogService.cs" />
+    <Compile Include="Services\Repository\ClientRepo.cs" />
+    <Compile Include="Services\Repository\ActivityRepo.cs" />
+    <Compile Include="Services\Utilities\BoolToVisibilityConverter.cs" />
+    <Compile Include="Services\Utilities\ComboboxStatus.cs" />
+    <Compile Include="Services\Utilities\DataRowColorConverter.cs" />
+    <Compile Include="Services\PostgresContext.cs" />
+    <Compile Include="Services\Utilities\DayVisibilityConverter.cs" />
+    <Compile Include="Services\Utilities\RichTextBoxHelper.cs" />
+    <Compile Include="ViewModels\NewActivityViewModel.cs" />
+    <Compile Include="ViewModels\ShowActivityViewModel.cs" />
+    <Compile Include="ViewModels\ShowClientViewModel.cs" />
+    <Compile Include="Views\NewActivity.xaml.cs">
       <DependentUpon>NewActivity.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ShowClient.xaml.cs">
+    <Compile Include="Views\ShowClient.xaml.cs">
       <DependentUpon>ShowClient.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ShowActivity.xaml.cs">
+    <Compile Include="Views\ShowActivity.xaml.cs">
       <DependentUpon>ShowActivity.xaml</DependentUpon>
     </Compile>
-    <Page Include="View\AddClient.xaml">
+    <Page Include="Views\AddClient.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\Calendar.xaml">
+    <Page Include="Views\Calendar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\ClientDatabase.xaml">
+    <Page Include="Views\ClientDatabase.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\LoadCSV.xaml">
+    <Page Include="Views\LoadCSV.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\MainWindow.xaml">
+    <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -226,49 +227,49 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Model\Client.cs" />
-    <Compile Include="Model\CalendarModel.cs" />
-    <Compile Include="Model\Activity.cs" />
-    <Compile Include="ViewModel\MainWindowViewModel.cs" />
-    <Compile Include="Service\DelegateCommand.cs" />
-    <Compile Include="View\AddClient.xaml.cs">
+    <Compile Include="Models\Client.cs" />
+    <Compile Include="Models\CalendarModel.cs" />
+    <Compile Include="Models\Activity.cs" />
+    <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="Services\DelegateCommand.cs" />
+    <Compile Include="Views\AddClient.xaml.cs">
       <DependentUpon>AddClient.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\Calendar.xaml.cs">
+    <Compile Include="Views\Calendar.xaml.cs">
       <DependentUpon>Calendar.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ClientDatabase.xaml.cs">
+    <Compile Include="Views\ClientDatabase.xaml.cs">
       <DependentUpon>ClientDatabase.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\LoadCSV.xaml.cs">
+    <Compile Include="Views\LoadCSV.xaml.cs">
       <DependentUpon>LoadCSV.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\MainWindow.xaml.cs">
+    <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="View\NewActivity.xaml">
+    <Page Include="Views\NewActivity.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\ResourceDic.xaml">
+    <Page Include="Views\ResourceDic.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\ShowClient.xaml">
+    <Page Include="Views\ShowClient.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\ShowActivity.xaml">
+    <Page Include="Views\ShowActivity.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ViewModel\AddClientViewModel.cs" />
-    <Compile Include="ViewModel\CalendarViewModel.cs" />
-    <Compile Include="ViewModel\ClientDatabaseViewModel.cs" />
-    <Compile Include="ViewModel\LoadCSVViewModel.cs" />
+    <Compile Include="ViewModels\AddClientViewModel.cs" />
+    <Compile Include="ViewModels\CalendarViewModel.cs" />
+    <Compile Include="ViewModels\ClientDatabaseViewModel.cs" />
+    <Compile Include="ViewModels\LoadCSVViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
