@@ -99,23 +99,23 @@ namespace ClientDatabaseApp.ViewModel
         }
 
 
-        private async void AddToDatabase(RoutedEventArgs e)
+        private void AddToDatabase(RoutedEventArgs e)//TODO
         {
             IsLoading = true;
-            await Task.Run(() =>
-            {
-                DatabaseQuery query = new DatabaseQuery();
-                List<(string, string)> result = query.TryAddClients(PreviewClients);
+            //await Task.Run(() =>
+            //{
+            //    DatabaseQuery query = new DatabaseQuery();
+            //    List<(string, string)> result = query.TryAddClients(PreviewClients);
 
-                App.Current.Dispatcher.Invoke(() =>
-                {
-                    foreach (var item in result)
-                    {
-                        MessageBox.Show(item.Item2, item.Item1);
-                    }
-                    PreviewClients.Clear();
-                });
-            });
+            //    App.Current.Dispatcher.Invoke(() =>
+            //    {
+            //        foreach (var item in result)
+            //        {
+            //            MessageBox.Show(item.Item2, item.Item1);
+            //        }
+            //        PreviewClients.Clear();
+            //    });
+            //});
 
             IsLoading = false;
         }

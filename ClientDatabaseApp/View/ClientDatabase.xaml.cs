@@ -1,5 +1,7 @@
 ﻿using ClientDatabaseApp.ViewModel;
+using System.Windows;
 using System.Windows.Controls;
+using Unity;
 
 namespace ClientDatabaseApp.View
 {
@@ -10,7 +12,9 @@ namespace ClientDatabaseApp.View
     {
         public ClientDatabase()
         {
-            DataContext = new ClientDatabaseViewModel();
+            var app = (App)Application.Current;
+            var viewModel = app.Container.Resolve<ClientDatabaseViewModel>();
+            DataContext = viewModel;
             InitializeComponent();
         }
     }

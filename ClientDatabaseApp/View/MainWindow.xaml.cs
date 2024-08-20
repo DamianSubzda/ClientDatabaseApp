@@ -11,7 +11,6 @@ namespace ClientDatabaseApp.View
     {
         public MainWindow()
         {
-            DatabaseConnector.GetInstance();
             DataContext = new MainWindowViewModel();
             InitializeComponent();
         }

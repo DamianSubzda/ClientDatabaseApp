@@ -1,5 +1,6 @@
 ﻿using ClientDatabaseApp.Model;
 using ClientDatabaseApp.Service;
+using ClientDatabaseApp.Service.Repository;
 using ClientDatabaseApp.View;
 using MySqlConnector;
 using System;
@@ -17,7 +18,6 @@ namespace ClientDatabaseApp.ViewModel
 {
     public class ClientDatabaseViewModel : INotifyPropertyChanged
     {
-        private MySqlConnection conn = DatabaseConnector.connection;
 
         public ICommand ShowMoreDetailsCommand { get; private set; }
         public ICommand RemoveSelectedCommand { get; private set; }
@@ -75,9 +75,13 @@ namespace ClientDatabaseApp.ViewModel
         }
 
         public string FilterText { get; set; }
+        private readonly IClientRepo _clientRepo;
+        private readonly IActivityRepo _activityRepo;
 
-        public ClientDatabaseViewModel()
+        public ClientDatabaseViewModel(IClientRepo clientRepo, IActivityRepo activityRepo)
         {
+            _clientRepo = clientRepo;
+            _activityRepo = activityRepo;
             ShowMoreDetailsCommand = new DelegateCommand<RoutedEventArgs>(ShowMoreDetails);
             RemoveSelectedCommand = new DelegateCommand<RoutedEventArgs>(RemoveSelected);
             AddFolowUpCommand = new DelegateCommand<RoutedEventArgs>(AddFolowUp);
@@ -175,8 +179,8 @@ namespace ClientDatabaseApp.ViewModel
 
         private async void LoadClients()
         {
-            var context = new DBContextHVAC();
-            var clients = await Task.Run(() => context.ClientDBSet.ToListAsync());
+            var context = new PostgresContext();
+            var clients = await context.Clients.ToListAsync();
 
             _clients = new ObservableCollection<Client>(clients);
             ClientsView = CollectionViewSource.GetDefaultView(_clients);
@@ -205,15 +209,14 @@ namespace ClientDatabaseApp.ViewModel
                 MessageBoxResult result = MessageBox.Show($"Jesteś pewny usunięcia klienta: {SelectedClient.ClientName}?", "Uwaga", MessageBoxButton.YesNo);
                 if (result == MessageBoxResult.Yes)
                 {
-                    DatabaseQuery query = new DatabaseQuery();
-                    string exception = query.DeleteClient(SelectedClient);
-                    if (!string.IsNullOrEmpty(exception))
+                    try
                     {
-                        _ = MessageBox.Show(exception);
-                    }
-                    else
-                    {
+                        _clientRepo.DeleteClient(SelectedClient);
                         _clients.Remove(SelectedClient);
+                    }
+                    catch
+                    {
+                        //TODO Exceptions
                     }
                     
                 }
@@ -230,7 +233,7 @@ namespace ClientDatabaseApp.ViewModel
             if (SelectedClient != null)
             {
                 NewFollowUp newFollowUp = new NewFollowUp();
-                NewFollowUpViewModel newFollowUpViewModel = new NewFollowUpViewModel(SelectedClient, () => newFollowUp.Close());
+                NewFollowUpViewModel newFollowUpViewModel = new NewFollowUpViewModel(SelectedClient, () => newFollowUp.Close(), _activityRepo);
                 newFollowUp.DataContext = newFollowUpViewModel;
                 newFollowUp.ShowDialog();
 

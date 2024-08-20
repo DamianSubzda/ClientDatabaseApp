@@ -1,13 +1,14 @@
 ﻿using ClientDatabaseApp.Model;
 using ClientDatabaseApp.Service;
+using ClientDatabaseApp.Service.Repository;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Xml.Linq;
 using static ClientDatabaseApp.Service.ComboboxStatus;
 
@@ -170,12 +171,15 @@ namespace ClientDatabaseApp.ViewModel
                 OnPropertyChanged(nameof(SelectedStatus));
             }
         }
-        
 
-        public AddClientViewModel()
+
+        private readonly IClientRepo _clientRepo;
+
+        public AddClientViewModel(ClientRepo clientRepo)
         {
+            _clientRepo = clientRepo;
             DateTextBox = DateTime.Now;
-            AddClientToDatabaseCommand = new DelegateCommand<RoutedEventArgs>(AddClient);
+            AddClientToDatabaseCommand = new DelegateCommand<RoutedEventArgs>(AddClientAsync);
             InitializeComboBoxStatus();
         }
 
@@ -192,7 +196,7 @@ namespace ClientDatabaseApp.ViewModel
         }
 
         
-        private void AddClient(RoutedEventArgs e)
+        private async void AddClientAsync(RoutedEventArgs e)
         {
             if (string.IsNullOrEmpty(ClientNameTextBox))
             {
@@ -234,10 +238,15 @@ namespace ClientDatabaseApp.ViewModel
 
             }
 
-            DatabaseQuery query = new DatabaseQuery();
-
-            var clients = new ObservableCollection<Client> { client };
-            List<(string, string)> exceptions = query.TryAddClients(clients);
+            try
+            {
+                await _clientRepo.AddClient(client);
+            }
+            catch
+            {
+                //MessageBox
+            }
+            
         }
 
 

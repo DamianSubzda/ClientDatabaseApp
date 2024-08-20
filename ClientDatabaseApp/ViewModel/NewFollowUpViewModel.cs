@@ -1,5 +1,6 @@
 ﻿using ClientDatabaseApp.Model;
 using ClientDatabaseApp.Service;
+using ClientDatabaseApp.Service.Repository;
 using System;
 using System.ComponentModel;
 using System.Linq;
@@ -36,8 +37,10 @@ namespace ClientDatabaseApp.ViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public NewFollowUpViewModel(Client client, Action closeAction)
+        private IActivityRepo _activityRepo;
+        public NewFollowUpViewModel(Client client, Action closeAction, IActivityRepo activityRepo)
         {
+            _activityRepo = activityRepo;
             SelectedDate = DateTime.Now;
             this.Client = client;
             this._closeAction = closeAction;
@@ -53,8 +56,7 @@ namespace ClientDatabaseApp.ViewModel
                                            .Select(run => run.Value));
             if (!string.IsNullOrEmpty(followUpNote))
             {
-                DatabaseQuery query = new DatabaseQuery();
-                query.AddFollowUp(Client, SelectedDate, followUpNote);
+                _activityRepo.CreateActivity(Client, SelectedDate, followUpNote);
             }
             _closeAction?.Invoke();
         }

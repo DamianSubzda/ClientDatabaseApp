@@ -14,7 +14,7 @@ namespace ClientDatabaseApp.ViewModel
     public class ShowFollowUpViewModel : INotifyPropertyChanged
     {
         public ICommand ExitCommand { get; set; }
-        private FollowUp _followup;
+        private Activity _followup;
         private Action _closeAction;
         private string _originalNote;
         private string _editableNote;
@@ -49,12 +49,12 @@ namespace ClientDatabaseApp.ViewModel
                 OnPropertyChanged(nameof(DateOfCreation));
             }
         }
-        public DateTime DateOfAction
+        public DateTime? DateOfAction
         {
             get => _dateOfAction;
             set
             {
-                _dateOfAction = value;
+                _dateOfAction = (DateTime)value;
                 OnPropertyChanged(nameof(DateOfAction));
             }
         }
@@ -68,7 +68,7 @@ namespace ClientDatabaseApp.ViewModel
             }
         }
 
-        public ShowFollowUpViewModel(FollowUp followup, Action closeAction)
+        public ShowFollowUpViewModel(Activity followup, Action closeAction)
         {
             FollowUp = followup;
             OriginalNote = FollowUp.Note;
@@ -80,7 +80,7 @@ namespace ClientDatabaseApp.ViewModel
             ExitCommand = new DelegateCommand<RoutedEventArgs>(ExitWindow);
         }
 
-        public FollowUp FollowUp
+        public Activity FollowUp
         {
             get => _followup;
             set

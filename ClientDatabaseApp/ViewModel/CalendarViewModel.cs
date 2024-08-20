@@ -1,6 +1,7 @@
 ﻿using ClientDatabaseApp.Model;
 using ClientDatabaseApp.Service;
 using ClientDatabaseApp.Service.API;
+using ClientDatabaseApp.Service.Repository;
 using ClientDatabaseApp.View;
 using System;
 using System.Collections.Generic;
@@ -62,8 +63,8 @@ namespace ClientDatabaseApp.ViewModel
             }
         }
 
-        private ObservableCollection<FollowUp> _followUp;
-        public ObservableCollection<FollowUp> FollowUp
+        private ObservableCollection<Activity> _followUp;
+        public ObservableCollection<Activity> FollowUp
         {
             get { return _followUp; }
             set
@@ -124,9 +125,9 @@ namespace ClientDatabaseApp.ViewModel
                 OnPropertyChanged(nameof(City));
             }
         }
-        private FollowUp _selectedFollowUp;
+        private Activity _selectedFollowUp;
 
-        public FollowUp SelectedFollowUp
+        public Activity SelectedFollowUp
         {
             get => _selectedFollowUp;
             set
@@ -136,9 +137,11 @@ namespace ClientDatabaseApp.ViewModel
             }
         }
 
-        public CalendarViewModel()
-        {
+        private readonly IActivityRepo _activityRepo;
 
+        public CalendarViewModel(ActivityRepo activityRepo)
+        {
+            _activityRepo = activityRepo;
             Button_Click_PrevMonthCommand = new DelegateCommand<RoutedEventArgs>(Button_Click_PrevMonth);
             Button_Click_NextMonthCommand = new DelegateCommand<RoutedEventArgs>(Button_Click_NextMonth);
             PickFollowUpCommand = new DelegateCommand<RoutedEventArgs>(PickFollowUp);
@@ -203,8 +206,7 @@ namespace ClientDatabaseApp.ViewModel
                 MessageBoxResult result = MessageBox.Show("Czy jesteś pewien, że chcesz usunąć ten followUp?", "Uwaga", MessageBoxButton.YesNo);
                 if(result == MessageBoxResult.Yes)
                 {
-                    DatabaseQuery query = new DatabaseQuery();
-                    query.DeleteFollowUp(SelectedFollowUp);
+                    _activityRepo.DeleteActivity(SelectedFollowUp);
                     FollowUp.Remove(SelectedFollowUp);
                     SelectedFollowUp = null;
                 }
@@ -220,8 +222,6 @@ namespace ClientDatabaseApp.ViewModel
             GetDaysFromMonth();
         }
 
-
-
         private async void OnMouseClick(string dayNumber)
         {
             if (Days.Any(dayinfo => dayinfo.DayNumber == dayNumber))
@@ -229,14 +229,15 @@ namespace ClientDatabaseApp.ViewModel
                 try
                 {
                     int day_number = int.Parse(dayNumber);
-                    var context = new DBContextHVAC();
-                    var followUp = await context.FollowUpDBSet
-                        .Where(line => line.DateOfAction.Year == calendarModel.DateToDisplay.Year
-                                    && line.DateOfAction.Month == calendarModel.DateToDisplay.Month
-                                    && line.DateOfAction.Day == day_number)
-                        .ToListAsync();
+                    var context = new PostgresContext();
+                    var followUp = await context.Activities
+                            .Where(line => line.DateOfAction.HasValue
+                                    && line.DateOfAction.Value.Year == calendarModel.DateToDisplay.Year
+                                    && line.DateOfAction.Value.Month == calendarModel.DateToDisplay.Month
+                                    && line.DateOfAction.Value.Day == day_number)
+                            .ToListAsync();
 
-                    FollowUp = new ObservableCollection<FollowUp>(followUp);
+                    FollowUp = new ObservableCollection<Activity>(followUp);
                 }
                 catch (Exception ex)
                 {
@@ -245,16 +246,17 @@ namespace ClientDatabaseApp.ViewModel
 
             }
         }
-        private void GetDaysFromMonth()
+        private async void GetDaysFromMonth()
         {
-            var context = new DBContextHVAC();
-            var followUps = context.FollowUpDBSet
-                .Where(line => line.DateOfAction.Year == calendarModel.DateToDisplay.Year &&
-                               line.DateOfAction.Month == calendarModel.DateToDisplay.Month)
-                .ToList();
+            var context = new PostgresContext();
+            var followUps = await context.Activities
+                .Where(line => line.DateOfAction.HasValue 
+                        && line.DateOfAction.Value.Year == calendarModel.DateToDisplay.Year 
+                        && line.DateOfAction.Value.Month == calendarModel.DateToDisplay.Month)
+                .ToListAsync();
 
             var followUpCounts = followUps
-                .GroupBy(line => line.DateOfAction.Day)
+                .GroupBy(line => line.DateOfAction.Value.Day)
                 .Select(group => new { Day = group.Key, Count = group.Count() })
                 .ToList();
 
