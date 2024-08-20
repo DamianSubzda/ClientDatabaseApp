@@ -180,8 +180,7 @@ namespace ClientDatabaseApp.ViewModel
 
         private async void LoadClients()
         {
-            var context = new PostgresContext();
-            var clients = await context.Clients.ToListAsync();
+            var clients = await _clientRepo.GetAllClients();
 
             _clients = new ObservableCollection<Client>(clients);
             ClientsView = CollectionViewSource.GetDefaultView(_clients);

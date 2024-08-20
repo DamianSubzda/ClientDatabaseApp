@@ -232,65 +232,44 @@ namespace ClientDatabaseApp.ViewModel
                 try
                 {
                     int day_number = int.Parse(dayNumber);
-                    var context = new PostgresContext();
-                    var activity = await context.Activities
-                            .Where(line => line.DateOfAction.HasValue
-                                    && line.DateOfAction.Value.Year == calendarModel.DateToDisplay.Year
-                                    && line.DateOfAction.Value.Month == calendarModel.DateToDisplay.Month
-                                    && line.DateOfAction.Value.Day == day_number)
-                            .ToListAsync();
+                    var activities = await _activityRepo.GetActivitiesOfDay(calendarModel.DateToDisplay.Year, calendarModel.DateToDisplay.Month, day_number);
 
-                    Activity = new ObservableCollection<Activity>(activity);
+                    Activity = new ObservableCollection<Activity>(activities);
                 }
                 catch (Exception ex)
                 {
                     _dialogService.ShowMessage(ex.Message);
                 }
-
             }
         }
-        private async void GetDaysFromMonth() //TODO: przerzucić do REPO pobrania z kontekstu!
+        private async void GetDaysFromMonth()
         {
-            var context = new PostgresContext();
-            var activities = await context.Activities
-                .Where(line => line.DateOfAction.HasValue 
-                        && line.DateOfAction.Value.Year == calendarModel.DateToDisplay.Year 
-                        && line.DateOfAction.Value.Month == calendarModel.DateToDisplay.Month)
-                .ToListAsync();
+            var activitiesCount = (await _activityRepo.GetActivitiesCountOfMonth(calendarModel.DateToDisplay.Year, calendarModel.DateToDisplay.Month))
+                .ToDictionary(ac => ac.Day, ac => ac.Count);
 
-            var activitiesCount = activities
-                .GroupBy(line => line.DateOfAction.Value.Day)
-                .Select(group => new { Day = group.Key, Count = group.Count() })
-                .ToList();
+            int daysInMonth = DateTime.DaysInMonth(calendarModel.DateToDisplay.Year, calendarModel.DateToDisplay.Month);
+            int firstDayOfWeek = (int)new DateTime(calendarModel.DateToDisplay.Year, calendarModel.DateToDisplay.Month, 1).DayOfWeek;
 
-            int days = DateTime.DaysInMonth(calendarModel.DateToDisplay.Year, calendarModel.DateToDisplay.Month);
-            DayOfWeek dayOfWeek = calendarModel.DateToDisplay.DayOfWeek;
-            int nr = (int)(DaysEnum)dayOfWeek;
-
-            if (dayOfWeek == DayOfWeek.Sunday)
-            {
-                nr = 7;
-            }
+            if (firstDayOfWeek == 0)
+                firstDayOfWeek = 7;
 
             List<DayInfo> listOfDays = new List<DayInfo>();
 
-            for (int i = 1; i < nr; i++)
+            for (int i = 1; i < firstDayOfWeek; i++)
             {
-                listOfDays.Add(new DayInfo()
+                listOfDays.Add(new DayInfo
                 {
                     DayNumber = "",
                     ActivitiesCount = 0
                 });
             }
 
-            for (int i = 1; i <= days; i++)
+            for (int day = 1; day <= daysInMonth; day++)
             {
-                var activitiesTempCount = activitiesCount.FirstOrDefault(fc => fc.Day == i)?.Count ?? 0;
-
-                listOfDays.Add(new DayInfo()
+                listOfDays.Add(new DayInfo
                 {
-                    DayNumber = i.ToString(),
-                    ActivitiesCount = activitiesTempCount
+                    DayNumber = day.ToString(),
+                    ActivitiesCount = activitiesCount.TryGetValue(day, out int count) ? count : 0
                 });
             }
 

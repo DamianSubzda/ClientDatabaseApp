@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ClientDatabaseApp.Service.Repository
@@ -11,9 +9,9 @@ namespace ClientDatabaseApp.Service.Repository
     public interface IClientRepo
     {
         Task AddClient(Client client);
+        Task<List<Client>> GetAllClients();
         Task DeleteClient(Client client);
         Task<bool> CheckIfClientExists(Client client);
-
     }
     public class ClientRepo : IClientRepo
     {
@@ -47,7 +45,6 @@ namespace ClientDatabaseApp.Service.Repository
             }
 
             _context.Clients.Remove(client);
-
             await _context.SaveChangesAsync();
         }
 
@@ -59,6 +56,11 @@ namespace ClientDatabaseApp.Service.Repository
             }
 
             return await _context.Clients.AnyAsync(c => c.ClientName == client.ClientName && c.Email == client.Email);
+        }
+
+        public async Task<List<Client>> GetAllClients()
+        {
+            return await _context.Clients.ToListAsync();
         }
     }
 }

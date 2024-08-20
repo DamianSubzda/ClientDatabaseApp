@@ -76,7 +76,7 @@
                                     <DropShadowEffect ShadowDepth="3" Color="Gray" Opacity="0.5"/>
                                 </Border.Effect>
                                 <StackPanel MinHeight="50" MinWidth="70" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
-                                    <Label Opacity="0.8" Content="{Binding ActivityCount}" Width="auto" VerticalContentAlignment="Top" FontSize="10"/>
+                                    <Label Opacity="0.8" Content="{Binding ActivitiesCount}" Width="auto" VerticalContentAlignment="Top" FontSize="10"/>
                                     <Label Name="DayNumber" Width="50" Content="{Binding DayNumber}" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="28"/>
                                 </StackPanel>
                             </Border>
