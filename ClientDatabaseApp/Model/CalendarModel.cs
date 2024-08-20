@@ -9,12 +9,12 @@ namespace ClientDatabaseApp.Model
         public string HeaderToDisplay { get; set; }
         public ObservableCollection<DayInfo> DaysOfCurrentMonth { get; set; }
         public DateTime DateToDisplay { get; set; }
-        public List<Activity> FollowUps { get; set; }
+        public List<Activity> Activities { get; set; }
     }
     public class DayInfo
     {
         public string DayNumber { get; set; }
-        public int FollowUpCount { get; set; }
+        public int ActivitiesCount { get; set; }
     }
 
 }

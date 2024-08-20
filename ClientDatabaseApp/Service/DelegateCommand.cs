@@ -24,19 +24,18 @@ namespace ClientDatabaseApp.Service
             if (_canExecute == null)
                 return true;
 
-            return _canExecute((parameter == null) ? default(T) : (T)Convert.ChangeType(parameter, typeof(T)));
+            return _canExecute((parameter == null) ? default : (T)Convert.ChangeType(parameter, typeof(T)));
         }
 
         public void Execute(object parameter)
         {
-            _execute((parameter == null) ? default(T) : (T)Convert.ChangeType(parameter, typeof(T)));
+            _execute((parameter == null) ? default : (T)Convert.ChangeType(parameter, typeof(T)));
         }
 
         public event EventHandler CanExecuteChanged;
         public void RaiseCanExecuteChanged()
         {
-            if (CanExecuteChanged != null)
-                CanExecuteChanged(this, EventArgs.Empty);
+            CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

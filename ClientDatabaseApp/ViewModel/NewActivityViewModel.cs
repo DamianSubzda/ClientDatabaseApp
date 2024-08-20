@@ -10,11 +10,11 @@ using System.Xml.Linq;
 
 namespace ClientDatabaseApp.ViewModel
 {
-    public class NewFollowUpViewModel : INotifyPropertyChanged
+    public class NewActivityViewModel : INotifyPropertyChanged
     {
         private readonly Action _closeAction;
 
-        public ICommand addFollowUpCommand { get; set; }
+        public ICommand AddActivityCommand { get; set; }
         public Client Client { get; set; }
         public DateTime SelectedDate { get; set; }
         public string Note { get; set; }
@@ -38,25 +38,25 @@ namespace ClientDatabaseApp.ViewModel
         }
 
         private IActivityRepo _activityRepo;
-        public NewFollowUpViewModel(Client client, Action closeAction, IActivityRepo activityRepo)
+        public NewActivityViewModel(Client client, Action closeAction, IActivityRepo activityRepo)
         {
             _activityRepo = activityRepo;
             SelectedDate = DateTime.Now;
             this.Client = client;
             this._closeAction = closeAction;
-            addFollowUpCommand = new DelegateCommand<RoutedEventArgs>(AddFollowUp);
+            AddActivityCommand = new DelegateCommand<RoutedEventArgs>(AddActivity);
         }
 
-        private void AddFollowUp(RoutedEventArgs e)
+        private void AddActivity(RoutedEventArgs e)
         {
             XDocument document = XDocument.Parse(RichTextContent);
             XNamespace ns = "http://schemas.microsoft.com/winfx/2006/xaml/presentation";
 
-            var followUpNote = string.Join(" ", document.Descendants(ns + "Run")
+            var activityNote = string.Join(" ", document.Descendants(ns + "Run")
                                            .Select(run => run.Value));
-            if (!string.IsNullOrEmpty(followUpNote))
+            if (!string.IsNullOrEmpty(activityNote))
             {
-                _activityRepo.CreateActivity(Client, SelectedDate, followUpNote);
+                _activityRepo.CreateActivity(Client, SelectedDate, activityNote);
             }
             _closeAction?.Invoke();
         }

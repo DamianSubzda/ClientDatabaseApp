@@ -21,7 +21,7 @@ namespace ClientDatabaseApp.ViewModel
 
         public ICommand ShowMoreDetailsCommand { get; private set; }
         public ICommand RemoveSelectedCommand { get; private set; }
-        public ICommand AddFolowUpCommand { get; private set; }
+        public ICommand AddActivityCommand { get; private set; }
         public ICommand FilterCommand { get; private set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -48,14 +48,12 @@ namespace ClientDatabaseApp.ViewModel
             {
                 _selectedClient = value;
                 OnPropertyChanged(nameof(SelectedClient));
-                
             }
         }
 
         public ObservableCollection<StatusItem> StatusItems
         {
             get => _statusItems;
-
             set
             {
                 _statusItems = value;
@@ -84,11 +82,11 @@ namespace ClientDatabaseApp.ViewModel
             _activityRepo = activityRepo;
             ShowMoreDetailsCommand = new DelegateCommand<RoutedEventArgs>(ShowMoreDetails);
             RemoveSelectedCommand = new DelegateCommand<RoutedEventArgs>(RemoveSelected);
-            AddFolowUpCommand = new DelegateCommand<RoutedEventArgs>(AddFolowUp);
+            AddActivityCommand = new DelegateCommand<RoutedEventArgs>(AddFolowUp);
             FilterCommand = new DelegateCommand<RoutedEventArgs>(ApplyFilter);
             LoadClients();
             InitializeComboBoxStatus();
-            
+
         }
 
         private void InitializeComboBoxStatus()
@@ -130,7 +128,7 @@ namespace ClientDatabaseApp.ViewModel
                     return false;
                 };
             }
-            
+
 
             ClientsView.Refresh();
         }
@@ -218,7 +216,7 @@ namespace ClientDatabaseApp.ViewModel
                     {
                         //TODO Exceptions
                     }
-                    
+
                 }
             }
             else
@@ -232,10 +230,10 @@ namespace ClientDatabaseApp.ViewModel
 
             if (SelectedClient != null)
             {
-                NewFollowUp newFollowUp = new NewFollowUp();
-                NewFollowUpViewModel newFollowUpViewModel = new NewFollowUpViewModel(SelectedClient, () => newFollowUp.Close(), _activityRepo);
-                newFollowUp.DataContext = newFollowUpViewModel;
-                newFollowUp.ShowDialog();
+                NewActivity newActivity = new NewActivity();
+                NewActivityViewModel newActivityViewModel = new NewActivityViewModel(SelectedClient, () => newActivity.Close(), _activityRepo);
+                newActivity.DataContext = newActivityViewModel;
+                newActivity.ShowDialog();
 
             }
             else

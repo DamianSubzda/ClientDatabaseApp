@@ -215,7 +215,7 @@ namespace ClientDatabaseApp.ViewModel
                 PageURL = PageURLTextBox,
                 Data = DateTextBox,
                 Owner = OwnerTextBox,
-                Status = (int)SelectedStatus.Value
+                Status = (int)SelectedStatus.Value //Może podmienić i zamiast numerka będzie wartość z 'Enuma'
             };
 
             if (string.IsNullOrEmpty(RichTextContent))

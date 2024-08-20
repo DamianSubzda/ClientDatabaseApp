@@ -12,10 +12,9 @@ namespace ClientDatabaseApp.ViewModel
             TabSelectionChangedCommand = new DelegateCommand<SelectionChangedEventArgs>(TabSelectionChanged);
         }
 
-
         private void TabSelectionChanged(SelectionChangedEventArgs e)
         {
-            
+            //TODO.
         }
     }
 }

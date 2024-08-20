@@ -1,5 +1,7 @@
 ﻿using ClientDatabaseApp.ViewModel;
+using System.Windows;
 using System.Windows.Controls;
+using Unity;
 
 namespace ClientDatabaseApp.View
 {
@@ -10,7 +12,9 @@ namespace ClientDatabaseApp.View
     {
         public LoadCSV()
         {
-            DataContext = new LoadCSVViewModel();
+            var app = (App)Application.Current;
+            var viewModel = app.Container.Resolve<LoadCSVViewModel>();
+            DataContext = viewModel;
             InitializeComponent();
         }
     }

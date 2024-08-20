@@ -22,8 +22,8 @@ namespace ClientDatabaseApp.ViewModel
         public ICommand MouseClickCommand { get; private set; }
         public ICommand Button_Click_PrevMonthCommand { get; private set; }
         public ICommand Button_Click_NextMonthCommand { get; private set; }
-        public ICommand PickFollowUpCommand { get; private set; }
-        public ICommand DeleteFollowUpCommand { get; private set; }
+        public ICommand PickActivityCommand { get; private set; }
+        public ICommand DeleteActivityCommand { get; private set; }
 
         public enum MonthEnum
         {
@@ -63,14 +63,14 @@ namespace ClientDatabaseApp.ViewModel
             }
         }
 
-        private ObservableCollection<Activity> _followUp;
-        public ObservableCollection<Activity> FollowUp
+        private ObservableCollection<Activity> _activity;
+        public ObservableCollection<Activity> Activity
         {
-            get { return _followUp; }
+            get { return _activity; }
             set
             {
-                _followUp = value;
-                OnPropertyChanged(nameof(FollowUp));
+                _activity = value;
+                OnPropertyChanged(nameof(Activity));
             }
         }
 
@@ -125,15 +125,15 @@ namespace ClientDatabaseApp.ViewModel
                 OnPropertyChanged(nameof(City));
             }
         }
-        private Activity _selectedFollowUp;
+        private Activity _selectedActivity;
 
-        public Activity SelectedFollowUp
+        public Activity SelectedActivity
         {
-            get => _selectedFollowUp;
+            get => _selectedActivity;
             set
             {
-                _selectedFollowUp = value;
-                OnPropertyChanged(nameof(SelectedFollowUp));
+                _selectedActivity = value;
+                OnPropertyChanged(nameof(SelectedActivity));
             }
         }
 
@@ -144,18 +144,18 @@ namespace ClientDatabaseApp.ViewModel
             _activityRepo = activityRepo;
             Button_Click_PrevMonthCommand = new DelegateCommand<RoutedEventArgs>(Button_Click_PrevMonth);
             Button_Click_NextMonthCommand = new DelegateCommand<RoutedEventArgs>(Button_Click_NextMonth);
-            PickFollowUpCommand = new DelegateCommand<RoutedEventArgs>(PickFollowUp);
-            DeleteFollowUpCommand = new DelegateCommand<RoutedEventArgs>(DeleteFollowUp);
+            PickActivityCommand = new DelegateCommand<RoutedEventArgs>(PickActivity);
+            DeleteActivityCommand = new DelegateCommand<RoutedEventArgs>(DeleteActivity);
             MouseClickCommand = new DelegateCommand<string>(OnMouseClick);
 
             calendarModel.HeaderToDisplay = ((MonthEnum)DateTime.Now.Month).ToString() + " " + DateTime.Now.Year.ToString();
             calendarModel.DateToDisplay = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
 
             InitialCalendar();
-            _ = InitializeAsync();
+            InitializeAsync();
         }
 
-        public async Task InitializeAsync()
+        public async void InitializeAsync()
         {
             IpifyAPIConnector ipify = new IpifyAPIConnector();
             await ipify.GetIp();
@@ -189,26 +189,27 @@ namespace ClientDatabaseApp.ViewModel
         {
             ChangeMonth(-1);
         }
-        private void PickFollowUp(RoutedEventArgs e)
+        private void PickActivity(RoutedEventArgs e)
         {
-            if(SelectedFollowUp != null)
+            if(SelectedActivity != null)
             {
-                ShowFollowUp showFollowUp = new ShowFollowUp();
-                ShowFollowUpViewModel showFollowUpViewModel = new ShowFollowUpViewModel(SelectedFollowUp, () => showFollowUp.Close());
-                showFollowUp.DataContext = showFollowUpViewModel;
-                showFollowUp.ShowDialog();
+                ShowActivity showActivity = new ShowActivity();
+                ShowActivityViewModel showActivityViewModel = new ShowActivityViewModel(SelectedActivity, () => showActivity.Close());
+                showActivity.DataContext = showActivityViewModel;
+                showActivity.ShowDialog();
             }
         }
-        private void DeleteFollowUp(RoutedEventArgs e)
+        private void DeleteActivity(RoutedEventArgs e)
         {
-            if (SelectedFollowUp != null)
+            if (SelectedActivity != null)
             {
-                MessageBoxResult result = MessageBox.Show("Czy jesteś pewien, że chcesz usunąć ten followUp?", "Uwaga", MessageBoxButton.YesNo);
+                MessageBoxResult result = MessageBox.Show("Czy jesteś pewien, że chcesz usunąć te wydarzenie?", "Uwaga", MessageBoxButton.YesNo);
+
                 if(result == MessageBoxResult.Yes)
                 {
-                    _activityRepo.DeleteActivity(SelectedFollowUp);
-                    FollowUp.Remove(SelectedFollowUp);
-                    SelectedFollowUp = null;
+                    _activityRepo.DeleteActivity(SelectedActivity);
+                    Activity.Remove(SelectedActivity);
+                    SelectedActivity = null;
                 }
             }
         }
@@ -230,14 +231,14 @@ namespace ClientDatabaseApp.ViewModel
                 {
                     int day_number = int.Parse(dayNumber);
                     var context = new PostgresContext();
-                    var followUp = await context.Activities
+                    var activity = await context.Activities
                             .Where(line => line.DateOfAction.HasValue
                                     && line.DateOfAction.Value.Year == calendarModel.DateToDisplay.Year
                                     && line.DateOfAction.Value.Month == calendarModel.DateToDisplay.Month
                                     && line.DateOfAction.Value.Day == day_number)
                             .ToListAsync();
 
-                    FollowUp = new ObservableCollection<Activity>(followUp);
+                    Activity = new ObservableCollection<Activity>(activity);
                 }
                 catch (Exception ex)
                 {
@@ -246,16 +247,16 @@ namespace ClientDatabaseApp.ViewModel
 
             }
         }
-        private async void GetDaysFromMonth()
+        private async void GetDaysFromMonth() //TODO: przerzucić do REPO pobrania z kontekstu!
         {
             var context = new PostgresContext();
-            var followUps = await context.Activities
+            var activities = await context.Activities
                 .Where(line => line.DateOfAction.HasValue 
                         && line.DateOfAction.Value.Year == calendarModel.DateToDisplay.Year 
                         && line.DateOfAction.Value.Month == calendarModel.DateToDisplay.Month)
                 .ToListAsync();
 
-            var followUpCounts = followUps
+            var activitiesCount = activities
                 .GroupBy(line => line.DateOfAction.Value.Day)
                 .Select(group => new { Day = group.Key, Count = group.Count() })
                 .ToList();
@@ -276,18 +277,18 @@ namespace ClientDatabaseApp.ViewModel
                 listOfDays.Add(new DayInfo()
                 {
                     DayNumber = "",
-                    FollowUpCount = 0
+                    ActivitiesCount = 0
                 });
             }
 
             for (int i = 1; i <= days; i++)
             {
-                var followUpCount = followUpCounts.FirstOrDefault(fc => fc.Day == i)?.Count ?? 0;
+                var activitiesTempCount = activitiesCount.FirstOrDefault(fc => fc.Day == i)?.Count ?? 0;
 
                 listOfDays.Add(new DayInfo()
                 {
                     DayNumber = i.ToString(),
-                    FollowUpCount = followUpCount
+                    ActivitiesCount = activitiesTempCount
                 });
             }
 

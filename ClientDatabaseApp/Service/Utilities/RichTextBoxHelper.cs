@@ -12,7 +12,7 @@ namespace ClientDatabaseApp.Service
 {
     public class RichTextBoxHelper : DependencyObject
     {
-        private static HashSet<Thread> _recursionProtection = new HashSet<Thread>();
+        private static readonly HashSet<Thread> _recursionProtection = new HashSet<Thread>();
 
         public static string GetDocumentXaml(DependencyObject obj)
         {
@@ -33,32 +33,32 @@ namespace ClientDatabaseApp.Service
             new FrameworkPropertyMetadata(
                 "",
                 FrameworkPropertyMetadataOptions.AffectsRender | FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
-                (obj, e) => {
+                (obj, e) =>
+                {
                     if (_recursionProtection.Contains(Thread.CurrentThread))
                         return;
 
                     var richTextBox = (RichTextBox)obj;
 
-                try
+                    try
                     {
                         var stream = new MemoryStream(Encoding.UTF8.GetBytes(GetDocumentXaml(richTextBox)));
                         var doc = (FlowDocument)XamlReader.Load(stream);
 
-                    richTextBox.Document = doc;
+                        richTextBox.Document = doc;
                     }
                     catch (Exception)
                     {
                         richTextBox.Document = new FlowDocument();
                     }
 
-                richTextBox.TextChanged += (obj2, e2) =>
-                    {
-                        RichTextBox richTextBox2 = obj2 as RichTextBox;
-                        if (richTextBox2 != null)
+                    richTextBox.TextChanged += (obj2, e2) =>
                         {
-                            SetDocumentXaml(richTextBox, XamlWriter.Save(richTextBox2.Document));
-                        }
-                    };
+                            if (obj2 is RichTextBox richTextBox2)
+                            {
+                                SetDocumentXaml(richTextBox, XamlWriter.Save(richTextBox2.Document));
+                            }
+                        };
                 }
             )
         );

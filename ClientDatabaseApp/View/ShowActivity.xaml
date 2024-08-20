@@ -1,11 +1,11 @@
-﻿<Window x:Class="ClientDatabaseApp.View.ShowFollowUp"
+﻿<Window x:Class="ClientDatabaseApp.View.ShowActivity"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ClientDatabaseApp.View"
         mc:Ignorable="d"
-        Title="ShowFollowUp" Height="450" Width="500">
+        Title="ShowActivity" Height="450" Width="500">
     <Grid Background="{StaticResource Color1}">
         <Grid.RowDefinitions>
             <RowDefinition/>

@@ -8,7 +8,7 @@ using System.Windows.Data;
 
 namespace ClientDatabaseApp.Service
 {
-    class DataRowColorConverter : IValueConverter
+    class DataRowColorConverter : IValueConverter //TODO
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

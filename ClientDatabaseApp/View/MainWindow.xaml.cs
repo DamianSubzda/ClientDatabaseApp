@@ -1,6 +1,6 @@
-﻿using ClientDatabaseApp.Service;
-using ClientDatabaseApp.ViewModel;
+﻿using ClientDatabaseApp.ViewModel;
 using System.Windows;
+using Unity;
 
 namespace ClientDatabaseApp.View
 {
@@ -11,7 +11,9 @@ namespace ClientDatabaseApp.View
     {
         public MainWindow()
         {
-            DataContext = new MainWindowViewModel();
+            var app = (App)Application.Current;
+            var viewModel = app.Container.Resolve<MainWindowViewModel>();
+            DataContext = viewModel;
             InitializeComponent();
         }
     }

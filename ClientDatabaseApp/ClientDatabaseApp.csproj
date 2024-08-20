@@ -190,20 +190,17 @@
     <Compile Include="Service\PostgresContext.cs" />
     <Compile Include="Service\Utilities\DayVisibilityConverter.cs" />
     <Compile Include="Service\Utilities\RichTextBoxHelper.cs" />
-    <Compile Include="ViewModel\NewFollowUpViewModel.cs" />
-    <Compile Include="ViewModel\ShowFollowUpViewModel.cs" />
+    <Compile Include="ViewModel\NewActivityViewModel.cs" />
+    <Compile Include="ViewModel\ShowActivityViewModel.cs" />
     <Compile Include="ViewModel\ShowClientViewModel.cs" />
-    <Compile Include="View\NewFollowUp.xaml.cs">
-      <DependentUpon>NewFollowUp.xaml</DependentUpon>
+    <Compile Include="View\NewActivity.xaml.cs">
+      <DependentUpon>NewActivity.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ShowClient.xaml.cs">
       <DependentUpon>ShowClient.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ShowFollowUp.xaml.cs">
-      <DependentUpon>ShowFollowUp.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="View\ToDo.xaml.cs">
-      <DependentUpon>ToDo.xaml</DependentUpon>
+    <Compile Include="View\ShowActivity.xaml.cs">
+      <DependentUpon>ShowActivity.xaml</DependentUpon>
     </Compile>
     <Page Include="View\AddClient.xaml">
       <SubType>Designer</SubType>
@@ -250,7 +247,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="View\NewFollowUp.xaml">
+    <Page Include="View\NewActivity.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -262,11 +259,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\ShowFollowUp.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="View\ToDo.xaml">
+    <Page Include="View\ShowActivity.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

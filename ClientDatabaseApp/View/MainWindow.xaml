@@ -25,9 +25,6 @@
             <TabItem Header="Wczytaj CSV">
                 <local1:LoadCSV/>
             </TabItem>
-            <TabItem Header="To Do">
-                <local1:ToDo/>
-            </TabItem>
             <TabItem Header="Kalendarz">
                 <local1:Calendar/>
             </TabItem>

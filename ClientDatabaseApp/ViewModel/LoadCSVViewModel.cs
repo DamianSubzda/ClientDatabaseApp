@@ -49,7 +49,6 @@ namespace ClientDatabaseApp.ViewModel
             }
         }
 
-
         protected virtual void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -102,6 +101,7 @@ namespace ClientDatabaseApp.ViewModel
         private void AddToDatabase(RoutedEventArgs e)//TODO
         {
             IsLoading = true;
+
             //await Task.Run(() =>
             //{
             //    DatabaseQuery query = new DatabaseQuery();

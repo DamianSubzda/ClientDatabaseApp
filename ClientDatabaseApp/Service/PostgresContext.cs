@@ -1,6 +1,5 @@
 ﻿using System.Data.Entity;
 using ClientDatabaseApp.Model;
-using Npgsql;
 
 public class PostgresContext : DbContext
 {

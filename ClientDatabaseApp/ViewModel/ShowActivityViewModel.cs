@@ -11,10 +11,10 @@ using System.Windows.Input;
 
 namespace ClientDatabaseApp.ViewModel
 {
-    public class ShowFollowUpViewModel : INotifyPropertyChanged
+    public class ShowActivityViewModel : INotifyPropertyChanged
     {
         public ICommand ExitCommand { get; set; }
-        private Activity _followup;
+        private Activity _activity;
         private Action _closeAction;
         private string _originalNote;
         private string _editableNote;
@@ -68,24 +68,24 @@ namespace ClientDatabaseApp.ViewModel
             }
         }
 
-        public ShowFollowUpViewModel(Activity followup, Action closeAction)
+        public ShowActivityViewModel(Activity activity, Action closeAction)
         {
-            FollowUp = followup;
-            OriginalNote = FollowUp.Note;
-            EditableNote = FollowUp.Note;
-            DateOfCreation = FollowUp.DateOfCreation;
-            DateOfAction = FollowUp.DateOfAction;
-            ClientName = FollowUp.Client.ClientName; //Nwm czy zadziała
+            Activity = activity;
+            OriginalNote = Activity.Note;
+            EditableNote = Activity.Note;
+            DateOfCreation = Activity.DateOfCreation;
+            DateOfAction = Activity.DateOfAction;
+            ClientName = Activity.Client.ClientName; //Nwm czy zadziała
             _closeAction = closeAction;
             ExitCommand = new DelegateCommand<RoutedEventArgs>(ExitWindow);
         }
 
-        public Activity FollowUp
+        public Activity Activity
         {
-            get => _followup;
+            get => _activity;
             set
             {
-                _followup = value;
+                _activity = value;
                 OnPropertyChanged(nameof(Client));
             }
         }
