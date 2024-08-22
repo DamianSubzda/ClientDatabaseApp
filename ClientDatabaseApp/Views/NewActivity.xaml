@@ -43,9 +43,9 @@
 
             </Viewbox >
         </Grid>
-        <RichTextBox Grid.Row="1"/>
+        <RichTextBox x:Name="NoteRichTextBox" Grid.Row="1"/>
         <StackPanel Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Button x:Name="button" Content="Dodaj wydarzenie" Command="{Binding AddActivityCommand}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+            <Button x:Name="button" Content="Dodaj wydarzenie" Command="{Binding AddActivityCommand}" CommandParameter="{Binding ElementName=NoteRichTextBox}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         </StackPanel>
 
     </Grid>

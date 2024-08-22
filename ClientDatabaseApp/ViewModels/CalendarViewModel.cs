@@ -2,8 +2,10 @@
 using ClientDatabaseApp.Service;
 using ClientDatabaseApp.Service.API;
 using ClientDatabaseApp.Service.Repository;
+using ClientDatabaseApp.Services.Events;
 using ClientDatabaseApp.View;
 using ClientDatabaseApp.ViewModels;
+using Prism.Events;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -108,14 +110,20 @@ namespace ClientDatabaseApp.ViewModel
         private readonly IActivityRepo _activityRepo;
         private readonly IClientRepo _clientRepo;
         private readonly IDialogService _dialogService;
+        private readonly IEventAggregator _eventAggregator;
 
         public CalendarViewModel() { }
 
-        public CalendarViewModel(IActivityRepo activityRepo, IDialogService dialogService, IClientRepo clientRepo)
+        public CalendarViewModel(IActivityRepo activityRepo, IDialogService dialogService, IClientRepo clientRepo, IEventAggregator eventAggregator)
         {
             _activityRepo = activityRepo;
             _clientRepo = clientRepo;
             _dialogService = dialogService;
+            _eventAggregator = eventAggregator;
+
+            _eventAggregator.GetEvent<ActivityAddedToDatabaseEvent>().Subscribe(OnActivityAdded);
+            _eventAggregator.GetEvent<ActivityRemovedFromDatabaseEvent>().Subscribe(OnActivityRemoved);
+
             Button_Click_PrevMonthCommand = new DelegateCommand<RoutedEventArgs>(Button_Click_PrevMonth);
             Button_Click_NextMonthCommand = new DelegateCommand<RoutedEventArgs>(Button_Click_NextMonth);
             PickActivityCommand = new DelegateCommand<RoutedEventArgs>(PickActivity);
@@ -128,6 +136,15 @@ namespace ClientDatabaseApp.ViewModel
             InitialCalendar();
             InitializeAsync();
             _clientRepo = clientRepo;
+        }
+
+        private void OnActivityRemoved(Activity addedActivity)
+        {
+            GetDaysFromMonth();
+        }
+        private void OnActivityAdded(Activity removedActivity)
+        {
+            GetDaysFromMonth();
         }
 
         public async void InitializeAsync()

@@ -53,7 +53,9 @@
         <Setter Property="Background" Value="{StaticResource Color2}"/>
     </Style>
 
+    <!--DataGrid-->
     <Style TargetType="DataGrid">
+        <Setter Property="IsReadOnly" Value="True"/>
         <Setter Property="Background" Value="{StaticResource Color1}"/>
     </Style>
 
@@ -76,6 +78,10 @@
     <Style TargetType="DataGridRowHeader">
         <Setter Property="Background" Value="White"/>
     </Style>
+
+    <Style TargetType="DataGridCell">
+    </Style>
+
 
     <Style TargetType="Button">
         <Setter Property="Template">

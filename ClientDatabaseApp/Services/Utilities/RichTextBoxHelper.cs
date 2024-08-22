@@ -11,7 +11,7 @@ namespace ClientDatabaseApp.Service
             TextRange textRange = new TextRange(richTextBox.Document.ContentStart, richTextBox.Document.ContentEnd);
             if (string.IsNullOrEmpty(textRange.Text))
                 return null;
-            return textRange.Text;
+            return textRange.Text.Trim();
         }
     }
 }

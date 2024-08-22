@@ -4,8 +4,8 @@ using System.Data.Entity;
 using System.Windows;
 using Unity.Lifetime;
 using Unity;
-using System.ComponentModel;
 using ClientDatabaseApp.Service;
+using Prism.Events;
 
 namespace ClientDatabaseApp
 {
@@ -25,6 +25,7 @@ namespace ClientDatabaseApp
             Container.RegisterType<IClientRepo, ClientRepo>();
             Container.RegisterType<IActivityRepo, ActivityRepo>();
             Container.RegisterType<IDialogService, DialogService>();
+            Container.RegisterType<IEventAggregator, EventAggregator>(new ContainerControlledLifetimeManager());
 
             var mainWindow = Container.Resolve<MainWindow>();
             mainWindow.Show();

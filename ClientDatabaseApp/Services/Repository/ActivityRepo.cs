@@ -1,12 +1,12 @@
 ﻿using ClientDatabaseApp.Model;
+using ClientDatabaseApp.Services.Events;
+using Prism.Events;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Controls;
 
 namespace ClientDatabaseApp.Service.Repository
 {
@@ -20,8 +20,10 @@ namespace ClientDatabaseApp.Service.Repository
     public class ActivityRepo : IActivityRepo
     {
         private readonly PostgresContext _context;
-        public ActivityRepo(PostgresContext context)
+        private readonly IEventAggregator _eventAggregator;
+        public ActivityRepo(PostgresContext context, IEventAggregator eventAggregator)
         {
+            _eventAggregator = eventAggregator;
             _context = context;
         }
         public async Task CreateActivity(Client client, DateTime date, string note)
@@ -37,6 +39,7 @@ namespace ClientDatabaseApp.Service.Repository
 
                 _context.Activities.Add(activity);
                 await _context.SaveChangesAsync();
+                _eventAggregator.GetEvent<ActivityAddedToDatabaseEvent>().Publish(activity);
             }
             catch (Exception ex)
             {
@@ -53,7 +56,7 @@ namespace ClientDatabaseApp.Service.Repository
 
             _context.Activities.Remove(activity);
             await _context.SaveChangesAsync();
-
+            _eventAggregator.GetEvent<ActivityRemovedFromDatabaseEvent>().Publish(activity);
         }
 
         public async Task<List<(int Day, int Count)>> GetActivitiesCountOfMonth(int year, int month)

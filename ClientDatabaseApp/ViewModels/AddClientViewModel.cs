@@ -2,6 +2,7 @@
 using ClientDatabaseApp.Service;
 using ClientDatabaseApp.Service.Repository;
 using ClientDatabaseApp.ViewModels;
+using Prism.Events;
 using System;
 using System.Collections.ObjectModel;
 using System.Windows.Controls;
@@ -144,11 +145,24 @@ namespace ClientDatabaseApp.ViewModel
             try
             {
                 await _clientRepo.AddClient(client);
-                //Clear all fields
             }
             catch
             {
                 _dialogService.ShowMessage($"Wystąpił błąd podczas próby dodania klienta: {client.ClientName}");
+            }
+            finally
+            {
+                ClientNameTextBox = string.Empty;
+                PhonenumberTextBox = string.Empty;
+                EmailTextBox = string.Empty;
+                CityTextBox = string.Empty;
+                FacebookTextBox = string.Empty;
+                InstagramTextBox = string.Empty;
+                PageURLTextBox = string.Empty;
+                DateTextBox = DateTime.Now;
+                OwnerTextBox = string.Empty;
+                RichTextContent = string.Empty;
+                SelectedStatus = StatusItems[0];
             }
 
         }

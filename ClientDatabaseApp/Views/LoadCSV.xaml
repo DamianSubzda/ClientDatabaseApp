@@ -16,7 +16,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <!--DataGrid-->
-        <DataGrid Grid.Row ="0" ItemsSource="{Binding PreviewClients}" AutoGenerateColumns="False" MaxColumnWidth="300" IsReadOnly= "True" x:Name="dataGrid" CanUserReorderColumns="True" CanUserSortColumns="True" CanUserResizeColumns="True" Margin="10" Grid.ColumnSpan="2">
+        <DataGrid Grid.Row ="0" ItemsSource="{Binding PreviewClients}" AutoGenerateColumns="False" MaxColumnWidth="300" x:Name="dataGrid" CanUserReorderColumns="True" CanUserSortColumns="True" CanUserResizeColumns="True" Margin="10" Grid.ColumnSpan="2">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ClientName" Binding="{Binding ClientName}" Width="SizeToHeader"/>
                 <DataGridTextColumn Header="Phonenumber" Binding="{Binding Phonenumber}" Width="SizeToHeader"/>

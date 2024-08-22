@@ -1,15 +1,15 @@
 ﻿using ClientDatabaseApp.Model;
 using ClientDatabaseApp.Service;
 using ClientDatabaseApp.Service.Repository;
+using ClientDatabaseApp.Services.Events;
 using ClientDatabaseApp.View;
 using ClientDatabaseApp.ViewModels;
-using MySqlConnector;
+using Prism.Events;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Data.Entity;
 using System.Globalization;
-using System.Threading.Tasks;
+using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -61,12 +61,18 @@ namespace ClientDatabaseApp.ViewModel
         private readonly IClientRepo _clientRepo;
         private readonly IActivityRepo _activityRepo;
         private readonly IDialogService _dialogService;
+        private readonly IEventAggregator _eventAggregator;
 
-        public ClientDatabaseViewModel(IClientRepo clientRepo, IActivityRepo activityRepo, IDialogService dialogService)
+        public ClientDatabaseViewModel(IClientRepo clientRepo, IActivityRepo activityRepo, IDialogService dialogService, IEventAggregator eventAggregator)
         {
             _clientRepo = clientRepo;
             _activityRepo = activityRepo;
             _dialogService = dialogService;
+            _eventAggregator = eventAggregator;
+
+            _eventAggregator.GetEvent<ClientAddedToDatabaseEvent>().Subscribe(OnClientAdded);
+            _eventAggregator.GetEvent<ClientUpdatedInDatabaseEvent>().Subscribe(OnClientUpdated);
+            _eventAggregator.GetEvent<ClientRemovedFromDatabaseEvent>().Subscribe(OnClientRemoved);
 
             ShowMoreDetailsCommand = new DelegateCommand<RoutedEventArgs>(ShowMoreDetails);
             RemoveSelectedCommand = new DelegateCommand<RoutedEventArgs>(RemoveSelected);
@@ -81,6 +87,39 @@ namespace ClientDatabaseApp.ViewModel
         {
             ComboboxStatus combobox = new ComboboxStatus();
             StatusItems = combobox.StatusItems;
+        }
+
+        private void OnClientAdded(Client newClient)
+        {
+            _clients.Add(newClient);
+            ClientsView.Refresh();
+        }
+
+        private void OnClientUpdated(Client updatedClient)
+        {
+            var clientInList = _clients.FirstOrDefault(c => c.ClientId == updatedClient.ClientId);
+            if (clientInList != null)
+            {
+                clientInList.ClientName = updatedClient.ClientName;
+                clientInList.Phonenumber = updatedClient.Phonenumber;
+                clientInList.Email = updatedClient.Email;
+                clientInList.City = updatedClient.City;
+                clientInList.Facebook = updatedClient.Facebook;
+                clientInList.Instagram = updatedClient.Instagram;
+                clientInList.PageURL = updatedClient.PageURL;
+                clientInList.Data = updatedClient.Data;
+                clientInList.Owner = updatedClient.Owner;
+                clientInList.Note = updatedClient.Note;
+                clientInList.Status = updatedClient.Status;
+
+                ClientsView.Refresh();
+            }
+        }
+
+        private void OnClientRemoved(Client clientToRemove)
+        {
+            _clients.Remove(clientToRemove);
+            ClientsView.Refresh();
         }
 
         private void HandleStatusChange()
@@ -147,7 +186,6 @@ namespace ClientDatabaseApp.ViewModel
                         {
                             isDateFilterMatch = client.Data == filterDate.Date;
                         }
-
 
                         return isNameMatch || isCityMatch || isDateFilterMatch;
                     }

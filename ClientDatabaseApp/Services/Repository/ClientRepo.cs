@@ -1,4 +1,6 @@
 ﻿using ClientDatabaseApp.Model;
+using ClientDatabaseApp.Services.Events;
+using Prism.Events;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -18,8 +20,10 @@ namespace ClientDatabaseApp.Service.Repository
     public class ClientRepo : IClientRepo
     {
         private readonly PostgresContext _context;
-        public ClientRepo(PostgresContext context)
+        private readonly IEventAggregator _eventAggregator;
+        public ClientRepo(PostgresContext context, IEventAggregator eventAggregator)
         {
+            _eventAggregator = eventAggregator;
             _context = context;
         }
 
@@ -37,6 +41,7 @@ namespace ClientDatabaseApp.Service.Repository
 
             _context.Clients.Add(client);
             await _context.SaveChangesAsync();
+            _eventAggregator.GetEvent<ClientAddedToDatabaseEvent>().Publish(client);
         }
 
         public async Task DeleteClient(Client client)
@@ -48,6 +53,7 @@ namespace ClientDatabaseApp.Service.Repository
 
             _context.Clients.Remove(client);
             await _context.SaveChangesAsync();
+            _eventAggregator.GetEvent<ClientRemovedFromDatabaseEvent>().Publish(client);
         }
 
         public async Task<bool> CheckIfClientExists(Client client)
@@ -89,6 +95,7 @@ namespace ClientDatabaseApp.Service.Repository
                 foundClient.Status = client.Status;
 
                 await _context.SaveChangesAsync();
+                _eventAggregator.GetEvent<ClientUpdatedInDatabaseEvent>().Publish(client);
             }
             else
             {

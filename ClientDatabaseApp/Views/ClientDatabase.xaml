@@ -13,7 +13,7 @@
         </Grid.RowDefinitions>
 
         <!--DataGrid-->
-        <DataGrid Grid.Row ="0" ItemsSource="{Binding ClientsView}" SelectedItem="{Binding SelectedClient}" AutoGenerateColumns="False" MaxColumnWidth="300" IsReadOnly= "False" x:Name="dataGrid" CanUserReorderColumns="True" CanUserSortColumns="True" CanUserResizeColumns="True" Margin="10">
+        <DataGrid Grid.Row ="0" ItemsSource="{Binding ClientsView}" SelectedItem="{Binding SelectedClient}" AutoGenerateColumns="False" MaxColumnWidth="300" x:Name="dataGrid" CanUserReorderColumns="True" CanUserSortColumns="True" CanUserResizeColumns="True" Margin="10">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ClientName" Binding="{Binding ClientName}" Width="SizeToHeader"/>
                 <DataGridTextColumn Header="Phonenumber" Binding="{Binding Phonenumber}" Width="SizeToHeader"/>

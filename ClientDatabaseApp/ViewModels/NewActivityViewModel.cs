@@ -3,10 +3,8 @@ using ClientDatabaseApp.Service;
 using ClientDatabaseApp.Service.Repository;
 using ClientDatabaseApp.ViewModels;
 using System;
-using System.Linq;
-using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
-using System.Xml.Linq;
 
 namespace ClientDatabaseApp.ViewModel
 {
@@ -19,14 +17,6 @@ namespace ClientDatabaseApp.ViewModel
         public Client Client { get; set; }
         public DateTime SelectedDate { get; set; }
 
-        private string _richTextContent;
-
-        public string RichTextContent
-        {
-            get => _richTextContent;
-            set => SetField(ref _richTextContent, value, nameof(RichTextContent));
-        }
-
         private readonly IActivityRepo _activityRepo;
         private readonly IDialogService _dialogService;
         public NewActivityViewModel(Client client, Action closeAction, IActivityRepo activityRepo, IDialogService dialogService)
@@ -36,23 +26,19 @@ namespace ClientDatabaseApp.ViewModel
             SelectedDate = DateTime.Now;
             Client = client;
             _closeAction = closeAction;
-            AddActivityCommand = new DelegateCommand<RoutedEventArgs>(AddActivity);
+            AddActivityCommand = new DelegateCommand<RichTextBox>(AddActivity);
         }
 
-        private void AddActivity(RoutedEventArgs e)//Możliwe że wypadałoby skorzystać z helpera!
+        private void AddActivity(RichTextBox richTextBox)
         {
-            if (string.IsNullOrEmpty(RichTextContent))
+            string note = RichTextBoxHelper.GetTextFromRichTextBox(richTextBox);
+            if (string.IsNullOrWhiteSpace(note))
             {
                 _dialogService.ShowMessage("Brak podanej notatki!");
                 return;
             }
-            XDocument document = XDocument.Parse(RichTextContent);
-            XNamespace ns = "http://schemas.microsoft.com/winfx/2006/xaml/presentation";
 
-            var activityNote = string.Join(" ", document.Descendants(ns + "Run")
-                                           .Select(run => run.Value));
-
-            _activityRepo.CreateActivity(Client, SelectedDate, activityNote);
+            _activityRepo.CreateActivity(Client, SelectedDate, note);
             _closeAction?.Invoke();
         }
 
