@@ -1,6 +1,7 @@
 ﻿using ClientDatabaseApp.Model;
 using ClientDatabaseApp.Service;
 using ClientDatabaseApp.Service.Repository;
+using ClientDatabaseApp.ViewModels;
 using System;
 using System.ComponentModel;
 using System.Windows;
@@ -8,7 +9,7 @@ using System.Windows.Input;
 
 namespace ClientDatabaseApp.ViewModel
 {
-    public class ShowActivityViewModel : INotifyPropertyChanged
+    public class ShowActivityViewModel : BaseViewModel
     {
         public ICommand ExitCommand { get; set; }
         private Activity _activity;
@@ -22,57 +23,33 @@ namespace ClientDatabaseApp.ViewModel
         public string OriginalNote
         {
             get => _originalNote;
-            set
-            {
-                _originalNote = value;
-                OnPropertyChanged(nameof(OriginalNote));
-            }
+            set => SetField(ref _originalNote, value, nameof(OriginalNote));
         }
         public string EditableNote
         {
             get => _editableNote;
-            set
-            {
-                _editableNote = value;
-                OnPropertyChanged(nameof(EditableNote));
-            }
+            set=> SetField(ref _editableNote, value, nameof(EditableNote));
         }
         public DateTime DateOfCreation
         {
             get => _dateOfCreation;
-            set
-            {
-                _dateOfCreation = value;
-                OnPropertyChanged(nameof(DateOfCreation));
-            }
+            set=> SetField(ref _dateOfCreation, value, nameof(DateOfCreation));
         }
-        public DateTime? DateOfAction
+        public DateTime DateOfAction
         {
             get => _dateOfAction;
-            set
-            {
-                _dateOfAction = (DateTime)value;
-                OnPropertyChanged(nameof(DateOfAction));
-            }
+            set => SetField(ref _dateOfAction, value, nameof(DateOfAction));
         }
         public string ClientName
         {
             get => _clientName;
-            set
-            {
-                _clientName = value;
-                OnPropertyChanged(nameof(ClientName));
-            }
+            set=> SetField(ref _clientName, value, nameof(ClientName));
         }
 
         public Activity Activity
         {
             get => _activity;
-            set
-            {
-                _activity = value;
-                OnPropertyChanged(nameof(Client));
-            }
+            set=> SetField(ref _activity, value, nameof(Activity));
         }
 
         private IClientRepo _clientRepo;
@@ -83,7 +60,7 @@ namespace ClientDatabaseApp.ViewModel
             OriginalNote = Activity.Note;
             EditableNote = Activity.Note;
             DateOfCreation = Activity.DateOfCreation;
-            DateOfAction = Activity.DateOfAction;
+            DateOfAction = Activity.DateOfAction ?? DateTime.MinValue;
             _closeAction = closeAction;
             ExitCommand = new DelegateCommand<RoutedEventArgs>(ExitWindow);
 
@@ -101,13 +78,6 @@ namespace ClientDatabaseApp.ViewModel
             {
                 ClientName = "Unknown Client";
             }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         private void ExitWindow(RoutedEventArgs e)

@@ -3,19 +3,17 @@ using ClientDatabaseApp.Service;
 using ClientDatabaseApp.Service.API;
 using ClientDatabaseApp.Service.Repository;
 using ClientDatabaseApp.View;
+using ClientDatabaseApp.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Data.Entity;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
 namespace ClientDatabaseApp.ViewModel
 {
-    public class CalendarViewModel : INotifyPropertyChanged
+    public class CalendarViewModel : BaseViewModel
     {
 
         private CalendarModel calendarModel = new CalendarModel();
@@ -35,9 +33,7 @@ namespace ClientDatabaseApp.ViewModel
             Monday = 1, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public ObservableCollection<DayInfo> Days
+        public ObservableCollection<DayInfo> Days //Do zmiany całkowicie - ten model w CalendarModel
         {
             get => calendarModel.DaysOfCurrentMonth;
             set
@@ -66,12 +62,8 @@ namespace ClientDatabaseApp.ViewModel
         private ObservableCollection<Activity> _activity;
         public ObservableCollection<Activity> Activity
         {
-            get { return _activity; }
-            set
-            {
-                _activity = value;
-                OnPropertyChanged(nameof(Activity));
-            }
+            get => _activity;
+            set=> SetField(ref _activity, value, nameof(Activity));
         }
 
         private string _temperature;
@@ -83,58 +75,34 @@ namespace ClientDatabaseApp.ViewModel
         public string Temperature
         {
             get => _temperature;
-            set
-            {
-                _temperature = value;
-                OnPropertyChanged(nameof(Temperature));
-            }
+            set => SetField(ref _temperature, value, nameof(Temperature));
         }
         public string TemperatureFeel
         {
             get => _temperatureFeel;
-            set
-            {
-                _temperatureFeel = value;
-                OnPropertyChanged(nameof(TemperatureFeel));
-            }
+            set=> SetField(ref _temperatureFeel, value, nameof(TemperatureFeel));
         }
         public string Wind
         {
             get => _wind;
-            set
-            {
-                _wind = value;
-                OnPropertyChanged(nameof(Wind));
-            }
+            set=> SetField(ref _wind, value, nameof(Wind));
         }
         public string Weather
         {
             get => _weather;
-            set
-            {
-                _weather = value;
-                OnPropertyChanged(nameof(Weather));
-            }
+            set=> SetField(ref _weather, value, nameof(Weather));
         }
         public string City
         {
             get => _city;
-            set
-            {
-                _city = value;
-                OnPropertyChanged(nameof(City));
-            }
+            set=> SetField(ref _city, value, nameof(City));
         }
         private Activity _selectedActivity;
 
         public Activity SelectedActivity
         {
             get => _selectedActivity;
-            set
-            {
-                _selectedActivity = value;
-                OnPropertyChanged(nameof(SelectedActivity));
-            }
+            set=> SetField(ref _selectedActivity, value, nameof(SelectedActivity));
         }
 
         private readonly IActivityRepo _activityRepo;
@@ -180,11 +148,6 @@ namespace ClientDatabaseApp.ViewModel
             GetDaysFromMonth();
         }
 
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
         private void Button_Click_NextMonth(RoutedEventArgs e)
         {
             ChangeMonth(1);
@@ -194,6 +157,7 @@ namespace ClientDatabaseApp.ViewModel
         {
             ChangeMonth(-1);
         }
+
         private void PickActivity(RoutedEventArgs e)
         {
             if(SelectedActivity != null)
@@ -204,6 +168,7 @@ namespace ClientDatabaseApp.ViewModel
                 showActivity.ShowDialog();
             }
         }
+
         private void DeleteActivity(RoutedEventArgs e)
         {
             if (SelectedActivity != null)
@@ -218,7 +183,6 @@ namespace ClientDatabaseApp.ViewModel
                 }
             }
         }
-
 
         private void ChangeMonth(int amountOfMonthToChange)
         {
@@ -245,6 +209,7 @@ namespace ClientDatabaseApp.ViewModel
                 }
             }
         }
+
         private async void GetDaysFromMonth()
         {
             var activitiesCount = (await _activityRepo.GetActivitiesCountOfMonth(calendarModel.DateToDisplay.Year, calendarModel.DateToDisplay.Month))

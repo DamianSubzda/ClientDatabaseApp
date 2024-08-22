@@ -2,6 +2,7 @@
 using ClientDatabaseApp.Service;
 using ClientDatabaseApp.Service.Repository;
 using ClientDatabaseApp.View;
+using ClientDatabaseApp.ViewModels;
 using MySqlConnector;
 using System;
 using System.Collections.ObjectModel;
@@ -16,7 +17,7 @@ using static ClientDatabaseApp.Service.ComboboxStatus;
 
 namespace ClientDatabaseApp.ViewModel
 {
-    public class ClientDatabaseViewModel : INotifyPropertyChanged
+    public class ClientDatabaseViewModel : BaseViewModel
     {
 
         public ICommand ShowMoreDetailsCommand { get; private set; }
@@ -24,55 +25,39 @@ namespace ClientDatabaseApp.ViewModel
         public ICommand AddActivityCommand { get; private set; }
         public ICommand FilterCommand { get; private set; }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
+        public string FilterText { get; set; }
         private ObservableCollection<Client> _clients;
         private ICollectionView _clientsView;
         private StatusItem _selectedStatus;
         private ObservableCollection<StatusItem> _statusItems;
+        private Client _selectedClient;
 
         public ICollectionView ClientsView
         {
-            get { return _clientsView; }
-            set
-            {
-                _clientsView = value;
-                OnPropertyChanged(nameof(ClientsView));
-            }
+            get => _clientsView;
+            set => SetField(ref _clientsView, value, nameof (ClientsView));
         }
-        private Client _selectedClient;
         public Client SelectedClient
         {
-            get { return _selectedClient; }
-            set
-            {
-                _selectedClient = value;
-                OnPropertyChanged(nameof(SelectedClient));
-            }
+            get => _selectedClient;
+            set => SetField(ref _selectedClient, value, nameof(SelectedClient));
         }
-
         public ObservableCollection<StatusItem> StatusItems
         {
             get => _statusItems;
-            set
-            {
-                _statusItems = value;
-                OnPropertyChanged(nameof(StatusItems));
-            }
+            set=> SetField(ref _statusItems, value, nameof(StatusItems));
         }
         public StatusItem SelectedStatus
         {
             get => _selectedStatus;
-
             set
             {
-                _selectedStatus = value;
-                OnPropertyChanged(nameof(SelectedStatus));
+                SetField(ref _selectedStatus, value, nameof(SelectedStatus));
                 HandleStatusChange();
             }
         }
 
-        public string FilterText { get; set; }
+
         private readonly IClientRepo _clientRepo;
         private readonly IActivityRepo _activityRepo;
         private readonly IDialogService _dialogService;
@@ -132,12 +117,7 @@ namespace ClientDatabaseApp.ViewModel
                 };
             }
 
-
             ClientsView.Refresh();
-        }
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         private void ApplyFilter(RoutedEventArgs e)

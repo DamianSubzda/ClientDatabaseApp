@@ -1,11 +1,10 @@
 ﻿using ClientDatabaseApp.Model;
 using ClientDatabaseApp.Service;
+using ClientDatabaseApp.ViewModels;
 using CsvHelper;
 using CsvHelper.Configuration;
 using Microsoft.Win32;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -18,40 +17,23 @@ namespace ClientDatabaseApp.ViewModel
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public class LoadCSVViewModel : INotifyPropertyChanged
+    public class LoadCSVViewModel : BaseViewModel
     {
         public ICommand GetClientsFromCSVCommand { get; set; }
         public ICommand AddToDatabaseCommand { get; set; }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
         private ObservableCollection<Client> _previewClients;
+        private bool _isLoading;
         public ObservableCollection<Client> PreviewClients
         {
             get => _previewClients;
-            set
-            {
-                if (_previewClients != value)
-                {
-                    _previewClients = value;
-                    OnPropertyChanged(nameof(PreviewClients));
-                }
-            }
+            set => SetField(ref _previewClients, value, nameof(PreviewClients));
         }
-        private bool _isLoading;
+        
         public bool IsLoading
         {
             get => _isLoading;
-            set
-            {
-                _isLoading = value;
-                OnPropertyChanged(nameof(IsLoading));
-            }
-        }
-
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            set => SetField(ref _isLoading, value, nameof(IsLoading));
         }
 
         public LoadCSVViewModel()
@@ -61,6 +43,7 @@ namespace ClientDatabaseApp.ViewModel
 
             PreviewClients = new ObservableCollection<Client>();
         }
+
         private async void GetClientsFromCSV(RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog
@@ -96,7 +79,6 @@ namespace ClientDatabaseApp.ViewModel
                 IsLoading = false;
             }
         }
-
 
         private void AddToDatabase(RoutedEventArgs e)//TODO
         {

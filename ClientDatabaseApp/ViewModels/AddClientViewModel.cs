@@ -1,21 +1,16 @@
 ﻿using ClientDatabaseApp.Model;
 using ClientDatabaseApp.Service;
 using ClientDatabaseApp.Service.Repository;
+using ClientDatabaseApp.ViewModels;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Xml.Linq;
 using static ClientDatabaseApp.Service.ComboboxStatus;
 
 namespace ClientDatabaseApp.ViewModel
 {
-    public class AddClientViewModel : INotifyPropertyChanged
+    public class AddClientViewModel : BaseViewModel
     {
         public ICommand AddClientToDatabaseCommand { get; set; }
         public ICommand SaveRichTextContentCommand { get; set; }
@@ -30,148 +25,69 @@ namespace ClientDatabaseApp.ViewModel
         private DateTime _dateTextBox;
         private string _ownerTextBox;
         private string _richTextContent;
-        private StatusItem _selectedStatus;
-        
-        private ObservableCollection<StatusItem> _statusItems;
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        private StatusItem _selectedStatus;
+        private ObservableCollection<StatusItem> _statusItems;
 
         public string ClientNameTextBox
         {
             get => _clientNameTextBox;
-            set
-            {
-                if (value != null)
-                {
-                    _clientNameTextBox = value;
-                    OnPropertyChanged(nameof(ClientNameTextBox));
-                }
-            }
+            set => SetField(ref _clientNameTextBox, value, nameof(ClientNameTextBox));
         }
         public string PhonenumberTextBox
         {
             get => _phonenumberTextBox;
-            set
-            {
-                if (value != null)
-                {
-                    _phonenumberTextBox = value;
-                    OnPropertyChanged(nameof(PhonenumberTextBox));
-                }
-            }
+            set => SetField(ref _phonenumberTextBox, value, nameof(PhonenumberTextBox));
         }
         public string EmailTextBox
         {
             get => _emailTextBox;
-            set
-            {
-                if (value != null)
-                {
-                    _emailTextBox = value;
-                    OnPropertyChanged(nameof(EmailTextBox));
-                }
-            }
+            set => SetField(ref _emailTextBox, value, nameof(EmailTextBox));
         }
         public string CityTextBox
         {
             get => _cityTextBox;
-            set
-            {
-                if (value != null)
-                {
-                    _cityTextBox = value;
-                    OnPropertyChanged(nameof(CityTextBox));
-                }
-            }
+            set => SetField(ref _cityTextBox, value, nameof(CityTextBox));
         }
         public string FacebookTextBox
         {
             get => _facebookTextBox;
-            set
-            {
-                if (value != null)
-                {
-                    _facebookTextBox = value;
-                    OnPropertyChanged(nameof(FacebookTextBox));
-                }
-            }
+            set => SetField(ref _facebookTextBox, value, nameof(FacebookTextBox));
         }
         public string InstagramTextBox
         {
             get => _instagramTextBox;
-            set
-            {
-                if (value != null)
-                {
-                    _instagramTextBox = value;
-                    OnPropertyChanged(nameof(InstagramTextBox));
-                }
-            }
+            set => SetField(ref _instagramTextBox, value, nameof(InstagramTextBox));
         }
         public string PageURLTextBox
         {
             get => _pageURLTextBox;
-            set
-            {
-                if (value != null)
-                {
-                    _pageURLTextBox = value;
-                    OnPropertyChanged(nameof(PageURLTextBox));
-                }
-            }
+            set => SetField(ref _pageURLTextBox, value, nameof(PageURLTextBox));
         }
         public DateTime DateTextBox
         {
             get => _dateTextBox;
-            set
-            {
-                if (value != null)
-                {
-                    _dateTextBox = value;
-                    OnPropertyChanged(nameof(DateTextBox));
-                }
-            }
+            set => SetField(ref _dateTextBox, value, nameof(DateTextBox));
         }
         public string OwnerTextBox
         {
             get => _ownerTextBox;
-            set
-            {
-                if (value != null)
-                {
-                    _ownerTextBox = value;
-                    OnPropertyChanged(nameof(OwnerTextBox));
-                }
-            }
+            set => SetField(ref _ownerTextBox, value, nameof(OwnerTextBox));
         }
         public string RichTextContent
         {
             get => _richTextContent;
-            set
-            {
-                _richTextContent = value;
-                OnPropertyChanged(nameof(RichTextContent));
-            }
+            set => SetField(ref _richTextContent, value, nameof(RichTextContent));
         }
         public ObservableCollection<StatusItem> StatusItems
         {
             get => _statusItems;
-
-            set
-            {
-                _statusItems = value;
-                OnPropertyChanged(nameof(StatusItems));
-            }
+            set => SetField(ref _statusItems, value, nameof(StatusItems));
         }
         public StatusItem SelectedStatus
         {
             get => _selectedStatus;
-
-            set
-            {
-                _selectedStatus = value;
-                OnPropertyChanged(nameof(SelectedStatus));
-            }
+            set => SetField(ref _selectedStatus, value, nameof(SelectedStatus));
         }
 
 
@@ -185,12 +101,6 @@ namespace ClientDatabaseApp.ViewModel
             AddClientToDatabaseCommand = new DelegateCommand<RichTextBox>(AddClientAsync);
             SaveRichTextContentCommand = new DelegateCommand<RichTextBox>(SaveRichTextContent);
             InitializeComboBoxStatus();
-            
-        }
-
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         private void InitializeComboBoxStatus()
@@ -205,7 +115,6 @@ namespace ClientDatabaseApp.ViewModel
             RichTextContent = RichTextBoxHelper.GetTextFromRichTextBox(richTextBox);
         }
 
-
         private async void AddClientAsync(RichTextBox richTextBox)
         {
 
@@ -216,7 +125,6 @@ namespace ClientDatabaseApp.ViewModel
                 _dialogService.ShowMessage("Brak nazwy klienta!");
                 return;
             }
-
 
             Client client = new Client
             {
@@ -242,7 +150,7 @@ namespace ClientDatabaseApp.ViewModel
             {
                 _dialogService.ShowMessage($"Wystąpił błąd podczas próby dodania klienta: {client.ClientName}");
             }
-            
+
         }
 
 

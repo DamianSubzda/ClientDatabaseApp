@@ -1,8 +1,8 @@
 ﻿using ClientDatabaseApp.Model;
 using ClientDatabaseApp.Service;
 using ClientDatabaseApp.Service.Repository;
+using ClientDatabaseApp.ViewModels;
 using System;
-using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
@@ -10,31 +10,21 @@ using System.Xml.Linq;
 
 namespace ClientDatabaseApp.ViewModel
 {
-    public class NewActivityViewModel : INotifyPropertyChanged
+    public class NewActivityViewModel : BaseViewModel
     {
-        private readonly Action _closeAction;
-
         public ICommand AddActivityCommand { get; set; }
+
+        private readonly Action _closeAction;
+        
         public Client Client { get; set; }
         public DateTime SelectedDate { get; set; }
-        public string Note { get; set; }
-        private string _richTextContent;
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        private string _richTextContent;
 
         public string RichTextContent
         {
             get => _richTextContent;
-            set
-            {
-                _richTextContent = value;
-                OnPropertyChanged(nameof(RichTextContent));
-            }
-        }
-
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            set => SetField(ref _richTextContent, value, nameof(RichTextContent));
         }
 
         private readonly IActivityRepo _activityRepo;
@@ -44,12 +34,12 @@ namespace ClientDatabaseApp.ViewModel
             _activityRepo = activityRepo;
             _dialogService = dialogService;
             SelectedDate = DateTime.Now;
-            this.Client = client;
-            this._closeAction = closeAction;
+            Client = client;
+            _closeAction = closeAction;
             AddActivityCommand = new DelegateCommand<RoutedEventArgs>(AddActivity);
         }
 
-        private void AddActivity(RoutedEventArgs e)
+        private void AddActivity(RoutedEventArgs e)//Możliwe że wypadałoby skorzystać z helpera!
         {
             if (string.IsNullOrEmpty(RichTextContent))
             {

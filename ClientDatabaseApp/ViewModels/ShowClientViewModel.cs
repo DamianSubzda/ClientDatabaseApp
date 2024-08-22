@@ -1,30 +1,22 @@
 ﻿using ClientDatabaseApp.Model;
 using ClientDatabaseApp.Service;
+using ClientDatabaseApp.ViewModels;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Input;
 using static ClientDatabaseApp.Service.ComboboxStatus;
 
 namespace ClientDatabaseApp.ViewModel
 {
-    public class ShowClientViewModel : INotifyPropertyChanged
+    internal class ShowClientViewModel : BaseViewModel
     {
-        
         public ICommand EditDataCommand { get; set; }
         public ICommand SaveDataCommand { get; set; }
         public ICommand ExitCommand { get; set; }
 
-
         private Client _client;
-        private Action _closeAction;
         private string _clientNameTextBox;
         private string _phonenumberTextBox;
         private string _emailTextBox;
@@ -35,150 +27,12 @@ namespace ClientDatabaseApp.ViewModel
         private DateTime _dateTextBox;
         private string _ownerTextBox;
         private string _richTextContent;
+        private bool _isEditing;
+
+        private Action _closeAction;
+
         private StatusItem _selectedStatus;
-
         private ObservableCollection<StatusItem> _statusItems;
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        public string ClientNameTextBox
-        {
-            get => _clientNameTextBox;
-            set
-            {
-                if (value != null)
-                {
-                    _clientNameTextBox = value;
-                    OnPropertyChanged(nameof(ClientNameTextBox));
-                }
-            }
-        }
-        public string PhonenumberTextBox
-        {
-            get => _phonenumberTextBox;
-            set
-            {
-                if (value != null)
-                {
-                    _phonenumberTextBox = value;
-                    OnPropertyChanged(nameof(PhonenumberTextBox));
-                }
-            }
-        }
-        public string EmailTextBox
-        {
-            get => _emailTextBox;
-            set
-            {
-                if (value != null)
-                {
-                    _emailTextBox = value;
-                    OnPropertyChanged(nameof(EmailTextBox));
-                }
-            }
-        }
-        public string CityTextBox
-        {
-            get => _cityTextBox;
-            set
-            {
-                if (value != null)
-                {
-                    _cityTextBox = value;
-                    OnPropertyChanged(nameof(CityTextBox));
-                }
-            }
-        }
-        public string FacebookTextBox
-        {
-            get => _facebookTextBox;
-            set
-            {
-                if (value != null)
-                {
-                    _facebookTextBox = value;
-                    OnPropertyChanged(nameof(FacebookTextBox));
-                }
-            }
-        }
-        public string InstagramTextBox
-        {
-            get => _instagramTextBox;
-            set
-            {
-                if (value != null)
-                {
-                    _instagramTextBox = value;
-                    OnPropertyChanged(nameof(InstagramTextBox));
-                }
-            }
-        }
-        public string PageURLTextBox
-        {
-            get => _pageURLTextBox;
-            set
-            {
-                if (value != null)
-                {
-                    _pageURLTextBox = value;
-                    OnPropertyChanged(nameof(PageURLTextBox));
-                }
-            }
-        }
-        public DateTime DateTextBox
-        {
-            get => _dateTextBox;
-            set
-            {
-                if (value != null)
-                {
-                    _dateTextBox = value;
-                    OnPropertyChanged(nameof(DateTextBox));
-                }
-            }
-        }
-        public string OwnerTextBox
-        {
-            get => _ownerTextBox;
-            set
-            {
-                if (value != null)
-                {
-                    _ownerTextBox = value;
-                    OnPropertyChanged(nameof(OwnerTextBox));
-                }
-            }
-        }
-        public string RichTextContent
-        {
-            get => _richTextContent;
-            set
-            {
-                _richTextContent = value;
-                OnPropertyChanged(nameof(RichTextContent));
-                
-            }
-        }
-        public ObservableCollection<StatusItem> StatusItems
-        {
-            get => _statusItems;
-
-            set
-            {
-                _statusItems = value;
-                OnPropertyChanged(nameof(StatusItems));
-            }
-        }
-        public StatusItem SelectedStatus
-        {
-            get => _selectedStatus;
-
-            set
-            {
-                _selectedStatus = value;
-                OnPropertyChanged(nameof(SelectedStatus));
-            }
-        }
 
         public Client Client
         {
@@ -193,7 +47,7 @@ namespace ClientDatabaseApp.ViewModel
                 FacebookTextBox = value.Facebook;
                 InstagramTextBox = value.Instagram;
                 PageURLTextBox = value.PageURL;
-                DateTextBox = (DateTime)value.Data;
+                DateTextBox = value.Data ?? DateTime.Now;
                 OwnerTextBox = value.Owner;
                 RichTextContent = value.Note;
                 SelectedStatus = StatusItems[value.Status];
@@ -201,20 +55,82 @@ namespace ClientDatabaseApp.ViewModel
             }
         }
 
-        private bool _isEditing;
+        public string ClientNameTextBox
+        {
+            get => _clientNameTextBox;
+            set => SetField(ref _clientNameTextBox, value, nameof(ClientNameTextBox));
+        }
+
+        public string PhonenumberTextBox
+        {
+            get => _phonenumberTextBox;
+            set => SetField(ref _phonenumberTextBox, value, nameof(PhonenumberTextBox));
+        }
+
+        public string EmailTextBox
+        {
+            get => _emailTextBox;
+            set => SetField(ref _emailTextBox, value, nameof(EmailTextBox));
+        }
+
+        public string CityTextBox
+        {
+            get => _cityTextBox;
+            set => SetField(ref _cityTextBox, value, nameof(CityTextBox));
+        }
+
+        public string FacebookTextBox
+        {
+            get => _facebookTextBox;
+            set => SetField(ref _facebookTextBox, value, nameof(FacebookTextBox));
+        }
+
+        public string InstagramTextBox
+        {
+            get => _instagramTextBox;
+            set => SetField(ref _instagramTextBox, value, nameof(InstagramTextBox));
+        }
+
+        public string PageURLTextBox
+        {
+            get => _pageURLTextBox;
+            set => SetField(ref _pageURLTextBox, value, nameof(PageURLTextBox));
+        }
+
+        public DateTime DateTextBox
+        {
+            get => _dateTextBox;
+            set => SetField(ref _dateTextBox, value, nameof(DateTextBox));
+        }
+
+        public string OwnerTextBox
+        {
+            get => _ownerTextBox;
+            set => SetField(ref _ownerTextBox, value, nameof(OwnerTextBox));
+        }
+
+        public string RichTextContent
+        {
+            get => _richTextContent;
+            set => SetField(ref _richTextContent, value, nameof(RichTextContent));
+        }
+
+        public ObservableCollection<StatusItem> StatusItems
+        {
+            get => _statusItems;
+            set => SetField(ref _statusItems, value, nameof(StatusItems));
+        }
+
+        public StatusItem SelectedStatus
+        {
+            get => _selectedStatus;
+            set => SetField(ref _selectedStatus, value, nameof(SelectedStatus));
+        }
+
         public bool IsEditing
         {
             get => _isEditing;
-            set
-            {
-                _isEditing = value;
-                OnPropertyChanged(nameof(IsEditing));
-            }
-        }
-
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            set => SetField(ref _isEditing, value, nameof(IsEditing));
         }
 
         public ShowClientViewModel(Client client, Action closeAction)
@@ -223,13 +139,13 @@ namespace ClientDatabaseApp.ViewModel
             StatusItems = combobox.StatusItems;
 
             Client = client;
-            IsEditing = false;
             _closeAction = closeAction;         
 
             EditDataCommand = new DelegateCommand<RoutedEventArgs>(EditData);
             SaveDataCommand = new DelegateCommand<RichTextBox>(SaveData);
             ExitCommand = new DelegateCommand<RoutedEventArgs>(ExitWindow);
 
+            IsEditing = false;
         }
 
         private void EditData(RoutedEventArgs e)
