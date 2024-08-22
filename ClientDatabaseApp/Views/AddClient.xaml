@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:System="clr-namespace:System;assembly=mscorlib"
              xmlns:local="clr-namespace:ClientDatabaseApp.View"
-             xmlns:locals="clr-namespace:ClientDatabaseApp.Service"
+             xmlns:localServices="clr-namespace:ClientDatabaseApp.Service"
              mc:Ignorable="d" 
              d:DesignHeight="520" d:DesignWidth="800">
     <Grid>
@@ -80,9 +80,9 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Label Grid.Column ="0" Content="Notatka:" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-            <RichTextBox locals:RichTextBoxHelper.DocumentXaml="{Binding RichTextContent}" Name="NotesRichTextBox" Grid.Column="1" Width="500"/>
+            <RichTextBox Name="NotesRichTextBox" Grid.Column="1" Width="500"/>
 
-            <Button Grid.Row ="8" Grid.Column="4" Width="150" Height="50" VerticalAlignment="Center" HorizontalAlignment="Center" Command="{Binding AddClientToDatabaseCommand}" Content="Dodaj"></Button>
+            <Button Grid.Row ="8" Grid.Column="4" Width="150" Height="50" VerticalAlignment="Center" HorizontalAlignment="Center" Command="{Binding AddClientToDatabaseCommand}" CommandParameter="{Binding ElementName=NotesRichTextBox}" Content="Dodaj"></Button>
         </Grid>
     </Grid>
 </UserControl>

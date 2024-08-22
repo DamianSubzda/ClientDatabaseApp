@@ -32,7 +32,7 @@
 
             <StackPanel Orientation="Horizontal">
                 <Button Content="Pokaż więcej" Command="{Binding ShowMoreDetailsCommand}" Margin="5" Width="150"/>
-                <Button Content="Dodaj wydarzenie" Command="{Binding AddFolowUpCommand}" Margin="5" Width="150"/>
+                <Button Content="Dodaj wydarzenie" Command="{Binding AddActivityCommand}" Margin="5" Width="150"/>
                 <Button Content="Usuń zaznaczony" Command="{Binding RemoveSelectedCommand}" Margin="5" Width="150"/>
             </StackPanel>
 

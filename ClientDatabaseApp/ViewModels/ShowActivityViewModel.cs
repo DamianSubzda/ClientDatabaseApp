@@ -1,11 +1,8 @@
 ﻿using ClientDatabaseApp.Model;
 using ClientDatabaseApp.Service;
+using ClientDatabaseApp.Service.Repository;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
@@ -68,18 +65,6 @@ namespace ClientDatabaseApp.ViewModel
             }
         }
 
-        public ShowActivityViewModel(Activity activity, Action closeAction)
-        {
-            Activity = activity;
-            OriginalNote = Activity.Note;
-            EditableNote = Activity.Note;
-            DateOfCreation = Activity.DateOfCreation;
-            DateOfAction = Activity.DateOfAction;
-            ClientName = Activity.Client.ClientName; //Nwm czy zadziała
-            _closeAction = closeAction;
-            ExitCommand = new DelegateCommand<RoutedEventArgs>(ExitWindow);
-        }
-
         public Activity Activity
         {
             get => _activity;
@@ -87,6 +72,34 @@ namespace ClientDatabaseApp.ViewModel
             {
                 _activity = value;
                 OnPropertyChanged(nameof(Client));
+            }
+        }
+
+        private IClientRepo _clientRepo;
+        public ShowActivityViewModel(Activity activity, Action closeAction, IClientRepo clientRepo)
+        {
+            _clientRepo = clientRepo;
+            Activity = activity;
+            OriginalNote = Activity.Note;
+            EditableNote = Activity.Note;
+            DateOfCreation = Activity.DateOfCreation;
+            DateOfAction = Activity.DateOfAction;
+            _closeAction = closeAction;
+            ExitCommand = new DelegateCommand<RoutedEventArgs>(ExitWindow);
+
+            LoadClientNameAsync(activity.ClientId);
+        }
+
+        private async void LoadClientNameAsync(int clientId)
+        {
+            var client = await _clientRepo.GetClient(clientId);
+            if (client != null)
+            {
+                ClientName = client.ClientName;
+            }
+            else
+            {
+                ClientName = "Unknown Client";
             }
         }
 

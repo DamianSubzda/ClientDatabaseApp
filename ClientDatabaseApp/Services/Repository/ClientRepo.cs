@@ -9,6 +9,7 @@ namespace ClientDatabaseApp.Service.Repository
     public interface IClientRepo
     {
         Task AddClient(Client client);
+        Task<Client> GetClient(int id);
         Task<List<Client>> GetAllClients();
         Task DeleteClient(Client client);
         Task<bool> CheckIfClientExists(Client client);
@@ -61,6 +62,11 @@ namespace ClientDatabaseApp.Service.Repository
         public async Task<List<Client>> GetAllClients()
         {
             return await _context.Clients.ToListAsync();
+        }
+
+        public async Task<Client> GetClient(int id)
+        {
+            return await _context.Clients.FirstOrDefaultAsync(c => c.ClientId == id);
         }
     }
 }

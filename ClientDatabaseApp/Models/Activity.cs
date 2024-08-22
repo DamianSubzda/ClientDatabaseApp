@@ -12,6 +12,7 @@ namespace ClientDatabaseApp.Model
             DateOfCreation = DateTime.Now;
         }
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ActivityId { get; set; }
         [Required]
         public int ClientId { get; set; }

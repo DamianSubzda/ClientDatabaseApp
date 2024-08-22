@@ -138,11 +138,13 @@ namespace ClientDatabaseApp.ViewModel
         }
 
         private readonly IActivityRepo _activityRepo;
+        private readonly IClientRepo _clientRepo;
         private readonly IDialogService _dialogService;
 
-        public CalendarViewModel(IActivityRepo activityRepo, IDialogService dialogService)
+        public CalendarViewModel(IActivityRepo activityRepo, IDialogService dialogService, IClientRepo clientRepo)
         {
             _activityRepo = activityRepo;
+            _clientRepo = clientRepo;
             _dialogService = dialogService;
             Button_Click_PrevMonthCommand = new DelegateCommand<RoutedEventArgs>(Button_Click_PrevMonth);
             Button_Click_NextMonthCommand = new DelegateCommand<RoutedEventArgs>(Button_Click_NextMonth);
@@ -155,6 +157,7 @@ namespace ClientDatabaseApp.ViewModel
 
             InitialCalendar();
             InitializeAsync();
+            _clientRepo = clientRepo;
         }
 
         public async void InitializeAsync()
@@ -196,7 +199,7 @@ namespace ClientDatabaseApp.ViewModel
             if(SelectedActivity != null)
             {
                 ShowActivity showActivity = new ShowActivity();
-                ShowActivityViewModel showActivityViewModel = new ShowActivityViewModel(SelectedActivity, () => showActivity.Close());
+                ShowActivityViewModel showActivityViewModel = new ShowActivityViewModel(SelectedActivity, () => showActivity.Close(), _clientRepo);
                 showActivity.DataContext = showActivityViewModel;
                 showActivity.ShowDialog();
             }

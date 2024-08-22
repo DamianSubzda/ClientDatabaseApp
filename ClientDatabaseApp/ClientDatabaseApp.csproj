@@ -170,13 +170,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Migrations\202408190919358_InitialCreate.cs" />
-    <Compile Include="Migrations\202408190919358_InitialCreate.Designer.cs">
-      <DependentUpon>202408190919358_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202408200849207_Activities.cs" />
-    <Compile Include="Migrations\202408200849207_Activities.Designer.cs">
-      <DependentUpon>202408200849207_Activities.cs</DependentUpon>
+    <Compile Include="Migrations\202408210743044_InitialMigration.cs" />
+    <Compile Include="Migrations\202408210743044_InitialMigration.Designer.cs">
+      <DependentUpon>202408210743044_InitialMigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Services\APIClients\IpifyAPIConnector.cs" />
@@ -191,6 +187,7 @@
     <Compile Include="Services\PostgresContext.cs" />
     <Compile Include="Services\Utilities\DayVisibilityConverter.cs" />
     <Compile Include="Services\Utilities\RichTextBoxHelper.cs" />
+    <Compile Include="ViewModels\BaseViewModel.cs" />
     <Compile Include="ViewModels\NewActivityViewModel.cs" />
     <Compile Include="ViewModels\ShowActivityViewModel.cs" />
     <Compile Include="ViewModels\ShowClientViewModel.cs" />
@@ -283,11 +280,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Migrations\202408190919358_InitialCreate.resx">
-      <DependentUpon>202408190919358_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202408200849207_Activities.resx">
-      <DependentUpon>202408200849207_Activities.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202408210743044_InitialMigration.resx">
+      <DependentUpon>202408210743044_InitialMigration.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

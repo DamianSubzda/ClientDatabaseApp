@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:ClientDatabaseApp.View"
-        xmlns:locals="clr-namespace:ClientDatabaseApp.Service"
+        xmlns:locals="clr-namespace:ClientDatabaseApp.Service" xmlns:viewmodel="clr-namespace:ClientDatabaseApp.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:NewActivityViewModel}"
         mc:Ignorable="d"
         Title="Dodaj wydarzenie" Height="450" Width="500">
     <Grid Background="{StaticResource Color1}">
@@ -24,14 +24,28 @@
                 <Label FontSize="20" HorizontalContentAlignment="Right" Content="Client Name: "/>
                 <Label FontSize="20" HorizontalContentAlignment="Left" Content="{Binding Client.ClientName, FallbackValue= 'Brak danych'}"/>
             </StackPanel>
-            
+
             <Viewbox Grid.Row="1" Width="200">
-                <DatePicker SelectedDate="{Binding SelectedDate}" HorizontalContentAlignment="Center"  />
+                <DatePicker SelectedDate="{Binding SelectedDate}" Width="130" HorizontalAlignment="Center">
+                    <DatePicker.CalendarStyle>
+                        <Style TargetType="{x:Type Calendar}">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type Calendar}">
+                                        <CalendarItem x:Name="PART_CalendarItem" Background="{StaticResource Color2}"/>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </DatePicker.CalendarStyle>
+                </DatePicker>
+
+
             </Viewbox >
         </Grid>
-        <RichTextBox locals:RichTextBoxHelper.DocumentXaml="{Binding RichTextContent}" Grid.Row="1"/>
+        <RichTextBox Grid.Row="1"/>
         <StackPanel Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Button x:Name="button" Content="Dodaj wydarzenie" Command="{Binding addActivityCommand}" HorizontalAlignment="Left" VerticalAlignment="Top" Width="129"/>
+            <Button x:Name="button" Content="Dodaj wydarzenie" Command="{Binding AddActivityCommand}" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         </StackPanel>
 
     </Grid>

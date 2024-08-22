@@ -14,7 +14,7 @@ namespace ClientDatabaseApp.Service.Repository
     {
         Task<List<Activity>> GetActivitiesOfDay(int year, int month, int day);
         Task<List<(int Day, int Count)>> GetActivitiesCountOfMonth(int year, int month);
-        Task CreateActivity(Client client, DateTime date, string Note);
+        Task CreateActivity(Client client, DateTime date, string note);
         Task DeleteActivity(Activity activity);
     }
     public class ActivityRepo : IActivityRepo
@@ -24,17 +24,24 @@ namespace ClientDatabaseApp.Service.Repository
         {
             _context = context;
         }
-        public async Task CreateActivity(Client client, DateTime date, string Note)
+        public async Task CreateActivity(Client client, DateTime date, string note)
         {
-            var activity = new Activity()
+            try
             {
-                Client = client,
-                DateOfAction = date,
-                Note = Note
-            };
+                var activity = new Activity()
+                {
+                    ClientId = client.ClientId,
+                    DateOfAction = date,
+                    Note = note
+                };
 
-            _context.Activities.Add(activity);
-            await _context.SaveChangesAsync();
+                _context.Activities.Add(activity);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error saving activity: {ex.Message}");
+            }
         }
 
         public async Task DeleteActivity(Activity activity)

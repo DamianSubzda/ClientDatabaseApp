@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Xml.Linq;
 using static ClientDatabaseApp.Service.ComboboxStatus;
@@ -17,6 +18,7 @@ namespace ClientDatabaseApp.ViewModel
     public class AddClientViewModel : INotifyPropertyChanged
     {
         public ICommand AddClientToDatabaseCommand { get; set; }
+        public ICommand SaveRichTextContentCommand { get; set; }
 
         private string _clientNameTextBox;
         private string _phonenumberTextBox;
@@ -180,7 +182,8 @@ namespace ClientDatabaseApp.ViewModel
             _clientRepo = clientRepo;
             _dialogService = dialogService;
             DateTextBox = DateTime.Now;
-            AddClientToDatabaseCommand = new DelegateCommand<RoutedEventArgs>(AddClientAsync);
+            AddClientToDatabaseCommand = new DelegateCommand<RichTextBox>(AddClientAsync);
+            SaveRichTextContentCommand = new DelegateCommand<RichTextBox>(SaveRichTextContent);
             InitializeComboBoxStatus();
             
         }
@@ -197,14 +200,23 @@ namespace ClientDatabaseApp.ViewModel
             SelectedStatus = StatusItems[0];
         }
 
-        
-        private async void AddClientAsync(RoutedEventArgs e)
+        public void SaveRichTextContent(RichTextBox richTextBox)
         {
+            RichTextContent = RichTextBoxHelper.GetTextFromRichTextBox(richTextBox);
+        }
+
+
+        private async void AddClientAsync(RichTextBox richTextBox)
+        {
+
+            SaveRichTextContent(richTextBox);
+
             if (string.IsNullOrEmpty(ClientNameTextBox))
             {
                 _dialogService.ShowMessage("Brak nazwy klienta!");
                 return;
             }
+
 
             Client client = new Client
             {
@@ -217,32 +229,14 @@ namespace ClientDatabaseApp.ViewModel
                 PageURL = PageURLTextBox,
                 Data = DateTextBox,
                 Owner = OwnerTextBox,
+                Note = RichTextContent,
                 Status = (int)SelectedStatus.Value //Może podmienić i zamiast numerka będzie wartość z 'Enuma'
             };
-
-            if (string.IsNullOrEmpty(RichTextContent))
-            {
-                client.Note = "";
-            }
-            else
-            {
-                try
-                {
-                    XDocument document = XDocument.Parse(RichTextContent);
-                    XNamespace ns = "http://schemas.microsoft.com/winfx/2006/xaml/presentation";
-                    client.Note = string.Join(" ", document.Descendants(ns + "Run")
-                                               .Select(run => run.Value));
-                }
-                catch
-                {
-                    client.Note = "";
-                }
-
-            }
 
             try
             {
                 await _clientRepo.AddClient(client);
+                //Clear all fields
             }
             catch
             {

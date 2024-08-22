@@ -154,12 +154,8 @@
     </Style>
 
     <Style TargetType="DatePicker">
-        <Setter Property="Background" Value="{StaticResource Color4}"/>
-        <Setter Property="Foreground" Value="White"/>
-    </Style>
-
-    <Style TargetType="DatePickerTextBox">
-        <Setter Property="Background" Value="{StaticResource Color4}"/>
+        <Setter Property="Background" Value="{StaticResource Color1}"/>
+        <Setter Property="Foreground" Value="{StaticResource Color3}"/>
     </Style>
 
 </ResourceDictionary>

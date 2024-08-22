@@ -9,6 +9,7 @@ namespace ClientDatabaseApp.Model
     public class Client
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ClientId { get; set; }
         [MaxLength(200, ErrorMessage = "Client name must be 200 characters or less!")]
         public string ClientName { get; set; }

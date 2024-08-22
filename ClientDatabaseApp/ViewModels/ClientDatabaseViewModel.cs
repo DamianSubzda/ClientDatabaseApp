@@ -233,7 +233,7 @@ namespace ClientDatabaseApp.ViewModel
             if (SelectedClient != null)
             {
                 NewActivity newActivity = new NewActivity();
-                NewActivityViewModel newActivityViewModel = new NewActivityViewModel(SelectedClient, () => newActivity.Close(), _activityRepo);
+                NewActivityViewModel newActivityViewModel = new NewActivityViewModel(SelectedClient, () => newActivity.Close(), _activityRepo, _dialogService);
                 newActivity.DataContext = newActivityViewModel;
                 newActivity.ShowDialog();
 

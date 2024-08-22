@@ -4,9 +4,92 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ClientDatabaseApp.View"
+        xmlns:localServices="clr-namespace:ClientDatabaseApp.Service"
         mc:Ignorable="d"
-        Title="ShowMore" Height="450" Width="800">
-    <Grid Background="{StaticResource Color1}">
-        <Button Content="Wyjdź" Command="{Binding ExitCommand}" Width="100" Height="100"/>
+        Title="ShowMore" Height="450" Width="500">
+    <Grid Background="{StaticResource Color1}" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <UniformGrid Grid.Row="0" Columns="2" >
+            <StackPanel Margin="2">
+                <Label  Content="Nazwa Klienta" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <TextBox IsEnabled="{Binding IsEditing}" Text="{Binding ClientNameTextBox}" Name="NazwaKlientaTextBox" Margin="0,1,0,1"/>
+            </StackPanel>
+            <StackPanel Margin="2">
+                <Label Content="Telefon" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <TextBox IsEnabled="{Binding IsEditing}" Text="{Binding PhonenumberTextBox}" Name="PhoneTextBox" Margin="0,1,0,1"/>
+            </StackPanel>
+            <StackPanel Margin="2">
+                <Label  Content="Email" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <TextBox IsEnabled="{Binding IsEditing}" Text="{Binding EmailTextBox}" Margin="0,1,0,1"/>
+            </StackPanel>
+            <StackPanel Margin="2">
+                <Label Content="Miasto" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <TextBox IsEnabled="{Binding IsEditing}" Text="{Binding CityTextBox}" Name="CityTextBox" Margin="0,1,0,1"/>
+            </StackPanel>
+            <StackPanel Margin="2">
+                <Label Content="Facebook" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <TextBox IsEnabled="{Binding IsEditing}" Text="{Binding FacebookTextBox}" Name="FbTextBox" Margin="0,1,0,1"/>
+            </StackPanel>
+            <StackPanel Margin="2">
+                <Label Content="Instagram" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <TextBox IsEnabled="{Binding IsEditing}" Text="{Binding InstagramTextBox}" Name="IgTextBox" Margin="0,1,0,1"/>
+            </StackPanel>
+            <StackPanel Margin="2">
+                <Label Content="Strona Klienta" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <TextBox IsEnabled="{Binding IsEditing}" Text="{Binding PageURLTextBox}" Name="ClientPageTextBox" Margin="0,1,0,1"/>
+            </StackPanel>
+            <StackPanel Margin="2">
+                <Label Content="Data" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <DatePicker IsEnabled="{Binding IsEditing}" SelectedDate="{Binding DateTextBox, Mode=TwoWay}" Name="ClientDataPicker" Margin="0,1,0,1"/>
+            </StackPanel>
+            <StackPanel Margin="2">
+                <Label Content="Imię Właściciela" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                <TextBox IsEnabled="{Binding IsEditing}" Text="{Binding OwnerTextBox}" Name="OwnerTextBox" Margin="0,1,0,1"/>
+            </StackPanel>
+            <StackPanel Margin="2">
+                <Label Content="Status"  HorizontalAlignment="Left"/>
+                <ComboBox IsEnabled="{Binding IsEditing}" ItemsSource="{Binding StatusItems}" SelectedItem="{Binding SelectedStatus}" x:Name="statusCombobox" HorizontalAlignment="Stretch" Margin="0,1,0,1">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Description}" Foreground="{StaticResource Color1}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                    <ComboBox.ItemContainerStyle>
+                        <Style TargetType="ComboBoxItem">
+                            <Setter Property="Background" Value="{Binding Color}" />
+                        </Style>
+                    </ComboBox.ItemContainerStyle>
+                </ComboBox>
+            </StackPanel>
+        </UniformGrid>
+        <Grid Grid.Row="1" Margin="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Label Content="Notatka" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="0"/>
+            <RichTextBox IsEnabled="{Binding IsEditing}" x:Name="NotesRichTextBox"
+                     Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                <RichTextBox.Document>
+                    <FlowDocument>
+                        <Paragraph>
+                            <Run Text="{Binding RichTextContent}"/>
+                        </Paragraph>
+                    </FlowDocument>
+                </RichTextBox.Document>
+            </RichTextBox>
+        </Grid>
+        <UniformGrid Grid.Row="2" Columns="3">
+            <Button Content="Edytuj" Command="{Binding EditDataCommand}" Margin="10"/>
+            <Button Content="Zapisz" Command="{Binding SaveDataCommand}" CommandParameter="{Binding ElementName=NotesRichTextBox}" Margin="10"/>
+            <Button Content="Wyjdź" Command="{Binding ExitCommand}" Margin="10"/>
+        </UniformGrid>
+
     </Grid>
 </Window>

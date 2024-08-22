@@ -37,10 +37,12 @@ namespace ClientDatabaseApp.ViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private IActivityRepo _activityRepo;
-        public NewActivityViewModel(Client client, Action closeAction, IActivityRepo activityRepo)
+        private readonly IActivityRepo _activityRepo;
+        private readonly IDialogService _dialogService;
+        public NewActivityViewModel(Client client, Action closeAction, IActivityRepo activityRepo, IDialogService dialogService)
         {
             _activityRepo = activityRepo;
+            _dialogService = dialogService;
             SelectedDate = DateTime.Now;
             this.Client = client;
             this._closeAction = closeAction;
@@ -49,15 +51,18 @@ namespace ClientDatabaseApp.ViewModel
 
         private void AddActivity(RoutedEventArgs e)
         {
+            if (string.IsNullOrEmpty(RichTextContent))
+            {
+                _dialogService.ShowMessage("Brak podanej notatki!");
+                return;
+            }
             XDocument document = XDocument.Parse(RichTextContent);
             XNamespace ns = "http://schemas.microsoft.com/winfx/2006/xaml/presentation";
 
             var activityNote = string.Join(" ", document.Descendants(ns + "Run")
                                            .Select(run => run.Value));
-            if (!string.IsNullOrEmpty(activityNote))
-            {
-                _activityRepo.CreateActivity(Client, SelectedDate, activityNote);
-            }
+
+            _activityRepo.CreateActivity(Client, SelectedDate, activityNote);
             _closeAction?.Invoke();
         }
 
