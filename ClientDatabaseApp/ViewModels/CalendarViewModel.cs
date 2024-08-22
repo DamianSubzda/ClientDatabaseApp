@@ -109,6 +109,8 @@ namespace ClientDatabaseApp.ViewModel
         private readonly IClientRepo _clientRepo;
         private readonly IDialogService _dialogService;
 
+        public CalendarViewModel() { }
+
         public CalendarViewModel(IActivityRepo activityRepo, IDialogService dialogService, IClientRepo clientRepo)
         {
             _activityRepo = activityRepo;

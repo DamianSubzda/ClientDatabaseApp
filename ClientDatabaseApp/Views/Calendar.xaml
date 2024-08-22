@@ -9,8 +9,7 @@
              xmlns:local2="clr-namespace:ClientDatabaseApp.Service"
              mc:Ignorable="d" 
              d:DesignHeight="520" d:DesignWidth="800">
-    <!-- Do zastanowienia: Ustawić DataContext w View i chyba tak trzeba będzie zrobić ponieważ to dobre dla MVVM-->
-    
+
     <UserControl.Resources>
         <local1:CalendarViewModel x:Key="MVCalendarMainWindow"/>
         <local2:DayVisibilityConverter x:Key="DayVisibilityConverter" />
@@ -87,8 +86,9 @@
         </Border>
         <StackPanel Grid.Column="1">
             <StackPanel Margin="0,5" Orientation="Horizontal" HorizontalAlignment="Center">
-                <Label Padding="0,0,0,0" FontSize="10" Content="Aktualna pogoda w "/>
-                <Label Padding="0,0,0,0" FontSize="10" Content="{Binding City, TargetNullValue='--',FallbackValue='--'}"/>
+                <TextBlock Padding="0,0,0,0" FontSize="10" Text="Aktualna pogoda w "/>
+                <TextBlock Padding="0,0,0,0" FontSize="10" Text="{Binding City, TargetNullValue='--',FallbackValue='--'}"
+                           TextWrapping="Wrap" TextTrimming="CharacterEllipsis" MaxWidth="110"/>
             </StackPanel>
             <Grid Margin="5,5,5,10">
                 <Grid.RowDefinitions>
@@ -98,22 +98,27 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <StackPanel Grid.Row="0" Orientation="Horizontal">
-                    <Label Padding="0,2,0,2" Content="Temperatura "/>
-                    <Label Padding="0,2,0,2"  Content="{Binding Temperature, TargetNullValue='--',FallbackValue='--'}"/>
+                    <TextBlock Padding="0,2,0,2" Text="Temperatura "/>
+                    <TextBlock Padding="0,2,0,2" Text="{Binding Temperature, TargetNullValue='--', FallbackValue='--'}" 
+                               TextWrapping="Wrap" TextTrimming="CharacterEllipsis" MaxWidth="130"/>
                 </StackPanel>
                 <StackPanel Grid.Row="1" Orientation="Horizontal">
-                    <Label Padding="0,2,0,2"  Content="Odczuwalna "/>
-                    <Label Padding="0,2,0,2"  Content="{Binding TemperatureFeel,TargetNullValue='--',FallbackValue='--'}"/>
+                    <TextBlock Padding="0,2,0,2" Text="Odczuwalna "/>
+                    <TextBlock Padding="0,2,0,2" Text="{Binding TemperatureFeel, TargetNullValue='--', FallbackValue='--'}"
+                               TextWrapping="Wrap" TextTrimming="CharacterEllipsis" MaxWidth="135"/>
                 </StackPanel>
                 <StackPanel Grid.Row="2" Orientation="Horizontal">
-                    <Label Padding="0,2,0,2"  Content="Wiatr "/>
-                    <Label Padding="0,2,0,2"  Content="{Binding Wind, TargetNullValue='--',FallbackValue='--'}"/>
+                    <TextBlock Padding="0,2,0,2" Text="Wiatr "/>
+                    <TextBlock Padding="0,2,0,2" Text="{Binding Wind, TargetNullValue='--', FallbackValue='--'}"
+                               TextWrapping="Wrap" TextTrimming="CharacterEllipsis" MaxWidth="175"/>
                 </StackPanel>
                 <StackPanel Grid.Row="3" Orientation="Horizontal">
-                    <Label Padding="0,2,0,2" Content="Pogoda: "/>
-                    <Label Padding="0,2,0,2" Content="{Binding Weather, TargetNullValue='--',FallbackValue='--'}"/>
+                    <TextBlock Padding="0,2,0,2" Text="Pogoda: "/>
+                    <TextBlock Padding="0,2,0,2" Text="{Binding Weather, TargetNullValue='--', FallbackValue='--'}"
+                               TextWrapping="Wrap" TextTrimming="CharacterEllipsis" MaxWidth="160"/>
                 </StackPanel>
-               
+
+
             </Grid>
             <Label Content="Lista zadań:"/>
             <ListBox Name="listbox_todolist" Height="200" ItemsSource="{Binding Activity, Mode=TwoWay}" DisplayMemberPath="Note" SelectedItem="{Binding SelectedActivity}"/>
