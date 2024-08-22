@@ -1,5 +1,6 @@
 ﻿using ClientDatabaseApp.Model;
 using ClientDatabaseApp.Service;
+using ClientDatabaseApp.Service.Repository;
 using ClientDatabaseApp.ViewModels;
 using System;
 using System.Collections.ObjectModel;
@@ -51,7 +52,6 @@ namespace ClientDatabaseApp.ViewModel
                 OwnerTextBox = value.Owner;
                 RichTextContent = value.Note;
                 SelectedStatus = StatusItems[value.Status];
-                OnPropertyChanged(nameof(Client));
             }
         }
 
@@ -133,13 +133,16 @@ namespace ClientDatabaseApp.ViewModel
             set => SetField(ref _isEditing, value, nameof(IsEditing));
         }
 
-        public ShowClientViewModel(Client client, Action closeAction)
+
+        private IClientRepo _clientRepo;
+        public ShowClientViewModel(Client client, Action closeAction, IClientRepo clientRepo)
         {
             ComboboxStatus combobox = new ComboboxStatus();
             StatusItems = combobox.StatusItems;
 
             Client = client;
-            _closeAction = closeAction;         
+            _closeAction = closeAction;
+            _clientRepo = clientRepo;
 
             EditDataCommand = new DelegateCommand<RoutedEventArgs>(EditData);
             SaveDataCommand = new DelegateCommand<RichTextBox>(SaveData);
@@ -155,9 +158,25 @@ namespace ClientDatabaseApp.ViewModel
 
         private void SaveData(RichTextBox richTextBox)
         {
-            
             string note = RichTextBoxHelper.GetTextFromRichTextBox(richTextBox);
-            //TODO
+            var client = new Client
+            {
+                ClientId = Client.ClientId,
+                ClientName = ClientNameTextBox,
+                Phonenumber = PhonenumberTextBox,
+                Email = EmailTextBox,
+                City = CityTextBox,
+                Facebook = FacebookTextBox,
+                Instagram = InstagramTextBox,
+                PageURL = PageURLTextBox,
+                Data = DateTextBox,
+                Owner = OwnerTextBox,
+                Note = note,
+                Status = (int)SelectedStatus.Value
+            };
+
+            _clientRepo.UpdateClient(client);
+
             IsEditing = false;
         }
 
