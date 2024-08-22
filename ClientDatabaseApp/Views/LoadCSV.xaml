@@ -18,16 +18,16 @@
         <!--DataGrid-->
         <DataGrid Grid.Row ="0" ItemsSource="{Binding PreviewClients}" AutoGenerateColumns="False" MaxColumnWidth="300" IsReadOnly= "True" x:Name="dataGrid" CanUserReorderColumns="True" CanUserSortColumns="True" CanUserResizeColumns="True" Margin="10" Grid.ColumnSpan="2">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="ClientName" Binding="{Binding ClientName}" Width="*"/>
-                <DataGridTextColumn Header="Phonenumber" Binding="{Binding Phonenumber}" Width="*"/>
-                <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="*"/>
-                <DataGridTextColumn Header="City" Binding="{Binding City}" Width="*"/>
-                <DataGridTextColumn Header="Facebook" Binding="{Binding Facebook}" Width="*"/>
-                <DataGridTextColumn Header="Instagram" Binding="{Binding Instagram}" Width="*"/>
-                <DataGridTextColumn Header="PageURL" Binding="{Binding PageURL}" Width="*"/>
-                <DataGridTextColumn Header="Data" Binding="{Binding Data, StringFormat=\{0:dd-MM-yyyy\}}" Width="*"/>
-                <DataGridTextColumn Header="Owner" Binding="{Binding Owner}" Width="*"/>
-                <DataGridTextColumn Header="Note" Binding="{Binding Note}" Width="*"/>
+                <DataGridTextColumn Header="ClientName" Binding="{Binding ClientName}" Width="SizeToHeader"/>
+                <DataGridTextColumn Header="Phonenumber" Binding="{Binding Phonenumber}" Width="SizeToHeader"/>
+                <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="SizeToHeader"/>
+                <DataGridTextColumn Header="City" Binding="{Binding City}" Width="80"/>
+                <DataGridTextColumn Header="Facebook" Binding="{Binding Facebook}" Width="SizeToHeader"/>
+                <DataGridTextColumn Header="Instagram" Binding="{Binding Instagram}" Width="SizeToHeader"/>
+                <DataGridTextColumn Header="PageURL" Binding="{Binding PageURL}" Width="SizeToHeader"/>
+                <DataGridTextColumn Header="Data" Binding="{Binding Data, StringFormat=\{0:dd-MM-yyyy\}}" Width="70"/>
+                <DataGridTextColumn Header="Owner" Binding="{Binding Owner}" Width="SizeToHeader"/>
+                <DataGridTextColumn Header="Note" Binding="{Binding Note}" Width="SizeToHeader"/>
             </DataGrid.Columns>
         </DataGrid>
 

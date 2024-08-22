@@ -58,6 +58,8 @@
     </Style>
 
     <Style TargetType="DataGridColumnHeader">
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="Background" Value="{StaticResource Color2}"/>
         <Setter Property="Foreground" Value="White" />
         <Setter Property="BorderBrush" Value="White" />
@@ -68,6 +70,7 @@
     <Style TargetType="DataGridRow">
         <Setter Property="Background" Value="{StaticResource Color4}"/>
         <Setter Property="Foreground" Value="White"/>
+        <Setter Property="MaxHeight" Value="20"/>
     </Style>
 
     <Style TargetType="DataGridRowHeader">
