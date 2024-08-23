@@ -5,7 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:ClientDatabaseApp.View"
-        xmlns:locals="clr-namespace:ClientDatabaseApp.Service" xmlns:viewmodel="clr-namespace:ClientDatabaseApp.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:NewActivityViewModel}"
+        xmlns:locals="clr-namespace:ClientDatabaseApp.Service" 
+        xmlns:viewmodel="clr-namespace:ClientDatabaseApp.ViewModel" 
+        d:DataContext="{d:DesignInstance Type=viewmodel:NewActivityViewModel}"
         mc:Ignorable="d"
         Title="Dodaj wydarzenie" Height="450" Width="500">
     <Grid Background="{StaticResource Color1}">
