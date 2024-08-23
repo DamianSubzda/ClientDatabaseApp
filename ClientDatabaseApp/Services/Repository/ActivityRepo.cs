@@ -5,13 +5,13 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ClientDatabaseApp.Service.Repository
 {
     public interface IActivityRepo
     {
+        Task UpdateActivity(Activity activity);
         Task<List<Activity>> GetActivitiesOfDay(int year, int month, int day);
         Task<List<(int Day, int Count)>> GetActivitiesCountOfMonth(int year, int month);
         Task CreateActivity(Client client, DateTime date, string note);
@@ -84,6 +84,27 @@ namespace ClientDatabaseApp.Service.Repository
                                     && line.DateOfAction.Value.Day == day)
                             .ToListAsync();
             return activity;
+        }
+
+        public async Task UpdateActivity(Activity activity)
+        {
+            var foundActivity = await _context.Activities.FirstOrDefaultAsync(a => a.ActivityId == activity.ActivityId);
+
+            if (foundActivity != null)
+            {
+                foundActivity.ActivityId = activity.ActivityId;
+                foundActivity.ClientId = activity.ClientId;
+                foundActivity.DateOfCreation = activity.DateOfCreation;
+                foundActivity.DateOfAction = activity.DateOfAction;
+                foundActivity.Note = activity.Note;
+
+                await _context.SaveChangesAsync();
+                _eventAggregator.GetEvent<ActivityUpdatedInDatabaseEvent>().Publish(activity);
+            }
+            else
+            {
+                throw new Exception("Client not found.");
+            }
         }
     }
 }

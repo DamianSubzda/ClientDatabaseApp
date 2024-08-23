@@ -73,6 +73,7 @@ namespace ClientDatabaseApp.ViewModel
         private string _wind;
         private string _weather;
         private string _city;
+        private Activity _selectedActivity;
 
         public string Temperature
         {
@@ -99,8 +100,6 @@ namespace ClientDatabaseApp.ViewModel
             get => _city;
             set=> SetField(ref _city, value, nameof(City));
         }
-        private Activity _selectedActivity;
-
         public Activity SelectedActivity
         {
             get => _selectedActivity;
@@ -123,6 +122,7 @@ namespace ClientDatabaseApp.ViewModel
 
             _eventAggregator.GetEvent<ActivityAddedToDatabaseEvent>().Subscribe(OnActivityAdded);
             _eventAggregator.GetEvent<ActivityRemovedFromDatabaseEvent>().Subscribe(OnActivityRemoved);
+            _eventAggregator.GetEvent<ActivityUpdatedInDatabaseEvent>().Subscribe(OnActivityUpdated);
 
             Button_Click_PrevMonthCommand = new DelegateCommand<RoutedEventArgs>(Button_Click_PrevMonth);
             Button_Click_NextMonthCommand = new DelegateCommand<RoutedEventArgs>(Button_Click_NextMonth);
@@ -142,11 +142,28 @@ namespace ClientDatabaseApp.ViewModel
         {
             GetDaysFromMonth();
         }
+        
         private void OnActivityAdded(Activity removedActivity)
         {
             GetDaysFromMonth();
         }
 
+        private void OnActivityUpdated(Activity updatedActivity)
+        {
+            var activities = new ObservableCollection<Activity>(Activity);
+            var existingActivity = activities.FirstOrDefault(a => a.ActivityId == updatedActivity.ActivityId);
+            if (existingActivity != null)
+            {
+                int index = activities.IndexOf(existingActivity);
+                if (index >= 0)
+                {
+                    activities[index] = updatedActivity;
+                }
+            }
+
+            Activity = activities;
+            SelectedActivity = updatedActivity;
+        }
         public async void InitializeAsync()
         {
             IpifyAPIConnector ipify = new IpifyAPIConnector();
@@ -182,7 +199,7 @@ namespace ClientDatabaseApp.ViewModel
             if(SelectedActivity != null)
             {
                 ShowActivity showActivity = new ShowActivity();
-                ShowActivityViewModel showActivityViewModel = new ShowActivityViewModel(SelectedActivity, () => showActivity.Close(), _clientRepo);
+                ShowActivityViewModel showActivityViewModel = new ShowActivityViewModel(SelectedActivity, () => showActivity.Close(), _clientRepo, _activityRepo);
                 showActivity.DataContext = showActivityViewModel;
                 showActivity.ShowDialog();
             }

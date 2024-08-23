@@ -3,8 +3,8 @@ using ClientDatabaseApp.Service;
 using ClientDatabaseApp.Service.Repository;
 using ClientDatabaseApp.ViewModels;
 using System;
-using System.ComponentModel;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace ClientDatabaseApp.ViewModel
@@ -12,6 +12,8 @@ namespace ClientDatabaseApp.ViewModel
     public class ShowActivityViewModel : BaseViewModel
     {
         public ICommand ExitCommand { get; set; }
+        public ICommand EditCommand { get; set; }
+
         private Activity _activity;
         private Action _closeAction;
         private string _originalNote;
@@ -53,16 +55,21 @@ namespace ClientDatabaseApp.ViewModel
         }
 
         private IClientRepo _clientRepo;
-        public ShowActivityViewModel(Activity activity, Action closeAction, IClientRepo clientRepo)
+        private IActivityRepo _activityRepo;
+        public ShowActivityViewModel(Activity activity, Action closeAction, IClientRepo clientRepo, IActivityRepo activityRepo)
         {
             _clientRepo = clientRepo;
+            _activityRepo = activityRepo;
+
             Activity = activity;
             OriginalNote = Activity.Note;
             EditableNote = Activity.Note;
             DateOfCreation = Activity.DateOfCreation;
             DateOfAction = Activity.DateOfAction ?? DateTime.MinValue;
             _closeAction = closeAction;
+
             ExitCommand = new DelegateCommand<RoutedEventArgs>(ExitWindow);
+            EditCommand = new DelegateCommand<RichTextBox>(EditActivity);
 
             LoadClientNameAsync(activity.ClientId);
         }
@@ -78,6 +85,14 @@ namespace ClientDatabaseApp.ViewModel
             {
                 ClientName = "Unknown Client";
             }
+        }
+
+        private async void EditActivity(RichTextBox richTextBox)
+        {
+            string note = RichTextBoxHelper.GetTextFromRichTextBox(richTextBox);
+            OriginalNote = note;
+            Activity.Note = note;
+            await _activityRepo.UpdateActivity(Activity);
         }
 
         private void ExitWindow(RoutedEventArgs e)
