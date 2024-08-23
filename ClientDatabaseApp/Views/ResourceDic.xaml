@@ -82,7 +82,6 @@
     <Style TargetType="DataGridCell">
     </Style>
 
-
     <Style TargetType="Button">
         <Setter Property="Template">
             <Setter.Value>

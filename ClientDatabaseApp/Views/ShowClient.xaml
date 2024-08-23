@@ -74,7 +74,7 @@
             </Grid.RowDefinitions>
 
             <Label Content="Notatka" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="0"/>
-            <RichTextBox IsEnabled="{Binding IsEditing}" x:Name="NotesRichTextBox"
+            <RichTextBox VerticalScrollBarVisibility="Auto" IsEnabled="{Binding IsEditing}" x:Name="NotesRichTextBox"
                      Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                 <RichTextBox.Document>
                     <FlowDocument>

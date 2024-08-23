@@ -118,10 +118,27 @@
                                TextWrapping="Wrap" TextTrimming="CharacterEllipsis" MaxWidth="160"/>
                 </StackPanel>
 
-
             </Grid>
             <Label Content="Lista zadań:"/>
-            <ListBox Name="listbox_todolist" Height="200" ItemsSource="{Binding Activity, Mode=TwoWay}" DisplayMemberPath="Note" SelectedItem="{Binding SelectedActivity}"/>
+            <ListBox Name="listbox_todolist" 
+                     Height="200" 
+                     ItemsSource="{Binding Activity, Mode=TwoWay}" 
+                     SelectedItem="{Binding SelectedActivity}" 
+                     HorizontalContentAlignment="Stretch">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Note}" 
+                                   TextTrimming="CharacterEllipsis" 
+                                   TextWrapping="NoWrap" 
+                                   VerticalAlignment="Center"
+                                   MaxHeight="20" 
+                                   MinWidth="50"
+                                   Margin="0,0,-15,0"
+                                   MaxWidth="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=ListBox}}"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
             <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0, 10, 0, 10" >
                 <Button Content="Wybierz" Command="{Binding PickActivityCommand}"/>
                 <Button Content="Usuń" Margin="10,0,0,0" Command="{Binding DeleteActivityCommand}"/>

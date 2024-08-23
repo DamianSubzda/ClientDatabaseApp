@@ -29,15 +29,25 @@
 
         </StackPanel>
         <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Center">
-            <TextBlock FontSize="8" Text="Oryginał"/>
-            <Label FontSize="20" Content="{Binding OriginalNote, FallbackValue='Original Note'}"/>
+            <TextBlock FontSize="8" Text="Oryginał" HorizontalAlignment="Center"/>
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Width="456" Height="140">
+                <TextBlock TextWrapping="Wrap" FontSize="20" Text="{Binding OriginalNote, FallbackValue='Original Note'}"/>
+            </ScrollViewer>
         </StackPanel>
-        <StackPanel Grid.Row="2" Orientation="Vertical" HorizontalAlignment="Center">
+        <Grid Grid.Row="2" HorizontalAlignment="Center">
             <TextBlock FontSize="8" Text="Po edycji"/>
-            <TextBox Width="460" FontSize="20" Text="{Binding EditableNote, FallbackValue='Editable Note'}"/>
-        </StackPanel>
+            <RichTextBox VerticalScrollBarVisibility="Auto" Width="460" FontSize="20" x:Name="NotesRichTextBox" Grid.Row="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+                <RichTextBox.Document>
+                    <FlowDocument>
+                        <Paragraph>
+                            <Run Text="{Binding EditableNote}"/>
+                        </Paragraph>
+                    </FlowDocument>
+                </RichTextBox.Document>
+            </RichTextBox>
+        </Grid>
         <StackPanel Grid.Row="3" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Margin="5" Content="Edytuj"/>
+            <Button Margin="5" Content="Edytuj" Command="{Binding EditCommand}" CommandParameter="{Binding ElementName=NotesRichTextBox}"/>
             <Button Margin="5" Content="Wyjdź" Command="{Binding ExitCommand}"/>
         </StackPanel>
         
