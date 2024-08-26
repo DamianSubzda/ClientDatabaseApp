@@ -37,13 +37,11 @@ namespace ClientDatabaseApp.ViewModels
 
         private IClientRepo _clientRepo;
         private IDialogService _dialogService;
-        private IEventAggregator _eventAggregator;
 
-        public LoadCSVViewModel(IClientRepo clientRepo, IDialogService dialogService, IEventAggregator eventAggregator)
+        public LoadCSVViewModel(IClientRepo clientRepo, IDialogService dialogService)
         {
             _clientRepo = clientRepo;
             _dialogService = dialogService;
-            _eventAggregator = eventAggregator;
             GetClientsFromCSVCommand = new DelegateCommand<RoutedEventArgs>(GetClientsFromCSV);
             AddToDatabaseCommand = new DelegateCommand<RoutedEventArgs>(AddToDatabase);
 
