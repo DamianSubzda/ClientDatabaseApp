@@ -1,5 +1,6 @@
 ﻿using ClientDatabaseApp.Models;
 using ClientDatabaseApp.Services.Events;
+using ClientDatabaseApp.Services.Exceptions;
 using Prism.Events;
 using System;
 using System.Collections.Generic;
@@ -38,7 +39,7 @@ namespace ClientDatabaseApp.Services.Repositories
             var result = await CheckIfClientExists(client);
             if (result)
             {
-                throw new Exception("client exists");
+                throw new ClientAlreadyExistsException(client.ClientName);
             }
 
             _context.Clients.Add(client);

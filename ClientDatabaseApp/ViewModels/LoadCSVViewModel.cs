@@ -1,8 +1,11 @@
 ﻿using ClientDatabaseApp.Models;
 using ClientDatabaseApp.Services;
+using ClientDatabaseApp.Services.Exceptions;
+using ClientDatabaseApp.Services.Repositories;
 using CsvHelper;
 using CsvHelper.Configuration;
 using Microsoft.Win32;
+using Prism.Events;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
@@ -25,15 +28,22 @@ namespace ClientDatabaseApp.ViewModels
             get => _previewClients;
             set => SetField(ref _previewClients, value, nameof(PreviewClients));
         }
-        
+
         public bool IsLoading
         {
             get => _isLoading;
             set => SetField(ref _isLoading, value, nameof(IsLoading));
         }
 
-        public LoadCSVViewModel()
+        private IClientRepo _clientRepo;
+        private IDialogService _dialogService;
+        private IEventAggregator _eventAggregator;
+
+        public LoadCSVViewModel(IClientRepo clientRepo, IDialogService dialogService, IEventAggregator eventAggregator)
         {
+            _clientRepo = clientRepo;
+            _dialogService = dialogService;
+            _eventAggregator = eventAggregator;
             GetClientsFromCSVCommand = new DelegateCommand<RoutedEventArgs>(GetClientsFromCSV);
             AddToDatabaseCommand = new DelegateCommand<RoutedEventArgs>(AddToDatabase);
 
@@ -76,24 +86,28 @@ namespace ClientDatabaseApp.ViewModels
             }
         }
 
-        private void AddToDatabase(RoutedEventArgs e)//TODO
+        private async void AddToDatabase(RoutedEventArgs e)
         {
             IsLoading = true;
 
-            //await Task.Run(() =>
-            //{
-            //    DatabaseQuery query = new DatabaseQuery();
-            //    List<(string, string)> result = query.TryAddClients(PreviewClients);
+            foreach (var client in PreviewClients)
+            {
+                try
+                {
+                    await _clientRepo.AddClient(client);
+                }
+                catch (ClientAlreadyExistsException ex)
+                {
+                    _dialogService.ShowMessage($"Wystąpił błąd podczas próby zapisu klienta: {ex.Message}");
+                }
+                catch
+                {
+                    _dialogService.ShowMessage($"Wystąpił nieoczekiwany błąd przy próbie zapisu: {client.ClientName}");
+                }
 
-            //    App.Current.Dispatcher.Invoke(() =>
-            //    {
-            //        foreach (var item in result)
-            //        {
-            //            MessageBox.Show(item.Item2, item.Item1);
-            //        }
-            //        PreviewClients.Clear();
-            //    });
-            //});
+            }
+
+            PreviewClients.Clear();
 
             IsLoading = false;
         }

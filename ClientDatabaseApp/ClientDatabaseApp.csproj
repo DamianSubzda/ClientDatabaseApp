@@ -197,6 +197,7 @@
     <Compile Include="Services\Events\ClientRemovedFromDatabaseEvent.cs" />
     <Compile Include="Services\Events\ClientUpdatedInDatabaseEvent.cs" />
     <Compile Include="Services\Events\ClientAddedToDatabase.cs" />
+    <Compile Include="Services\Exceptions\ClientAlreadyExistsException.cs" />
     <Compile Include="Services\Repositories\ClientRepo.cs" />
     <Compile Include="Services\Repositories\ActivityRepo.cs" />
     <Compile Include="Services\Utilities\BoolToVisibilityConverter.cs" />
