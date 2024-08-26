@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace ClientDatabaseApp.Service
+namespace ClientDatabaseApp.Services
 {
     public class DelegateCommand<T> : ICommand
     {
         private readonly Predicate<T> _canExecute;
         private readonly Action<T> _execute;
+        public event EventHandler CanExecuteChanged;
 
         public DelegateCommand(Action<T> execute)
             : this(execute, null)
@@ -32,10 +33,11 @@ namespace ClientDatabaseApp.Service
             _execute((parameter == null) ? default : (T)Convert.ChangeType(parameter, typeof(T)));
         }
 
-        public event EventHandler CanExecuteChanged;
         public void RaiseCanExecuteChanged()
         {
             CanExecuteChanged?.Invoke(this, EventArgs.Empty);
         }
+
+
     }
 }

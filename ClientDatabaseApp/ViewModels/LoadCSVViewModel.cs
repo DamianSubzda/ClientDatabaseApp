@@ -1,6 +1,5 @@
-﻿using ClientDatabaseApp.Model;
-using ClientDatabaseApp.Service;
-using ClientDatabaseApp.ViewModels;
+﻿using ClientDatabaseApp.Models;
+using ClientDatabaseApp.Services;
 using CsvHelper;
 using CsvHelper.Configuration;
 using Microsoft.Win32;
@@ -12,11 +11,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
-namespace ClientDatabaseApp.ViewModel
+namespace ClientDatabaseApp.ViewModels
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public class LoadCSVViewModel : BaseViewModel
     {
         public ICommand GetClientsFromCSVCommand { get; set; }
@@ -101,6 +97,7 @@ namespace ClientDatabaseApp.ViewModel
 
             IsLoading = false;
         }
+
 
     }
 }

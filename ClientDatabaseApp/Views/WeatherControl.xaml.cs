@@ -6,16 +6,16 @@ using Unity;
 namespace ClientDatabaseApp.Views
 {
     /// <summary>
-    /// Logika interakcji dla klasy ClientDatabase.xaml
+    /// Interaction logic for WeatherControl.xaml
     /// </summary>
-    public partial class ClientDatabase : UserControl
+    public partial class WeatherControl : UserControl
     {
-        public ClientDatabase()
+        public WeatherControl()
         {
-            var app = (App)Application.Current;
-            var viewModel = app.Container.Resolve<ClientDatabaseViewModel>();
-            DataContext = viewModel;
             InitializeComponent();
+            var app = (App)Application.Current;
+            var viewModel = app.Container.Resolve<WeatherViewModel>();
+            DataContext = viewModel;
         }
     }
 }

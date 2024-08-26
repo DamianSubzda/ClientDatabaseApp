@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
 
-namespace ClientDatabaseApp.Service
+namespace ClientDatabaseApp.Services.Utilities
 {
     class DataRowColorConverter : IValueConverter //TODO
     {
@@ -19,5 +15,7 @@ namespace ClientDatabaseApp.Service
         {
             throw new NotImplementedException();
         }
+
+
     }
 }

@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace ClientDatabaseApp.Service
+namespace ClientDatabaseApp.Services.Utilities
 {
     [ValueConversion(typeof(bool), typeof(Visibility))]
     public class BoolToVisibilityConverter : IValueConverter
@@ -17,5 +17,7 @@ namespace ClientDatabaseApp.Service
         {
             throw new NotImplementedException();
         }
+
+
     }
 }

@@ -1,9 +1,10 @@
-﻿<Window x:Class="ClientDatabaseApp.View.ShowActivity"
+﻿<Window x:Class="ClientDatabaseApp.Views.ShowActivity"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ClientDatabaseApp.View"
+        xmlns:local="clr-namespace:ClientDatabaseApp.Views" 
+        xmlns:viewmodels="clr-namespace:ClientDatabaseApp.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:ShowActivityViewModel}"
         mc:Ignorable="d"
         Title="ShowActivity" Height="450" Width="500">
     <Grid Background="{StaticResource Color1}">

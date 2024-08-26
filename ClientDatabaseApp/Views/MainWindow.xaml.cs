@@ -1,8 +1,8 @@
-﻿using ClientDatabaseApp.ViewModel;
+﻿using ClientDatabaseApp.ViewModels;
 using System.Windows;
 using Unity;
 
-namespace ClientDatabaseApp.View
+namespace ClientDatabaseApp.Views
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

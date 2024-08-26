@@ -1,8 +1,8 @@
-﻿using ClientDatabaseApp.Service;
+﻿using ClientDatabaseApp.Services;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace ClientDatabaseApp.ViewModel
+namespace ClientDatabaseApp.ViewModels
 {
     public class MainWindowViewModel
     {

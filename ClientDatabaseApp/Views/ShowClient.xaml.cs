@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace ClientDatabaseApp.View
+namespace ClientDatabaseApp.Views
 {
     /// <summary>
     /// Logika interakcji dla klasy ShowMore.xaml

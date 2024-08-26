@@ -1,4 +1,4 @@
-﻿using ClientDatabaseApp.Model;
+﻿using ClientDatabaseApp.Models;
 using ClientDatabaseApp.Services.Events;
 using Prism.Events;
 using System;
@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Threading.Tasks;
 
-namespace ClientDatabaseApp.Service.Repository
+namespace ClientDatabaseApp.Services.Repositories
 {
     public interface IClientRepo
     {
@@ -17,10 +17,12 @@ namespace ClientDatabaseApp.Service.Repository
         Task DeleteClient(Client client);
         Task<bool> CheckIfClientExists(Client client);
     }
+
     public class ClientRepo : IClientRepo
     {
         private readonly PostgresContext _context;
         private readonly IEventAggregator _eventAggregator;
+
         public ClientRepo(PostgresContext context, IEventAggregator eventAggregator)
         {
             _eventAggregator = eventAggregator;
@@ -102,5 +104,7 @@ namespace ClientDatabaseApp.Service.Repository
                 throw new Exception("Client not found.");
             }
         }
+
+
     }
 }

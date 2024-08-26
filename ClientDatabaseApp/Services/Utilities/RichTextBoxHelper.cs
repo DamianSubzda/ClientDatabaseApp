@@ -1,8 +1,7 @@
-﻿using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using System.Windows.Documents;
 
-namespace ClientDatabaseApp.Service
+namespace ClientDatabaseApp.Services.Utilities
 {
     public static class RichTextBoxHelper
     {
@@ -13,5 +12,7 @@ namespace ClientDatabaseApp.Service
                 return null;
             return textRange.Text.Trim();
         }
+
+
     }
 }

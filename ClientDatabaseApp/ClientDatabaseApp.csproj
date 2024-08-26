@@ -197,8 +197,8 @@
     <Compile Include="Services\Events\ClientRemovedFromDatabaseEvent.cs" />
     <Compile Include="Services\Events\ClientUpdatedInDatabaseEvent.cs" />
     <Compile Include="Services\Events\ClientAddedToDatabase.cs" />
-    <Compile Include="Services\Repository\ClientRepo.cs" />
-    <Compile Include="Services\Repository\ActivityRepo.cs" />
+    <Compile Include="Services\Repositories\ClientRepo.cs" />
+    <Compile Include="Services\Repositories\ActivityRepo.cs" />
     <Compile Include="Services\Utilities\BoolToVisibilityConverter.cs" />
     <Compile Include="Services\Utilities\ComboboxStatus.cs" />
     <Compile Include="Services\Utilities\DataRowColorConverter.cs" />
@@ -206,6 +206,7 @@
     <Compile Include="Services\Utilities\DayVisibilityConverter.cs" />
     <Compile Include="Services\Utilities\RichTextBoxHelper.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\WeatherViewModel.cs" />
     <Compile Include="ViewModels\NewActivityViewModel.cs" />
     <Compile Include="ViewModels\ShowActivityViewModel.cs" />
     <Compile Include="ViewModels\ShowClientViewModel.cs" />
@@ -217,6 +218,9 @@
     </Compile>
     <Compile Include="Views\ShowActivity.xaml.cs">
       <DependentUpon>ShowActivity.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\WeatherControl.xaml.cs">
+      <DependentUpon>WeatherControl.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\AddClient.xaml">
       <SubType>Designer</SubType>
@@ -243,7 +247,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Models\Client.cs" />
-    <Compile Include="Models\CalendarModel.cs" />
     <Compile Include="Models\Activity.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="Services\DelegateCommand.cs" />
@@ -276,6 +279,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ShowActivity.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\WeatherControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

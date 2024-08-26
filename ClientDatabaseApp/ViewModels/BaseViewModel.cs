@@ -20,5 +20,7 @@ namespace ClientDatabaseApp.ViewModels
             OnPropertyChanged(propertyName);
             return true;
         }
+
+
     }
 }

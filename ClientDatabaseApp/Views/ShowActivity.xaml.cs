@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace ClientDatabaseApp.View
+namespace ClientDatabaseApp.Views
 {
     /// <summary>
     /// Logika interakcji dla klasy ShowActivity.xaml

@@ -1,15 +1,14 @@
-﻿using ClientDatabaseApp.Model;
-using ClientDatabaseApp.Service;
-using ClientDatabaseApp.Service.Repository;
-using ClientDatabaseApp.ViewModels;
-using Prism.Events;
+﻿using ClientDatabaseApp.Models;
+using ClientDatabaseApp.Services;
+using ClientDatabaseApp.Services.Repositories;
+using ClientDatabaseApp.Services.Utilities;
 using System;
 using System.Collections.ObjectModel;
 using System.Windows.Controls;
 using System.Windows.Input;
-using static ClientDatabaseApp.Service.ComboboxStatus;
+using static ClientDatabaseApp.Services.Utilities.ComboboxStatus;
 
-namespace ClientDatabaseApp.ViewModel
+namespace ClientDatabaseApp.ViewModels
 {
     public class AddClientViewModel : BaseViewModel
     {
@@ -139,7 +138,7 @@ namespace ClientDatabaseApp.ViewModel
                 Data = DateTextBox,
                 Owner = OwnerTextBox,
                 Note = RichTextContent,
-                Status = (int)SelectedStatus.Value //Może podmienić i zamiast numerka będzie wartość z 'Enuma'
+                Status = (int)SelectedStatus.Value
             };
 
             try

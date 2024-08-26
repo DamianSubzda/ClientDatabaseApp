@@ -1,5 +1,5 @@
 ﻿using System.Data.Entity;
-using ClientDatabaseApp.Model;
+using ClientDatabaseApp.Models;
 
 public class PostgresContext : DbContext
 {
@@ -14,4 +14,6 @@ public class PostgresContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
     }
+
+
 }

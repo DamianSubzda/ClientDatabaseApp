@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace ClientDatabaseApp.Service
+namespace ClientDatabaseApp.Services.Utilities
 {
     public class DayVisibilityConverter : IValueConverter
     {
@@ -20,5 +20,7 @@ namespace ClientDatabaseApp.Service
         {
             throw new NotImplementedException();
         }
+
+
     }
 }

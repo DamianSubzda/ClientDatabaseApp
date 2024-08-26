@@ -1,13 +1,11 @@
-﻿<Window x:Class="ClientDatabaseApp.View.NewActivity"
+﻿<Window x:Class="ClientDatabaseApp.Views.NewActivity"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:System="clr-namespace:System;assembly=mscorlib"
-        xmlns:local="clr-namespace:ClientDatabaseApp.View"
-        xmlns:locals="clr-namespace:ClientDatabaseApp.Service" 
-        xmlns:viewmodel="clr-namespace:ClientDatabaseApp.ViewModel" 
-        d:DataContext="{d:DesignInstance Type=viewmodel:NewActivityViewModel}"
+        xmlns:local="clr-namespace:ClientDatabaseApp.Views"
+        xmlns:viewmodel="clr-namespace:ClientDatabaseApp.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodel:NewActivityViewModel}"
         mc:Ignorable="d"
         Title="Dodaj wydarzenie" Height="450" Width="500">
     <Grid Background="{StaticResource Color1}">

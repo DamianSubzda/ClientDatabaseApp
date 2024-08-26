@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media;
 
-namespace ClientDatabaseApp.Service
+namespace ClientDatabaseApp.Services.Utilities
 {
     public class ComboboxStatus
     {
@@ -42,6 +40,7 @@ namespace ClientDatabaseApp.Service
             public SolidColorBrush Color { get; set; }
         }
         private List<Status> StatusEnumValues { get; set; }
+
         public ComboboxStatus()
         {
             StatusEnumValues = Enum.GetValues(typeof(Status)).Cast<Status>().ToList();

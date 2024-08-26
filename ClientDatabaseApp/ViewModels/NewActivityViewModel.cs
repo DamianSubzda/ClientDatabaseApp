@@ -1,12 +1,12 @@
-﻿using ClientDatabaseApp.Model;
-using ClientDatabaseApp.Service;
-using ClientDatabaseApp.Service.Repository;
-using ClientDatabaseApp.ViewModels;
+﻿using ClientDatabaseApp.Models;
+using ClientDatabaseApp.Services;
+using ClientDatabaseApp.Services.Utilities;
+using ClientDatabaseApp.Services.Repositories;
 using System;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace ClientDatabaseApp.ViewModel
+namespace ClientDatabaseApp.ViewModels
 {
     public class NewActivityViewModel : BaseViewModel
     {
@@ -41,6 +41,7 @@ namespace ClientDatabaseApp.ViewModel
             _activityRepo.CreateActivity(Client, SelectedDate, note);
             _closeAction?.Invoke();
         }
+
 
     }
 }

@@ -1,9 +1,9 @@
-﻿using ClientDatabaseApp.ViewModel;
+﻿using ClientDatabaseApp.ViewModels;
 using System.Windows;
 using System.Windows.Controls;
 using Unity;
 
-namespace ClientDatabaseApp.View
+namespace ClientDatabaseApp.Views
 {
     /// <summary>
     /// Logika interakcji dla klasy LoadCSV.xaml

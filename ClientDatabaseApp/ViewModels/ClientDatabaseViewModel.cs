@@ -1,9 +1,9 @@
-﻿using ClientDatabaseApp.Model;
-using ClientDatabaseApp.Service;
-using ClientDatabaseApp.Service.Repository;
+﻿using ClientDatabaseApp.Models;
+using ClientDatabaseApp.Services;
+using ClientDatabaseApp.Services.Utilities;
+using ClientDatabaseApp.Services.Repositories;
 using ClientDatabaseApp.Services.Events;
-using ClientDatabaseApp.View;
-using ClientDatabaseApp.ViewModels;
+using ClientDatabaseApp.Views;
 using Prism.Events;
 using System;
 using System.Collections.ObjectModel;
@@ -13,9 +13,9 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
-using static ClientDatabaseApp.Service.ComboboxStatus;
+using static ClientDatabaseApp.Services.Utilities.ComboboxStatus;
 
-namespace ClientDatabaseApp.ViewModel
+namespace ClientDatabaseApp.ViewModels
 {
     public class ClientDatabaseViewModel : BaseViewModel
     {
@@ -261,6 +261,8 @@ namespace ClientDatabaseApp.ViewModel
                 _dialogService.ShowMessage("Proszę zaznaczyć klienta w tabeli.");
             }
         }
+
+
     }
 }
 

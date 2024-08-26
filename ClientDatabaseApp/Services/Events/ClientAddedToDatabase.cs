@@ -1,4 +1,4 @@
-﻿using ClientDatabaseApp.Model;
+﻿using ClientDatabaseApp.Models;
 using Prism.Events;
 
 

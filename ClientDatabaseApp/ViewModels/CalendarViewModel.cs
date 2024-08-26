@@ -1,10 +1,8 @@
-﻿using ClientDatabaseApp.Model;
-using ClientDatabaseApp.Service;
-using ClientDatabaseApp.Service.API;
-using ClientDatabaseApp.Service.Repository;
+﻿using ClientDatabaseApp.Models;
+using ClientDatabaseApp.Services;
+using ClientDatabaseApp.Services.Repositories;
 using ClientDatabaseApp.Services.Events;
-using ClientDatabaseApp.View;
-using ClientDatabaseApp.ViewModels;
+using ClientDatabaseApp.Views;
 using Prism.Events;
 using System;
 using System.Collections.Generic;
@@ -13,17 +11,36 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 
-namespace ClientDatabaseApp.ViewModel
+namespace ClientDatabaseApp.ViewModels
 {
     public class CalendarViewModel : BaseViewModel
     {
-
-        private CalendarModel calendarModel = new CalendarModel();
         public ICommand MouseClickCommand { get; private set; }
-        public ICommand Button_Click_PrevMonthCommand { get; private set; }
-        public ICommand Button_Click_NextMonthCommand { get; private set; }
+        public ICommand ButtonClickPrevMonthCommand { get; private set; }
+        public ICommand ButtonClickNextMonthCommand { get; private set; }
         public ICommand PickActivityCommand { get; private set; }
         public ICommand DeleteActivityCommand { get; private set; }
+
+        private CalendarDataModel _calendarModel;
+        public CalendarDataModel CalendarModel
+        {
+            get => _calendarModel;
+            set => SetField(ref _calendarModel, value, nameof(CalendarModel));
+        }
+
+        public class CalendarDataModel
+        {
+            public string HeaderToDisplay { get; set; }
+            public ObservableCollection<DayInfo> DaysOfCurrentMonth { get; set; }
+            public DateTime DateToDisplay { get; set; }
+            public List<Activity> Activities { get; set; }
+        }
+
+        public class DayInfo
+        {
+            public string DayNumber { get; set; }
+            public int ActivitiesCount { get; set; }
+        }
 
         public enum MonthEnum
         {
@@ -35,14 +52,14 @@ namespace ClientDatabaseApp.ViewModel
             Monday = 1, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday
         }
 
-        public ObservableCollection<DayInfo> Days //Do zmiany całkowicie - ten model w CalendarModel
+        public ObservableCollection<DayInfo> Days
         {
-            get => calendarModel.DaysOfCurrentMonth;
+            get => CalendarModel.DaysOfCurrentMonth;
             set
             {
-                if (calendarModel.DaysOfCurrentMonth != value)
+                if (CalendarModel.DaysOfCurrentMonth != value)
                 {
-                    calendarModel.DaysOfCurrentMonth = value;
+                    CalendarModel.DaysOfCurrentMonth = value;
                     OnPropertyChanged(nameof(Days));
                 }
             }
@@ -50,12 +67,12 @@ namespace ClientDatabaseApp.ViewModel
 
         public string DataToDisplay
         {
-            get => calendarModel.HeaderToDisplay;
+            get => CalendarModel.HeaderToDisplay;
             set
             {
-                if (calendarModel.HeaderToDisplay != value)
+                if (CalendarModel.HeaderToDisplay != value)
                 {
-                    calendarModel.HeaderToDisplay = value;
+                    CalendarModel.HeaderToDisplay = value;
                     OnPropertyChanged(nameof(DataToDisplay));
                 }
             }
@@ -65,45 +82,15 @@ namespace ClientDatabaseApp.ViewModel
         public ObservableCollection<Activity> Activity
         {
             get => _activity;
-            set=> SetField(ref _activity, value, nameof(Activity));
+            set => SetField(ref _activity, value, nameof(Activity));
         }
 
-        private string _temperature;
-        private string _temperatureFeel;
-        private string _wind;
-        private string _weather;
-        private string _city;
         private Activity _selectedActivity;
 
-        public string Temperature
-        {
-            get => _temperature;
-            set => SetField(ref _temperature, value, nameof(Temperature));
-        }
-        public string TemperatureFeel
-        {
-            get => _temperatureFeel;
-            set=> SetField(ref _temperatureFeel, value, nameof(TemperatureFeel));
-        }
-        public string Wind
-        {
-            get => _wind;
-            set=> SetField(ref _wind, value, nameof(Wind));
-        }
-        public string Weather
-        {
-            get => _weather;
-            set=> SetField(ref _weather, value, nameof(Weather));
-        }
-        public string City
-        {
-            get => _city;
-            set=> SetField(ref _city, value, nameof(City));
-        }
         public Activity SelectedActivity
         {
             get => _selectedActivity;
-            set=> SetField(ref _selectedActivity, value, nameof(SelectedActivity));
+            set => SetField(ref _selectedActivity, value, nameof(SelectedActivity));
         }
 
         private readonly IActivityRepo _activityRepo;
@@ -124,26 +111,28 @@ namespace ClientDatabaseApp.ViewModel
             _eventAggregator.GetEvent<ActivityRemovedFromDatabaseEvent>().Subscribe(OnActivityRemoved);
             _eventAggregator.GetEvent<ActivityUpdatedInDatabaseEvent>().Subscribe(OnActivityUpdated);
 
-            Button_Click_PrevMonthCommand = new DelegateCommand<RoutedEventArgs>(Button_Click_PrevMonth);
-            Button_Click_NextMonthCommand = new DelegateCommand<RoutedEventArgs>(Button_Click_NextMonth);
+            ButtonClickPrevMonthCommand = new DelegateCommand<RoutedEventArgs>(ButtonClickPrevMonth);
+            ButtonClickNextMonthCommand = new DelegateCommand<RoutedEventArgs>(ButtonClickNextMonth);
             PickActivityCommand = new DelegateCommand<RoutedEventArgs>(PickActivity);
             DeleteActivityCommand = new DelegateCommand<RoutedEventArgs>(DeleteActivity);
             MouseClickCommand = new DelegateCommand<string>(OnMouseClick);
 
-            calendarModel.HeaderToDisplay = ((MonthEnum)DateTime.Now.Month).ToString() + " " + DateTime.Now.Year.ToString();
-            calendarModel.DateToDisplay = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            CalendarModel = new CalendarDataModel
+            {
+                HeaderToDisplay = ((MonthEnum)DateTime.Now.Month).ToString() + " " + DateTime.Now.Year.ToString(),
+                DateToDisplay = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1),
+                DaysOfCurrentMonth = new ObservableCollection<DayInfo>()
+            };
 
-            InitialCalendar();
-            InitializeAsync();
-            _clientRepo = clientRepo;
+            InitializeCalendar();
         }
 
-        private void OnActivityRemoved(Activity addedActivity)
+        private void OnActivityRemoved(Activity removedActivity)
         {
             GetDaysFromMonth();
         }
-        
-        private void OnActivityAdded(Activity removedActivity)
+
+        private void OnActivityAdded(Activity addedActivity)
         {
             GetDaysFromMonth();
         }
@@ -164,39 +153,25 @@ namespace ClientDatabaseApp.ViewModel
             Activity = activities;
             SelectedActivity = updatedActivity;
         }
-        public async void InitializeAsync()
-        {
-            IpifyAPIConnector ipify = new IpifyAPIConnector();
-            await ipify.GetIp();
-            GeolocationAPIConnector geolocation = new GeolocationAPIConnector(ipify.IPAddress);
-            await geolocation.GetCoorAsync();
-            OpenweatherAPIConnector openweather = new OpenweatherAPIConnector(geolocation.Lat, geolocation.Lon);
-            await openweather.GetWeather();
-            Temperature = Math.Round(openweather.temperature, 1).ToString() + " C.";
-            TemperatureFeel = Math.Round(openweather.temperatureFeel, 1).ToString() + " C.";
-            Wind = Math.Round(openweather.wind * 36 / 10, 1).ToString() + " km/h.";
-            Weather = openweather.weather + '.';
-            City = geolocation.City + '.';
-        }
 
-        private void InitialCalendar()
+        private void InitializeCalendar()
         {
             GetDaysFromMonth();
         }
 
-        private void Button_Click_NextMonth(RoutedEventArgs e)
+        private void ButtonClickNextMonth(RoutedEventArgs e)
         {
             ChangeMonth(1);
         }
 
-        private void Button_Click_PrevMonth(RoutedEventArgs e)
+        private void ButtonClickPrevMonth(RoutedEventArgs e)
         {
             ChangeMonth(-1);
         }
 
         private void PickActivity(RoutedEventArgs e)
         {
-            if(SelectedActivity != null)
+            if (SelectedActivity != null)
             {
                 ShowActivity showActivity = new ShowActivity();
                 ShowActivityViewModel showActivityViewModel = new ShowActivityViewModel(SelectedActivity, () => showActivity.Close(), _clientRepo, _activityRepo);
@@ -211,7 +186,7 @@ namespace ClientDatabaseApp.ViewModel
             {
                 bool result = _dialogService.Confirm("Czy jesteś pewien, że chcesz usunąć te wydarzenie?");
 
-                if(result)
+                if (result)
                 {
                     _activityRepo.DeleteActivity(SelectedActivity);
                     Activity.Remove(SelectedActivity);
@@ -222,20 +197,20 @@ namespace ClientDatabaseApp.ViewModel
 
         private void ChangeMonth(int amountOfMonthToChange)
         {
-            calendarModel.DateToDisplay = calendarModel.DateToDisplay.AddMonths(amountOfMonthToChange);
-            DataToDisplay = (MonthEnum)calendarModel.DateToDisplay.Month + " " + calendarModel.DateToDisplay.Year.ToString();
+            CalendarModel.DateToDisplay = CalendarModel.DateToDisplay.AddMonths(amountOfMonthToChange);
+            DataToDisplay = (MonthEnum)CalendarModel.DateToDisplay.Month + " " + CalendarModel.DateToDisplay.Year.ToString();
 
             GetDaysFromMonth();
         }
 
         private async void OnMouseClick(string dayNumber)
         {
-            if (Days.Any(dayinfo => dayinfo.DayNumber == dayNumber))
+            if (Days.Any(dayInfo => dayInfo.DayNumber == dayNumber))
             {
                 try
                 {
                     int day_number = int.Parse(dayNumber);
-                    var activities = await _activityRepo.GetActivitiesOfDay(calendarModel.DateToDisplay.Year, calendarModel.DateToDisplay.Month, day_number);
+                    var activities = await _activityRepo.GetActivitiesOfDay(CalendarModel.DateToDisplay.Year, CalendarModel.DateToDisplay.Month, day_number);
 
                     Activity = new ObservableCollection<Activity>(activities);
                 }
@@ -248,11 +223,11 @@ namespace ClientDatabaseApp.ViewModel
 
         private async void GetDaysFromMonth()
         {
-            var activitiesCount = (await _activityRepo.GetActivitiesCountOfMonth(calendarModel.DateToDisplay.Year, calendarModel.DateToDisplay.Month))
+            var activitiesCount = (await _activityRepo.GetActivitiesCountOfMonth(CalendarModel.DateToDisplay.Year, CalendarModel.DateToDisplay.Month))
                 .ToDictionary(ac => ac.Day, ac => ac.Count);
 
-            int daysInMonth = DateTime.DaysInMonth(calendarModel.DateToDisplay.Year, calendarModel.DateToDisplay.Month);
-            int firstDayOfWeek = (int)new DateTime(calendarModel.DateToDisplay.Year, calendarModel.DateToDisplay.Month, 1).DayOfWeek;
+            int daysInMonth = DateTime.DaysInMonth(CalendarModel.DateToDisplay.Year, CalendarModel.DateToDisplay.Month);
+            int firstDayOfWeek = (int)new DateTime(CalendarModel.DateToDisplay.Year, CalendarModel.DateToDisplay.Month, 1).DayOfWeek;
 
             if (firstDayOfWeek == 0)
                 firstDayOfWeek = 7;
@@ -280,7 +255,6 @@ namespace ClientDatabaseApp.ViewModel
             Days = new ObservableCollection<DayInfo>(listOfDays);
         }
 
+
     }
-
-
 }

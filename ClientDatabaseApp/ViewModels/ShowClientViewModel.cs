@@ -1,15 +1,15 @@
-﻿using ClientDatabaseApp.Model;
-using ClientDatabaseApp.Service;
-using ClientDatabaseApp.Service.Repository;
-using ClientDatabaseApp.ViewModels;
+﻿using ClientDatabaseApp.Models;
+using ClientDatabaseApp.Services;
+using ClientDatabaseApp.Services.Utilities;
+using ClientDatabaseApp.Services.Repositories;
 using System;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using static ClientDatabaseApp.Service.ComboboxStatus;
+using static ClientDatabaseApp.Services.Utilities.ComboboxStatus;
 
-namespace ClientDatabaseApp.ViewModel
+namespace ClientDatabaseApp.ViewModels
 {
     internal class ShowClientViewModel : BaseViewModel
     {

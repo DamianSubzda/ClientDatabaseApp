@@ -1,4 +1,4 @@
-﻿using ClientDatabaseApp.Model;
+﻿using ClientDatabaseApp.Models;
 using ClientDatabaseApp.Services.Events;
 using Prism.Events;
 using System;
@@ -7,7 +7,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ClientDatabaseApp.Service.Repository
+namespace ClientDatabaseApp.Services.Repositories
 {
     public interface IActivityRepo
     {
@@ -17,15 +17,18 @@ namespace ClientDatabaseApp.Service.Repository
         Task CreateActivity(Client client, DateTime date, string note);
         Task DeleteActivity(Activity activity);
     }
+
     public class ActivityRepo : IActivityRepo
     {
         private readonly PostgresContext _context;
         private readonly IEventAggregator _eventAggregator;
+
         public ActivityRepo(PostgresContext context, IEventAggregator eventAggregator)
         {
             _eventAggregator = eventAggregator;
             _context = context;
         }
+
         public async Task CreateActivity(Client client, DateTime date, string note)
         {
             try
@@ -106,5 +109,7 @@ namespace ClientDatabaseApp.Service.Repository
                 throw new Exception("Client not found.");
             }
         }
+
+
     }
 }

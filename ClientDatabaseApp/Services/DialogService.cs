@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 
-namespace ClientDatabaseApp.Service
+namespace ClientDatabaseApp.Services
 {
     public interface IDialogService
     {
         void ShowMessage(string message); 
         bool Confirm(string message);
     }
+
     internal class DialogService : IDialogService
     {
         public void ShowMessage(string message)
@@ -24,5 +20,7 @@ namespace ClientDatabaseApp.Service
             var result = MessageBox.Show(message, "Confirm", MessageBoxButton.YesNo);
             return result == MessageBoxResult.Yes;
         }
+
+
     }
 }

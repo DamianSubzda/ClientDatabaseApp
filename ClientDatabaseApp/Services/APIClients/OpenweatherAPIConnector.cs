@@ -1,12 +1,10 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Configuration;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace ClientDatabaseApp.Service.API
+namespace ClientDatabaseApp.Services.APIClients
 {
     public class OpenweatherAPIConnector //Requests -> 60 calls/minute  1,000,000 calls/month
     {

@@ -1,10 +1,10 @@
-﻿using ClientDatabaseApp.Service.Repository;
-using ClientDatabaseApp.View;
+﻿using ClientDatabaseApp.Services.Repositories;
+using ClientDatabaseApp.Views;
 using System.Data.Entity;
 using System.Windows;
 using Unity.Lifetime;
 using Unity;
-using ClientDatabaseApp.Service;
+using ClientDatabaseApp.Services;
 using Prism.Events;
 
 namespace ClientDatabaseApp
