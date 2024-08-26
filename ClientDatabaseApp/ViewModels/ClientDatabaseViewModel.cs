@@ -122,7 +122,7 @@ namespace ClientDatabaseApp.ViewModels
             ClientsView.Refresh();
         }
 
-        private void HandleStatusChange() //Filter by Names and Cities - bug occures when city is null
+        private void HandleStatusChange()
         {
             if (string.IsNullOrEmpty(FilterText))
             {
@@ -141,8 +141,8 @@ namespace ClientDatabaseApp.ViewModels
                 {
                     if (item is Client client)
                     {
-                        bool isNameMatch = client.ClientName.IndexOf(FilterText, StringComparison.OrdinalIgnoreCase) >= 0;
-                        bool isCityMatch = client.City.IndexOf(FilterText, StringComparison.OrdinalIgnoreCase) >= 0;
+                        bool isNameMatch = client.ClientName != null && client.ClientName.IndexOf(FilterText, StringComparison.OrdinalIgnoreCase) >= 0;
+                        bool isCityMatch = client.City != null && client.City.IndexOf(FilterText, StringComparison.OrdinalIgnoreCase) >= 0;
                         bool isDateFilterMatch = false;
 
                         if (DateTime.TryParseExact(FilterText, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out var filterDate))
@@ -178,8 +178,8 @@ namespace ClientDatabaseApp.ViewModels
                 {
                     if (item is Client client)
                     {
-                        bool isNameMatch = client.ClientName.IndexOf(FilterText, StringComparison.OrdinalIgnoreCase) >= 0;
-                        bool isCityMatch = client.City.IndexOf(FilterText, StringComparison.OrdinalIgnoreCase) >= 0;
+                        bool isNameMatch = client.ClientName != null && client.ClientName.IndexOf(FilterText, StringComparison.OrdinalIgnoreCase) >= 0;
+                        bool isCityMatch = client.City != null && client.City.IndexOf(FilterText, StringComparison.OrdinalIgnoreCase) >= 0;
                         bool isDateFilterMatch = false;
 
                         if (DateTime.TryParseExact(FilterText, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out var filterDate))
