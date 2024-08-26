@@ -5,19 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:local="clr-namespace:ClientDatabaseApp" 
-        xmlns:localV="clr-namespace:ClientDatabaseApp.Views" 
-        xmlns:viewmodels="clr-namespace:ClientDatabaseApp.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:CalendarViewModel}"
+        xmlns:localV="clr-namespace:ClientDatabaseApp.Views"
         mc:Ignorable="d"
         Title="MainWindow" Height="520" Width="800">
     <Grid Background="{StaticResource Color1}">
 
         <TabControl>
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="SelectionChanged">
-                    <i:InvokeCommandAction Command="{Binding TabSelectionChangedCommand}" />
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-            
             <TabItem Header="Baza klientów">
                 <localV:ClientDatabase/>
             </TabItem>
