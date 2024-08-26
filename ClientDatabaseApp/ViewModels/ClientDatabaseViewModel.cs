@@ -14,6 +14,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 using static ClientDatabaseApp.Services.Utilities.ComboboxStatus;
+using System.Threading.Tasks;
 
 namespace ClientDatabaseApp.ViewModels
 {
@@ -197,7 +198,7 @@ namespace ClientDatabaseApp.ViewModels
             ClientsView.Refresh();
         }
 
-        private async void LoadClients()
+        internal async void LoadClients()
         {
             var clients = await _clientRepo.GetAllClients();
 
