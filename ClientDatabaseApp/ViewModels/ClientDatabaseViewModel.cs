@@ -78,6 +78,7 @@ namespace ClientDatabaseApp.ViewModels
             RemoveSelectedCommand = new DelegateCommand<RoutedEventArgs>(RemoveSelected);
             AddActivityCommand = new DelegateCommand<RoutedEventArgs>(AddActivity);
             FilterCommand = new DelegateCommand<RoutedEventArgs>(ApplyFilter);
+
             LoadClients();
             InitializeComboBoxStatus();
             
@@ -220,7 +221,7 @@ namespace ClientDatabaseApp.ViewModels
             }
         }
 
-        private void RemoveSelected(RoutedEventArgs e)
+        private async void RemoveSelected(RoutedEventArgs e)
         {
             if (SelectedClient != null)
             {
@@ -229,7 +230,7 @@ namespace ClientDatabaseApp.ViewModels
                 {
                     try
                     {
-                        _clientRepo.DeleteClient(SelectedClient);
+                        await _clientRepo.DeleteClient(SelectedClient);
                         _clients.Remove(SelectedClient);
                     }
                     catch
