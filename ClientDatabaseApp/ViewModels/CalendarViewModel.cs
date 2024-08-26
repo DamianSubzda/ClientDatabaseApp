@@ -174,7 +174,8 @@ namespace ClientDatabaseApp.ViewModels
             if (SelectedActivity != null)
             {
                 ShowActivity showActivity = new ShowActivity();
-                ShowActivityViewModel showActivityViewModel = new ShowActivityViewModel(SelectedActivity, () => showActivity.Close(), _clientRepo, _activityRepo);
+                ShowActivityViewModel showActivityViewModel = 
+                    new ShowActivityViewModel(SelectedActivity, () => showActivity.Close(), _clientRepo, _activityRepo, _dialogService);
                 showActivity.DataContext = showActivityViewModel;
                 showActivity.ShowDialog();
             }
@@ -188,9 +189,17 @@ namespace ClientDatabaseApp.ViewModels
 
                 if (result)
                 {
-                    _activityRepo.DeleteActivity(SelectedActivity);
-                    Activity.Remove(SelectedActivity);
-                    SelectedActivity = null;
+                    try
+                    {
+                        _activityRepo.DeleteActivity(SelectedActivity);
+                        Activity.Remove(SelectedActivity);
+                        SelectedActivity = null;
+                    }
+                    catch
+                    {
+                        _dialogService.ShowMessage("Wystąpił nieznany błąd podczas próby usunięcia zaznaczonego wydarzenia!");
+                    }
+                    
                 }
             }
         }

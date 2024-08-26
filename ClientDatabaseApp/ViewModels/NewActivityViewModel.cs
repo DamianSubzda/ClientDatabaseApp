@@ -38,8 +38,17 @@ namespace ClientDatabaseApp.ViewModels
                 return;
             }
 
-            _activityRepo.CreateActivity(Client, SelectedDate, note);
-            _closeAction?.Invoke();
+            try
+            {
+                _activityRepo.CreateActivity(Client, SelectedDate, note);
+                _closeAction?.Invoke();
+            }
+            catch
+            {
+                _dialogService.ShowMessage("Wystąpił błąd podczas próby stworzenia nowego wydarzenia! \nSprawdź wprowadzone dane!");
+            }
+            
+            
         }
 
 

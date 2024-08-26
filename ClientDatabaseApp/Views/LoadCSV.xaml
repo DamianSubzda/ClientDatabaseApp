@@ -33,7 +33,6 @@
         </DataGrid>
 
         <StackPanel Grid.Row="1" Margin="10,0,10,0" Height="50" Orientation="Horizontal" HorizontalAlignment="Center">
-            <TextBlock Text="{Binding IsLoading}" />
             <Button Content="Wybierz i podejrzyj plik" Margin="5" Command="{Binding GetClientsFromCSVCommand}"/>
             <Button Content="Wczytaj dane" Margin="5" Command="{Binding AddToDatabaseCommand}"/>
         </StackPanel>

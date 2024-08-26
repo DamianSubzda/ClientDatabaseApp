@@ -135,7 +135,8 @@ namespace ClientDatabaseApp.ViewModels
 
 
         private IClientRepo _clientRepo;
-        public ShowClientViewModel(Client client, Action closeAction, IClientRepo clientRepo)
+        private IDialogService _dialogService;
+        public ShowClientViewModel(Client client, Action closeAction, IClientRepo clientRepo, IDialogService dialogService)
         {
             ComboboxStatus combobox = new ComboboxStatus();
             StatusItems = combobox.StatusItems;
@@ -143,6 +144,7 @@ namespace ClientDatabaseApp.ViewModels
             Client = client;
             _closeAction = closeAction;
             _clientRepo = clientRepo;
+            _dialogService = dialogService;
 
             EditDataCommand = new DelegateCommand<RoutedEventArgs>(EditData);
             SaveDataCommand = new DelegateCommand<RichTextBox>(SaveData);
@@ -175,7 +177,15 @@ namespace ClientDatabaseApp.ViewModels
                 Status = (int)SelectedStatus.Value
             };
 
-            _clientRepo.UpdateClient(client);
+            try
+            {
+                _clientRepo.UpdateClient(client);
+            }
+            catch
+            {
+                _dialogService.ShowMessage("Wystąpił błąd podczas aktualizowania informacji o kliencie! \nSprawdź wprowadzone dane!");
+            }
+            
 
             IsEditing = false;
         }

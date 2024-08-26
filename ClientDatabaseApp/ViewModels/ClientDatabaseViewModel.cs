@@ -122,7 +122,7 @@ namespace ClientDatabaseApp.ViewModels
             ClientsView.Refresh();
         }
 
-        private void HandleStatusChange()
+        private void HandleStatusChange() //Filter by Names and Cities - bug occures when city is null
         {
             if (string.IsNullOrEmpty(FilterText))
             {
@@ -209,7 +209,7 @@ namespace ClientDatabaseApp.ViewModels
             if (SelectedClient != null)
             {
                 ShowClient showMore = new ShowClient();
-                ShowClientViewModel showMoreViewModel = new ShowClientViewModel(SelectedClient, () => showMore.Close(), _clientRepo);
+                ShowClientViewModel showMoreViewModel = new ShowClientViewModel(SelectedClient, () => showMore.Close(), _clientRepo, _dialogService);
                 showMore.DataContext = showMoreViewModel;
                 showMore.ShowDialog();
 
@@ -234,7 +234,7 @@ namespace ClientDatabaseApp.ViewModels
                     }
                     catch
                     {
-                        _dialogService.ShowMessage("Wystąpił błąd podczas usuwania klienta!");
+                        _dialogService.ShowMessage("Wystąpił nieznany błąd podczas próby usunięcia klienta!");
                     }
 
                 }

@@ -56,10 +56,12 @@ namespace ClientDatabaseApp.ViewModels
 
         private IClientRepo _clientRepo;
         private IActivityRepo _activityRepo;
-        public ShowActivityViewModel(Activity activity, Action closeAction, IClientRepo clientRepo, IActivityRepo activityRepo)
+        private IDialogService _dialogService;
+        public ShowActivityViewModel(Activity activity, Action closeAction, IClientRepo clientRepo, IActivityRepo activityRepo, IDialogService dialogService)
         {
             _clientRepo = clientRepo;
             _activityRepo = activityRepo;
+            _dialogService = dialogService;
 
             Activity = activity;
             OriginalNote = Activity.Note;
@@ -72,6 +74,7 @@ namespace ClientDatabaseApp.ViewModels
             EditCommand = new DelegateCommand<RichTextBox>(EditActivity);
 
             LoadClientNameAsync(activity.ClientId);
+            
         }
 
         private async void LoadClientNameAsync(int clientId)
@@ -90,9 +93,18 @@ namespace ClientDatabaseApp.ViewModels
         private async void EditActivity(RichTextBox richTextBox)
         {
             string note = RichTextBoxHelper.GetTextFromRichTextBox(richTextBox);
-            OriginalNote = note;
             Activity.Note = note;
-            await _activityRepo.UpdateActivity(Activity);
+
+            try
+            {
+                await _activityRepo.UpdateActivity(Activity);
+                OriginalNote = note;
+            }
+            catch
+            {
+                _dialogService.ShowMessage("Wystąpił błąd podczas aktualizowania informacji o wydarzeniu! \nSprawdź wprowadzone dane!");
+            }
+            
         }
 
         private void ExitWindow(RoutedEventArgs e)
