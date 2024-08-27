@@ -1,35 +1,36 @@
-﻿using System;
+﻿using Newtonsoft.Json;
 using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace ClientDatabaseApp.Services.APIClients //Requests -> nolimit
 {
-    public class IpifyAPIConnector
+    public interface IIpifyAPIConnector
+    {
+        string IPAddress { get; }
+        Task GetIpAsync();
+    }
+
+    public class IpifyAPIConnector : IIpifyAPIConnector
     {
         public string IPAddress { get; private set; }
 
-        public IpifyAPIConnector()
+        private readonly HttpClient _httpClient;
+
+        public IpifyAPIConnector(HttpClient httpClient = null)
         {
+            _httpClient = httpClient ?? new HttpClient();
         }
 
-        public async Task GetIp()
+        public async Task GetIpAsync()
         {
-            string requestUri = "https://api.ipify.org";
-            using (HttpClient client = new HttpClient())
+            HttpResponseMessage response = await _httpClient.GetAsync("https://api.ipify.org?format=json");
+            if (response.IsSuccessStatusCode)
             {
-                try
-                {
-                    var ipAddress = await client.GetStringAsync(requestUri);
-                    IPAddress = ipAddress;
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine($"Wystąpił wyjątek: {e.Message}");
-                }
+                string content = await response.Content.ReadAsStringAsync();
+                dynamic data = JsonConvert.DeserializeObject(content);
+                IPAddress = data.ip;
             }
         }
-
-
 
 
     }

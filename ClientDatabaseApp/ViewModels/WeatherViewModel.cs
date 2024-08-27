@@ -37,24 +37,30 @@ namespace ClientDatabaseApp.ViewModels
             set => SetField(ref _city, value, nameof(City));
         }
 
-        public WeatherViewModel()
+        private readonly IIpifyAPIConnector _ipifyAPIConnector;
+        private readonly IGeolocationAPIConnector _geolocationAPIConnector;
+        private readonly IOpenweatherAPIConnector _openweatherAPIConnector;
+
+        public WeatherViewModel(IIpifyAPIConnector ipifyAPIConnector, IGeolocationAPIConnector geolocationAPIConnector, IOpenweatherAPIConnector openweatherAPIConnector)
         {
+            _ipifyAPIConnector = ipifyAPIConnector;
+            _geolocationAPIConnector = geolocationAPIConnector;
+            _openweatherAPIConnector = openweatherAPIConnector;
+
             InitializeAsync();
         }
 
         public async void InitializeAsync()
         {
-            IpifyAPIConnector ipify = new IpifyAPIConnector();
-            await ipify.GetIp();
-            GeolocationAPIConnector geolocation = new GeolocationAPIConnector(ipify.IPAddress);
-            await geolocation.GetCoorAsync();
-            OpenweatherAPIConnector openweather = new OpenweatherAPIConnector(geolocation.Lat, geolocation.Lon);
-            await openweather.GetWeather();
-            Temperature = Math.Round(openweather.temperature, 1).ToString() + " C.";
-            TemperatureFeel = Math.Round(openweather.temperatureFeel, 1).ToString() + " C.";
-            Wind = Math.Round(openweather.wind * 36 / 10, 1).ToString() + " km/h.";
-            Weather = openweather.weather + '.';
-            City = geolocation.City + '.';
+            await _ipifyAPIConnector.GetIpAsync();
+            await _geolocationAPIConnector.GetCoorAsync(_ipifyAPIConnector.IPAddress);
+            await _openweatherAPIConnector.GetWeatherAsync(_geolocationAPIConnector.Lat, _geolocationAPIConnector.Lon);
+
+            Temperature = Math.Round(_openweatherAPIConnector.Temperature, 1).ToString() + " C.";
+            TemperatureFeel = Math.Round(_openweatherAPIConnector.TemperatureFeel, 1).ToString() + " C.";
+            Wind = Math.Round(_openweatherAPIConnector.Wind * 36 / 10, 1).ToString() + " km/h.";
+            Weather = _openweatherAPIConnector.Weather + '.';
+            City = _geolocationAPIConnector.City + '.';
         }
 
 

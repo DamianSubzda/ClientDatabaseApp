@@ -1,51 +1,42 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace ClientDatabaseApp.Services.APIClients //Requests -> nolimit
 {
-    public class GeolocationAPIConnector
+    public interface IGeolocationAPIConnector
     {
-        public string IPAddress { get; private set; }
+        string Lat { get; }
+        string Lon { get; }
+        string City { get; }
+        Task GetCoorAsync(string ipAddress);
+    }
+    public class GeolocationAPIConnector : IGeolocationAPIConnector
+    {
         public string Lat { get; private set; }
         public string Lon { get; private set; }
         public string City { get; private set; }
 
-        public GeolocationAPIConnector(string iPAddress)
+        private readonly HttpClient _httpClient;
+
+        public GeolocationAPIConnector(HttpClient httpClient = null)
         {
-            IPAddress = iPAddress;
+            _httpClient = httpClient ?? new HttpClient();
         }
 
-        public async Task GetCoorAsync()
+        public async Task GetCoorAsync(string ipAddress)
         {
-            string requestUri = $"http://ip-api.com/json/{IPAddress}?fields=status,message,country,regionName,city,zip,lat,lon,query&lang=pl";
-            using (HttpClient client = new HttpClient())
+            string requestUri = $"http://ip-api.com/json/{ipAddress}?fields=status,message,country,regionName,city,zip,lat,lon,query&lang=pl";
+            HttpResponseMessage response = await _httpClient.GetAsync(requestUri);
+            if (response.IsSuccessStatusCode)
             {
-                try
-                {
-                    HttpResponseMessage response = await client.GetAsync(requestUri);
-                    if (response.IsSuccessStatusCode)
-                    {
-                        string content = await response.Content.ReadAsStringAsync();
-                        dynamic locationData = JsonConvert.DeserializeObject(content);
-                        Lat = locationData.lat;
-                        Lon = locationData.lon;
-                        City = locationData.city;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Nie udało się uzyskać odpowiedzi: " + response.StatusCode);
-                    }
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("Wystąpił wyjątek: " + e.Message);
-                }
+                string content = await response.Content.ReadAsStringAsync();
+                dynamic locationData = JsonConvert.DeserializeObject(content);
+                Lat = locationData.lat;
+                Lon = locationData.lon;
+                City = locationData.city;
             }
         }
-
-
 
 
     }

@@ -6,56 +6,47 @@ using System.Threading.Tasks;
 
 namespace ClientDatabaseApp.Services.APIClients
 {
-    public class OpenweatherAPIConnector //Requests -> 60 calls/minute  1,000,000 calls/month
+    public interface IOpenweatherAPIConnector
+    {
+        double Temperature { get; }
+        double TemperatureFeel { get; }
+        double Wind { get; }
+        string Weather { get; }
+        Task GetWeatherAsync(string lat, string lon);
+    }
+
+    public class OpenweatherAPIConnector : IOpenweatherAPIConnector //Requests -> 60 calls/minute  1,000,000 calls/month
     {
 
-        private string lat;
-        private string lon;
+        public double Temperature { get; set; }
+        public double TemperatureFeel { get; set; }
+        public double Wind { get; set; }
+        public string Weather { get; set; }
 
-        public double temperature;
-        public double temperatureFeel;
-        public double wind;
-        public string weather;
+        private readonly HttpClient _httpClient;
 
-        public OpenweatherAPIConnector(string lat, string lon)
+        public OpenweatherAPIConnector(HttpClient httpClient = null)
         {
-            this.lat = lat;
-            this.lon = lon;
+            _httpClient = httpClient ?? new HttpClient();
         }
-        public async Task GetWeather()
+
+        public async Task GetWeatherAsync(string lat, string lon)
         {
             string accessKey = ConfigurationManager.AppSettings["AccessKey"];
             string requestUri = $"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={accessKey}&units=metric&lang=pl";
 
-            using (HttpClient client = new HttpClient())
+            HttpResponseMessage response = await _httpClient.GetAsync(requestUri);
+            if (response.IsSuccessStatusCode)
             {
-                try
-                {
-                    HttpResponseMessage response = await client.GetAsync(requestUri);
-                    if (response.IsSuccessStatusCode)
-                    {
-                        string content = await response.Content.ReadAsStringAsync();
-                        dynamic weatherData = JsonConvert.DeserializeObject(content);
-                        temperature = weatherData.main.temp;
-                        temperatureFeel = weatherData.main.feels_like;
-                        wind = weatherData.wind.speed;
-                        weather = weatherData.weather[0].description;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Nie udało się uzyskać odpowiedzi: " + response.StatusCode);
-                    }
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("Wystąpił wyjątek: " + e.Message);
-                }
+                string content = await response.Content.ReadAsStringAsync();
+                dynamic weatherData = JsonConvert.DeserializeObject(content);
+                Temperature = weatherData.main.temp;
+                TemperatureFeel = weatherData.main.feels_like;
+                Wind = weatherData.wind.speed;
+                Weather = weatherData.weather[0].description;
             }
+
         }
-
-
-
-
 
 
     }
