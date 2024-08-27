@@ -7,8 +7,8 @@ public class PostgresContext : DbContext
     {
     }
 
-    public DbSet<Client> Clients { get; set; }
-    public DbSet<Activity> Activities { get; set; }
+    public virtual DbSet<Client> Clients { get; set; }
+    public virtual DbSet<Activity> Activities { get; set; }
 
     protected override void OnModelCreating(DbModelBuilder modelBuilder)
     {
