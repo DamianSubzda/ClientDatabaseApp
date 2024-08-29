@@ -7,6 +7,7 @@ using Unity;
 using ClientDatabaseApp.Services;
 using Prism.Events;
 using ClientDatabaseApp.Services.APIClients;
+using ClientDatabaseApp.Services.Utilities;
 
 namespace ClientDatabaseApp
 {
@@ -28,6 +29,7 @@ namespace ClientDatabaseApp
             Container.RegisterType<IActivityRepo, ActivityRepo>();
             Container.RegisterType<IDialogService, DialogService>();
             Container.RegisterType<IEventAggregator, EventAggregator>(new ContainerControlledLifetimeManager());
+            Container.RegisterType<IComboboxStatus, ComboboxStatus>();
 
             Container.RegisterType<IIpifyAPIConnector, IpifyAPIConnector>();
             Container.RegisterType<IGeolocationAPIConnector, GeolocationAPIConnector>();

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -7,7 +6,11 @@ using System.Windows.Media;
 
 namespace ClientDatabaseApp.Services.Utilities
 {
-    public class ComboboxStatus
+    public interface IComboboxStatus
+    {
+        ObservableCollection<ComboboxStatus.StatusItem> GetStatusItems();
+    }
+    public class ComboboxStatus : IComboboxStatus
     {
         public enum Status
         {
@@ -31,28 +34,24 @@ namespace ClientDatabaseApp.Services.Utilities
             NotConsideredInStatistics = 8
         }
 
-        public ObservableCollection<StatusItem> StatusItems { get; set; }
-
         public struct StatusItem
         {
             public string Description { get; set; }
             public Status? Value { get; set; }
             public SolidColorBrush Color { get; set; }
         }
-        private List<Status> StatusEnumValues { get; set; }
 
-        public ComboboxStatus()
+        public ObservableCollection<StatusItem> GetStatusItems()
         {
-            StatusEnumValues = Enum.GetValues(typeof(Status)).Cast<Status>().ToList();
-
-            StatusItems = new ObservableCollection<StatusItem>(StatusEnumValues.Select(status => new StatusItem
+            var statusEnumValues = Enum.GetValues(typeof(Status)).Cast<Status>().ToList();
+            return new ObservableCollection<StatusItem>(statusEnumValues.Select(status => new StatusItem
             {
                 Description = GetComboboxDescription(status),
                 Value = status,
                 Color = GetBackgroundForStatus(status)
             }).ToList());
         }
-        
+
         private string GetComboboxDescription(Status value)
         {
             var field = value.GetType().GetField(value.ToString());
@@ -111,4 +110,5 @@ namespace ClientDatabaseApp.Services.Utilities
 
         }
     }
+
 }

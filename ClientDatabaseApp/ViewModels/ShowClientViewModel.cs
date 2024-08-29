@@ -134,21 +134,23 @@ namespace ClientDatabaseApp.ViewModels
         }
 
 
-        private IClientRepo _clientRepo;
-        private IDialogService _dialogService;
-        public ShowClientViewModel(Client client, Action closeAction, IClientRepo clientRepo, IDialogService dialogService)
+        private readonly IClientRepo _clientRepo;
+        private readonly IDialogService _dialogService;
+        private readonly IComboboxStatus _comboboxStatus;
+        public ShowClientViewModel(Client client, Action closeAction, IClientRepo clientRepo, IDialogService dialogService, IComboboxStatus comboboxStatus)
         {
-            ComboboxStatus combobox = new ComboboxStatus();
-            StatusItems = combobox.StatusItems;
-
-            Client = client;
             _closeAction = closeAction;
             _clientRepo = clientRepo;
             _dialogService = dialogService;
+            _comboboxStatus = comboboxStatus;
+
+            StatusItems = _comboboxStatus.GetStatusItems();
 
             EditDataCommand = new DelegateCommand<RoutedEventArgs>(EditData);
             SaveDataCommand = new DelegateCommand<RichTextBox>(SaveData);
             ExitCommand = new DelegateCommand<RoutedEventArgs>(ExitWindow);
+
+            Client = client;
 
             IsEditing = false;
         }

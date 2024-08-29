@@ -93,20 +93,17 @@ namespace ClientDatabaseApp.ViewModels
 
         private readonly IClientRepo _clientRepo;
         private readonly IDialogService _dialogService;
-        public AddClientViewModel(IClientRepo clientRepo, IDialogService dialogService)
+        private readonly IComboboxStatus _comboboxStatus;
+        public AddClientViewModel(IClientRepo clientRepo, IDialogService dialogService, IComboboxStatus comboboxStatus)
         {
             _clientRepo = clientRepo;
             _dialogService = dialogService;
+            _comboboxStatus = comboboxStatus;
+
             DateTextBox = DateTime.Now;
             AddClientToDatabaseCommand = new DelegateCommand<RichTextBox>(AddClientAsync);
             SaveRichTextContentCommand = new DelegateCommand<RichTextBox>(SaveRichTextContent);
-            InitializeComboBoxStatus();
-        }
-
-        private void InitializeComboBoxStatus()
-        {
-            ComboboxStatus combobox = new ComboboxStatus();
-            StatusItems = combobox.StatusItems;
+            StatusItems = _comboboxStatus.GetStatusItems();
             SelectedStatus = StatusItems[0];
         }
 

@@ -10,7 +10,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
-using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 using static ClientDatabaseApp.Services.Utilities.ComboboxStatus;
@@ -63,32 +62,34 @@ namespace ClientDatabaseApp.ViewModels
         private readonly IActivityRepo _activityRepo;
         private readonly IDialogService _dialogService;
         private readonly IEventAggregator _eventAggregator;
+        private readonly IComboboxStatus _comboboxStatus;
 
-        public ClientDatabaseViewModel(IClientRepo clientRepo, IActivityRepo activityRepo, IDialogService dialogService, IEventAggregator eventAggregator)
+        public ClientDatabaseViewModel(IClientRepo clientRepo, IActivityRepo activityRepo, IDialogService dialogService, IEventAggregator eventAggregator, IComboboxStatus comboboxStatus)
         {
             _clientRepo = clientRepo;
             _activityRepo = activityRepo;
             _dialogService = dialogService;
             _eventAggregator = eventAggregator;
+            _comboboxStatus = comboboxStatus;
 
             _eventAggregator.GetEvent<ClientAddedToDatabaseEvent>().Subscribe(OnClientAdded);
             _eventAggregator.GetEvent<ClientUpdatedInDatabaseEvent>().Subscribe(OnClientUpdated);
             _eventAggregator.GetEvent<ClientRemovedFromDatabaseEvent>().Subscribe(OnClientRemoved);
 
-            ShowMoreDetailsCommand = new DelegateCommand<RoutedEventArgs>(ShowMoreDetails);
-            RemoveSelectedCommand = new DelegateCommand<RoutedEventArgs>(RemoveSelected);
-            AddActivityCommand = new DelegateCommand<RoutedEventArgs>(AddActivity);
-            FilterCommand = new DelegateCommand<RoutedEventArgs>(ApplyFilter);
+            ShowMoreDetailsCommand = new DelegateCommand<object>(ShowMoreDetails);
+            RemoveSelectedCommand = new DelegateCommand<object>(RemoveSelected);
+            AddActivityCommand = new DelegateCommand<object>(AddActivity);
+            FilterCommand = new DelegateCommand<object>(ApplyFilter);
 
-            LoadClients();
-            InitializeComboBoxStatus();
+            Initialize();
+            
             
         }
 
-        private void InitializeComboBoxStatus()
+        private async void Initialize()
         {
-            ComboboxStatus combobox = new ComboboxStatus();
-            StatusItems = combobox.StatusItems;
+            await LoadClientsAsync();
+            StatusItems = _comboboxStatus.GetStatusItems();
         }
 
         private void OnClientAdded(Client newClient)
@@ -161,7 +162,7 @@ namespace ClientDatabaseApp.ViewModels
             ClientsView.Refresh();
         }
 
-        private void ApplyFilter(RoutedEventArgs e)
+        private void ApplyFilter(object e)
         {
             SelectedStatus = StatusItems[0];
 
@@ -198,7 +199,7 @@ namespace ClientDatabaseApp.ViewModels
             ClientsView.Refresh();
         }
 
-        internal async void LoadClients()
+        internal async Task LoadClientsAsync()
         {
             var clients = await _clientRepo.GetAllClients();
 
@@ -206,12 +207,12 @@ namespace ClientDatabaseApp.ViewModels
             ClientsView = CollectionViewSource.GetDefaultView(_clients);
         }
 
-        private void ShowMoreDetails(RoutedEventArgs e)
+        private void ShowMoreDetails(object e)
         {
             if (SelectedClient != null)
             {
                 ShowClient showMore = new ShowClient();
-                ShowClientViewModel showMoreViewModel = new ShowClientViewModel(SelectedClient, () => showMore.Close(), _clientRepo, _dialogService);
+                ShowClientViewModel showMoreViewModel = new ShowClientViewModel(SelectedClient, () => showMore.Close(), _clientRepo, _dialogService, _comboboxStatus);
                 showMore.DataContext = showMoreViewModel;
                 showMore.ShowDialog();
 
@@ -222,7 +223,7 @@ namespace ClientDatabaseApp.ViewModels
             }
         }
 
-        private async void RemoveSelected(RoutedEventArgs e)
+        private async void RemoveSelected(object e)
         {
             if (SelectedClient != null)
             {
@@ -247,7 +248,7 @@ namespace ClientDatabaseApp.ViewModels
             }
         }
 
-        private void AddActivity(RoutedEventArgs e)
+        private void AddActivity(object e)
         {
 
             if (SelectedClient != null)

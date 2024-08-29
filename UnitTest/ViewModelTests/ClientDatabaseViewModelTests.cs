@@ -8,6 +8,8 @@ using ClientDatabaseApp.ViewModels;
 using ClientDatabaseApp.Models;
 using System.Collections.Generic;
 using ClientDatabaseApp.Services.Events;
+using ClientDatabaseApp.Services.Utilities;
+using System.Threading.Tasks;
 
 namespace UnitTest
 {
@@ -17,6 +19,7 @@ namespace UnitTest
         private readonly Mock<IActivityRepo> _activityRepoMock;
         private readonly Mock<IDialogService> _dialogServiceMock;
         private readonly Mock<IEventAggregator> _eventAggregatorMock;
+        private readonly Mock<IComboboxStatus> _comboboxStatus; 
         private readonly ClientDatabaseViewModel _viewModel;
 
         public ClientDatabaseViewModelTests()
@@ -25,6 +28,7 @@ namespace UnitTest
             _activityRepoMock = new Mock<IActivityRepo>();
             _dialogServiceMock = new Mock<IDialogService>();
             _eventAggregatorMock = new Mock<IEventAggregator>();
+            _comboboxStatus = new Mock<IComboboxStatus>();
 
             _eventAggregatorMock.Setup(x => x.GetEvent<ClientAddedToDatabaseEvent>())
                                 .Returns(new Mock<ClientAddedToDatabaseEvent>().Object);
@@ -37,25 +41,27 @@ namespace UnitTest
                 _clientRepoMock.Object,
                 _activityRepoMock.Object,
                 _dialogServiceMock.Object,
-                _eventAggregatorMock.Object
+                _eventAggregatorMock.Object,
+                _comboboxStatus.Object
             );
         }
 
 
         [Fact]
-        public void ShouldInitializeClientsView()
+        public async Task ShouldInitializeClientsView()
         {
             // Arrange
             var expectedClients = new List<Client> { new Client { ClientName = "Test Client" } };
             _clientRepoMock.Setup(repo => repo.GetAllClients()).ReturnsAsync(expectedClients);
 
             // Act
-            _viewModel.LoadClients();
+            await _viewModel.LoadClientsAsync();
             var actualClients = _viewModel.ClientsView;
 
             // Assert
             Assert.NotNull(actualClients);
             Assert.Equal(expectedClients.Count, actualClients.Cast<object>().Count());
         }
+
     }
 }

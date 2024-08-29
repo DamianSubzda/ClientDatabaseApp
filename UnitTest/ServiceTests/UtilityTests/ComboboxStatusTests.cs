@@ -8,6 +8,7 @@ namespace UnitTest.ServiceTests.UtilityTests
 {
     public class ComboboxStatusTests
     {
+        
         [Fact]
         public void ComboboxStatus_ShouldInitializeStatusItemsWithCorrectDescriptionsAndColors()
         {
@@ -16,7 +17,7 @@ namespace UnitTest.ServiceTests.UtilityTests
             var expectedStatuses = Enum.GetValues(typeof(ComboboxStatus.Status)).Cast<ComboboxStatus.Status>().ToList();
 
             // Act
-            var statusItems = comboboxStatus.StatusItems;
+            var statusItems = comboboxStatus.GetStatusItems();
 
             // Assert
             Assert.Equal(expectedStatuses.Count, statusItems.Count);
@@ -86,7 +87,7 @@ namespace UnitTest.ServiceTests.UtilityTests
             var comboboxStatus = new ComboboxStatus();
 
             // Act
-            var item = comboboxStatus.StatusItems.FirstOrDefault(si => si.Value == status);
+            var item = comboboxStatus.GetStatusItems().FirstOrDefault(si => si.Value == status);
 
             // Assert
             Assert.Equal(expectedDescription, item.Description);
