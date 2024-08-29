@@ -11,7 +11,7 @@ using ClientDatabaseApp.Services.Events;
 using ClientDatabaseApp.Services.Utilities;
 using System.Threading.Tasks;
 
-namespace UnitTest
+namespace UnitTest.ViewModelsTests
 {
     public class ClientDatabaseViewModelTests
     {

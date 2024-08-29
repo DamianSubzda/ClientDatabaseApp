@@ -7,78 +7,81 @@ using ClientDatabaseApp.Services.APIClients;
 using System.Net.Http;
 using Newtonsoft.Json;
 
-public class IpfyAPIConnectorTests
+namespace UnitTest.ServiceTests.ApiClientsTests
 {
-    [Fact]
-    public async Task GetIpAsync_SuccessfulResponse_ShouldSetIPAddress()
+    public class IpfyAPIConnectorTests
     {
-        // Arrange
-        var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
-        mockHttpMessageHandler.Protected()
-            .Setup<Task<HttpResponseMessage>>(
-                "SendAsync",
-                ItExpr.IsAny<HttpRequestMessage>(),
-                ItExpr.IsAny<CancellationToken>())
-            .ReturnsAsync(new HttpResponseMessage
-            {
-                StatusCode = System.Net.HttpStatusCode.OK,
-                Content = new StringContent(JsonConvert.SerializeObject(new
+        [Fact]
+        public async Task GetIpAsync_SuccessfulResponse_ShouldSetIPAddress()
+        {
+            // Arrange
+            var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
+            mockHttpMessageHandler.Protected()
+                .Setup<Task<HttpResponseMessage>>(
+                    "SendAsync",
+                    ItExpr.IsAny<HttpRequestMessage>(),
+                    ItExpr.IsAny<CancellationToken>())
+                .ReturnsAsync(new HttpResponseMessage
                 {
-                    ip = "123.123.123.123"
-                }))
-            });
+                    StatusCode = System.Net.HttpStatusCode.OK,
+                    Content = new StringContent(JsonConvert.SerializeObject(new
+                    {
+                        ip = "123.123.123.123"
+                    }))
+                });
 
-        var httpClient = new HttpClient(mockHttpMessageHandler.Object);
-        var ipifyAPIConnector = new IpifyAPIConnector(httpClient);
+            var httpClient = new HttpClient(mockHttpMessageHandler.Object);
+            var ipifyAPIConnector = new IpifyAPIConnector(httpClient);
 
-        // Act
-        await ipifyAPIConnector.GetIpAsync();
+            // Act
+            await ipifyAPIConnector.GetIpAsync();
 
-        // Assert
-        Assert.Equal("123.123.123.123", ipifyAPIConnector.IPAddress);
-    }
+            // Assert
+            Assert.Equal("123.123.123.123", ipifyAPIConnector.IPAddress);
+        }
 
-    [Fact]
-    public async Task GetIpAsync_UnsuccessfulResponse_ShouldNotSetIPAddress()
-    {
-        // Arrange
-        var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
-        mockHttpMessageHandler.Protected()
-            .Setup<Task<HttpResponseMessage>>(
-                "SendAsync",
-                ItExpr.IsAny<HttpRequestMessage>(),
-                ItExpr.IsAny<CancellationToken>())
-            .ReturnsAsync(new HttpResponseMessage
-            {
-                StatusCode = System.Net.HttpStatusCode.BadRequest
-            });
+        [Fact]
+        public async Task GetIpAsync_UnsuccessfulResponse_ShouldNotSetIPAddress()
+        {
+            // Arrange
+            var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
+            mockHttpMessageHandler.Protected()
+                .Setup<Task<HttpResponseMessage>>(
+                    "SendAsync",
+                    ItExpr.IsAny<HttpRequestMessage>(),
+                    ItExpr.IsAny<CancellationToken>())
+                .ReturnsAsync(new HttpResponseMessage
+                {
+                    StatusCode = System.Net.HttpStatusCode.BadRequest
+                });
 
-        var httpClient = new HttpClient(mockHttpMessageHandler.Object);
-        var ipifyAPIConnector = new IpifyAPIConnector(httpClient);
+            var httpClient = new HttpClient(mockHttpMessageHandler.Object);
+            var ipifyAPIConnector = new IpifyAPIConnector(httpClient);
 
-        // Act
-        await ipifyAPIConnector.GetIpAsync();
+            // Act
+            await ipifyAPIConnector.GetIpAsync();
 
-        // Assert
-        Assert.Null(ipifyAPIConnector.IPAddress);
-    }
+            // Assert
+            Assert.Null(ipifyAPIConnector.IPAddress);
+        }
 
-    [Fact]
-    public async Task GetIpAsync_ThrowsException_ShouldThrowHttpRequestException()
-    {
-        // Arrange
-        var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
-        mockHttpMessageHandler.Protected()
-            .Setup<Task<HttpResponseMessage>>(
-                "SendAsync",
-                ItExpr.IsAny<HttpRequestMessage>(),
-                ItExpr.IsAny<CancellationToken>())
-            .ThrowsAsync(new HttpRequestException("Request failed"));
+        [Fact]
+        public async Task GetIpAsync_ThrowsException_ShouldThrowHttpRequestException()
+        {
+            // Arrange
+            var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
+            mockHttpMessageHandler.Protected()
+                .Setup<Task<HttpResponseMessage>>(
+                    "SendAsync",
+                    ItExpr.IsAny<HttpRequestMessage>(),
+                    ItExpr.IsAny<CancellationToken>())
+                .ThrowsAsync(new HttpRequestException("Request failed"));
 
-        var httpClient = new HttpClient(mockHttpMessageHandler.Object);
-        var ipifyAPIConnector = new IpifyAPIConnector(httpClient);
+            var httpClient = new HttpClient(mockHttpMessageHandler.Object);
+            var ipifyAPIConnector = new IpifyAPIConnector(httpClient);
 
-        // Act & Assert
-        await Assert.ThrowsAsync<HttpRequestException>(() => ipifyAPIConnector.GetIpAsync());
+            // Act & Assert
+            await Assert.ThrowsAsync<HttpRequestException>(() => ipifyAPIConnector.GetIpAsync());
+        }
     }
 }
