@@ -71,7 +71,7 @@ namespace ClientDatabaseApp.Services.Repositories
 
         public async Task<List<Client>> GetAllClients()
         {
-            return await _context.Clients.ToListAsync();
+            return await _context.Clients.ToListAsync() ?? new List<Client>();
         }
 
         public async Task<Client> GetClient(int id)

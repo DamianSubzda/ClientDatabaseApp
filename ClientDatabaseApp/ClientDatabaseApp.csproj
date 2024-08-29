@@ -207,6 +207,7 @@
     <Compile Include="Services\Utilities\DayVisibilityConverter.cs" />
     <Compile Include="Services\Utilities\RichTextBoxHelper.cs" />
     <Compile Include="ViewModels\BaseViewModel.cs" />
+    <Compile Include="ViewModels\BaseDialog.cs" />
     <Compile Include="ViewModels\WeatherViewModel.cs" />
     <Compile Include="ViewModels\NewActivityViewModel.cs" />
     <Compile Include="ViewModels\ShowActivityViewModel.cs" />

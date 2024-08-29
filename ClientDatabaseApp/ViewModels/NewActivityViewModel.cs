@@ -8,24 +8,22 @@ using System.Windows.Input;
 
 namespace ClientDatabaseApp.ViewModels
 {
-    public class NewActivityViewModel : BaseViewModel
+    public class NewActivityViewModel : BaseViewModel, IBaseDialog
     {
         public ICommand AddActivityCommand { get; set; }
-
-        private readonly Action _closeAction;
         
         public Client Client { get; set; }
         public DateTime SelectedDate { get; set; }
+        public Action CloseAction { get; set; }
 
         private readonly IActivityRepo _activityRepo;
         private readonly IDialogService _dialogService;
-        public NewActivityViewModel(Client client, Action closeAction, IActivityRepo activityRepo, IDialogService dialogService)
+        public NewActivityViewModel(Client client,IActivityRepo activityRepo, IDialogService dialogService)
         {
             _activityRepo = activityRepo;
             _dialogService = dialogService;
             SelectedDate = DateTime.Now;
             Client = client;
-            _closeAction = closeAction;
             AddActivityCommand = new DelegateCommand<RichTextBox>(AddActivity);
         }
 
@@ -41,7 +39,7 @@ namespace ClientDatabaseApp.ViewModels
             try
             {
                 _activityRepo.CreateActivity(Client, SelectedDate, note);
-                _closeAction?.Invoke();
+                ExitWindow(null);
             }
             catch
             {
@@ -50,7 +48,9 @@ namespace ClientDatabaseApp.ViewModels
             
             
         }
-
-
+        public void ExitWindow(object e)
+        {
+            CloseAction?.Invoke();
+        }
     }
 }

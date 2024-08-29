@@ -11,7 +11,7 @@ using static ClientDatabaseApp.Services.Utilities.ComboboxStatus;
 
 namespace ClientDatabaseApp.ViewModels
 {
-    internal class ShowClientViewModel : BaseViewModel
+    internal class ShowClientViewModel : BaseViewModel, IBaseDialog
     {
         public ICommand EditDataCommand { get; set; }
         public ICommand SaveDataCommand { get; set; }
@@ -30,10 +30,10 @@ namespace ClientDatabaseApp.ViewModels
         private string _richTextContent;
         private bool _isEditing;
 
-        private Action _closeAction;
-
         private StatusItem _selectedStatus;
         private ObservableCollection<StatusItem> _statusItems;
+
+        public Action CloseAction { get; set; }
 
         public Client Client
         {
@@ -137,25 +137,24 @@ namespace ClientDatabaseApp.ViewModels
         private readonly IClientRepo _clientRepo;
         private readonly IDialogService _dialogService;
         private readonly IComboboxStatus _comboboxStatus;
-        public ShowClientViewModel(Client client, Action closeAction, IClientRepo clientRepo, IDialogService dialogService, IComboboxStatus comboboxStatus)
+        public ShowClientViewModel(Client client, IClientRepo clientRepo, IDialogService dialogService, IComboboxStatus comboboxStatus)
         {
-            _closeAction = closeAction;
             _clientRepo = clientRepo;
             _dialogService = dialogService;
             _comboboxStatus = comboboxStatus;
 
             StatusItems = _comboboxStatus.GetStatusItems();
 
-            EditDataCommand = new DelegateCommand<RoutedEventArgs>(EditData);
+            EditDataCommand = new DelegateCommand<object>(EditData);
             SaveDataCommand = new DelegateCommand<RichTextBox>(SaveData);
-            ExitCommand = new DelegateCommand<RoutedEventArgs>(ExitWindow);
+            ExitCommand = new DelegateCommand<object>(ExitWindow);
 
             Client = client;
 
             IsEditing = false;
         }
 
-        private void EditData(RoutedEventArgs e)
+        private void EditData(object e)
         {
             IsEditing = true;
         }
@@ -187,15 +186,13 @@ namespace ClientDatabaseApp.ViewModels
             {
                 _dialogService.ShowMessage("Wystąpił błąd podczas aktualizowania informacji o kliencie! \nSprawdź wprowadzone dane!");
             }
-            
 
             IsEditing = false;
         }
 
-        private void ExitWindow(RoutedEventArgs e)
+        public void ExitWindow(object e)
         {
-            _closeAction?.Invoke();
+            CloseAction?.Invoke();
         }
-
     }
 }

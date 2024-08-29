@@ -9,13 +9,12 @@ using System.Windows.Input;
 
 namespace ClientDatabaseApp.ViewModels
 {
-    public class ShowActivityViewModel : BaseViewModel
+    public class ShowActivityViewModel : BaseViewModel, IBaseDialog
     {
         public ICommand ExitCommand { get; set; }
         public ICommand EditCommand { get; set; }
 
         private Activity _activity;
-        private Action _closeAction;
         private string _originalNote;
         private string _editableNote;
         private DateTime _dateOfCreation;
@@ -53,11 +52,12 @@ namespace ClientDatabaseApp.ViewModels
             get => _activity;
             set=> SetField(ref _activity, value, nameof(Activity));
         }
+        public Action CloseAction { get; set; }
 
         private IClientRepo _clientRepo;
         private IActivityRepo _activityRepo;
         private IDialogService _dialogService;
-        public ShowActivityViewModel(Activity activity, Action closeAction, IClientRepo clientRepo, IActivityRepo activityRepo, IDialogService dialogService)
+        public ShowActivityViewModel(Activity activity, IClientRepo clientRepo, IActivityRepo activityRepo, IDialogService dialogService)
         {
             _clientRepo = clientRepo;
             _activityRepo = activityRepo;
@@ -68,9 +68,8 @@ namespace ClientDatabaseApp.ViewModels
             EditableNote = Activity.Note;
             DateOfCreation = Activity.DateOfCreation;
             DateOfAction = Activity.DateOfAction ?? DateTime.MinValue;
-            _closeAction = closeAction;
 
-            ExitCommand = new DelegateCommand<RoutedEventArgs>(ExitWindow);
+            ExitCommand = new DelegateCommand<object>(ExitWindow);
             EditCommand = new DelegateCommand<RichTextBox>(EditActivity);
 
             LoadClientNameAsync(activity.ClientId);
@@ -107,9 +106,9 @@ namespace ClientDatabaseApp.ViewModels
             
         }
 
-        private void ExitWindow(RoutedEventArgs e)
+        public void ExitWindow(object e)
         {
-            _closeAction?.Invoke();
+            CloseAction?.Invoke();
         }
     }
 }

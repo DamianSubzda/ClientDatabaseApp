@@ -35,7 +35,7 @@ namespace ClientDatabaseApp.ViewModels
         public ICollectionView ClientsView
         {
             get => _clientsView;
-            set => SetField(ref _clientsView, value, nameof (ClientsView));
+            set => SetField(ref _clientsView, value, nameof(ClientsView));
         }
         public Client SelectedClient
         {
@@ -45,7 +45,7 @@ namespace ClientDatabaseApp.ViewModels
         public ObservableCollection<StatusItem> StatusItems
         {
             get => _statusItems;
-            set=> SetField(ref _statusItems, value, nameof(StatusItems));
+            set => SetField(ref _statusItems, value, nameof(StatusItems));
         }
         public StatusItem SelectedStatus
         {
@@ -82,8 +82,6 @@ namespace ClientDatabaseApp.ViewModels
             FilterCommand = new DelegateCommand<object>(ApplyFilter);
 
             Initialize();
-            
-            
         }
 
         private async void Initialize()
@@ -211,11 +209,8 @@ namespace ClientDatabaseApp.ViewModels
         {
             if (SelectedClient != null)
             {
-                ShowClient showMore = new ShowClient();
-                ShowClientViewModel showMoreViewModel = new ShowClientViewModel(SelectedClient, () => showMore.Close(), _clientRepo, _dialogService, _comboboxStatus);
-                showMore.DataContext = showMoreViewModel;
-                showMore.ShowDialog();
-
+                var viewModel = new ShowClientViewModel(SelectedClient, _clientRepo, _dialogService, _comboboxStatus);
+                _dialogService.ShowDialog(viewModel);
             }
             else
             {
@@ -250,14 +245,10 @@ namespace ClientDatabaseApp.ViewModels
 
         private void AddActivity(object e)
         {
-
             if (SelectedClient != null)
             {
-                NewActivity newActivity = new NewActivity();
-                NewActivityViewModel newActivityViewModel = new NewActivityViewModel(SelectedClient, () => newActivity.Close(), _activityRepo, _dialogService);
-                newActivity.DataContext = newActivityViewModel;
-                newActivity.ShowDialog();
-
+                NewActivityViewModel newActivityViewModel = new NewActivityViewModel(SelectedClient, _activityRepo, _dialogService);
+                _dialogService.ShowDialog(newActivityViewModel);
             }
             else
             {

@@ -173,11 +173,9 @@ namespace ClientDatabaseApp.ViewModels
         {
             if (SelectedActivity != null)
             {
-                ShowActivity showActivity = new ShowActivity();
                 ShowActivityViewModel showActivityViewModel = 
-                    new ShowActivityViewModel(SelectedActivity, () => showActivity.Close(), _clientRepo, _activityRepo, _dialogService);
-                showActivity.DataContext = showActivityViewModel;
-                showActivity.ShowDialog();
+                    new ShowActivityViewModel(SelectedActivity, _clientRepo, _activityRepo, _dialogService);
+                _dialogService.ShowDialog(showActivityViewModel);
             }
         }
 
