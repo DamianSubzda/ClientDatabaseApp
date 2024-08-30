@@ -33,9 +33,9 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Button Width="auto" Content="Prev" Command="{Binding ButtonClickPrevMonthCommand}"/>
-                    <Label Content="{Binding Path=DataToDisplay}" MinWidth="160" FontSize="20" HorizontalContentAlignment="Center"/>
-                    <Button Width="auto" Content="Next" Command="{Binding ButtonClickNextMonthCommand}"/>
+                    <Button Width="auto" Content="Poprzedni" Command="{Binding ButtonClickPrevMonthCommand}"/>
+                    <Label Content="{Binding Path=DataToDisplay}" MinWidth="182" FontSize="20" HorizontalContentAlignment="Center"/>
+                    <Button Width="auto" Content="Następny" Command="{Binding ButtonClickNextMonthCommand}"/>
                 </StackPanel>
                 <UniformGrid Grid.Row="1" Columns="7" HorizontalAlignment="Stretch" Margin="10,0,10,0">
                     <Label FontSize="20" Content="Pon" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
