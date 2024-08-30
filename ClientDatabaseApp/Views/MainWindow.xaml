@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:ClientDatabaseApp" 
         xmlns:localV="clr-namespace:ClientDatabaseApp.Views"
         mc:Ignorable="d"
-        Title="MainWindow" Height="520" Width="800">
+        Title="Aplikacja do obsługi klientów" Height="520" Width="800">
     <Grid Background="{StaticResource Color1}">
 
         <TabControl>
