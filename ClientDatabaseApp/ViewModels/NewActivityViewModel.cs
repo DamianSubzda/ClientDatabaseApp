@@ -18,7 +18,7 @@ namespace ClientDatabaseApp.ViewModels
 
         private readonly IActivityRepo _activityRepo;
         private readonly IDialogService _dialogService;
-        public NewActivityViewModel(Client client,IActivityRepo activityRepo, IDialogService dialogService)
+        public NewActivityViewModel(Client client, IActivityRepo activityRepo, IDialogService dialogService)
         {
             _activityRepo = activityRepo;
             _dialogService = dialogService;

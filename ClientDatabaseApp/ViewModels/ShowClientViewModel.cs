@@ -4,7 +4,6 @@ using ClientDatabaseApp.Services.Utilities;
 using ClientDatabaseApp.Services.Repositories;
 using System;
 using System.Collections.ObjectModel;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using static ClientDatabaseApp.Services.Utilities.ComboboxStatus;
@@ -51,7 +50,7 @@ namespace ClientDatabaseApp.ViewModels
                 DateTextBox = value.Data ?? DateTime.Now;
                 OwnerTextBox = value.Owner;
                 RichTextContent = value.Note;
-                SelectedStatus = StatusItems[value.Status];
+                SelectedStatus = _comboboxStatus.GetStatusItems()[value.Status];
             }
         }
 
@@ -143,7 +142,7 @@ namespace ClientDatabaseApp.ViewModels
             _dialogService = dialogService;
             _comboboxStatus = comboboxStatus;
 
-            StatusItems = _comboboxStatus.GetStatusItems();
+            StatusItems = _comboboxStatus.GetStatusItems() ?? new ObservableCollection<StatusItem>();
 
             EditDataCommand = new DelegateCommand<object>(EditData);
             SaveDataCommand = new DelegateCommand<RichTextBox>(SaveData);

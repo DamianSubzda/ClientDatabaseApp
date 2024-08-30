@@ -3,7 +3,6 @@ using ClientDatabaseApp.Services;
 using ClientDatabaseApp.Services.Utilities;
 using ClientDatabaseApp.Services.Repositories;
 using ClientDatabaseApp.Services.Events;
-using ClientDatabaseApp.Views;
 using Prism.Events;
 using System;
 using System.Collections.ObjectModel;
@@ -14,6 +13,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using static ClientDatabaseApp.Services.Utilities.ComboboxStatus;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace ClientDatabaseApp.ViewModels
 {
@@ -199,7 +199,7 @@ namespace ClientDatabaseApp.ViewModels
 
         internal async Task LoadClientsAsync()
         {
-            var clients = await _clientRepo.GetAllClients();
+            var clients = await _clientRepo.GetAllClients() ?? new List<Client>();
 
             _clients = new ObservableCollection<Client>(clients);
             ClientsView = CollectionViewSource.GetDefaultView(_clients);
@@ -229,6 +229,7 @@ namespace ClientDatabaseApp.ViewModels
                     {
                         await _clientRepo.DeleteClient(SelectedClient);
                         _clients.Remove(SelectedClient);
+                        ClientsView.Refresh();
                     }
                     catch
                     {

@@ -1,4 +1,5 @@
 ﻿using ClientDatabaseApp.ViewModels;
+using Microsoft.Win32;
 using System;
 using System.Windows;
 
@@ -9,6 +10,7 @@ namespace ClientDatabaseApp.Services
         void ShowMessage(string message);
         bool Confirm(string message);
         void ShowDialog<TViewModel>(TViewModel viewModel) where TViewModel : class;
+        string OpenFileDialog(string filter, string title);
     }
 
     internal class DialogService : IDialogService
@@ -55,6 +57,15 @@ namespace ClientDatabaseApp.Services
             }
         }
 
+        public string OpenFileDialog(string filter, string title)
+        {
+            var openFileDialog = new OpenFileDialog
+            {
+                Filter = filter,
+                Title = title
+            };
 
+            return openFileDialog.ShowDialog() == true ? openFileDialog.FileName : null;
+        }
     }
 }

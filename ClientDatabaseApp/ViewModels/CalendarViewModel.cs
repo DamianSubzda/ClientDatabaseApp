@@ -127,12 +127,12 @@ namespace ClientDatabaseApp.ViewModels
             InitializeCalendar();
         }
 
-        private void OnActivityRemoved(Activity removedActivity)
+        internal void OnActivityRemoved(Activity removedActivity)
         {
             GetDaysFromMonth();
         }
 
-        private void OnActivityAdded(Activity addedActivity)
+        internal void OnActivityAdded(Activity addedActivity)
         {
             GetDaysFromMonth();
         }
@@ -210,7 +210,7 @@ namespace ClientDatabaseApp.ViewModels
             GetDaysFromMonth();
         }
 
-        private async void OnMouseClick(string dayNumber)
+        internal async void OnMouseClick(string dayNumber)
         {
             if (Days.Any(dayInfo => dayInfo.DayNumber == dayNumber))
             {

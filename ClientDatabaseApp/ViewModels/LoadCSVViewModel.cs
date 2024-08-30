@@ -4,14 +4,11 @@ using ClientDatabaseApp.Services.Exceptions;
 using ClientDatabaseApp.Services.Repositories;
 using CsvHelper;
 using CsvHelper.Configuration;
-using Microsoft.Win32;
-using Prism.Events;
+using System;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
 
 namespace ClientDatabaseApp.ViewModels
@@ -42,26 +39,19 @@ namespace ClientDatabaseApp.ViewModels
         {
             _clientRepo = clientRepo;
             _dialogService = dialogService;
-            GetClientsFromCSVCommand = new DelegateCommand<RoutedEventArgs>(GetClientsFromCSV);
-            AddToDatabaseCommand = new DelegateCommand<RoutedEventArgs>(AddToDatabase);
+            GetClientsFromCSVCommand = new DelegateCommand<object>(GetClientsFromCSV);
+            AddToDatabaseCommand = new DelegateCommand<object>(AddToDatabase);
 
             PreviewClients = new ObservableCollection<Client>();
         }
 
-        private async void GetClientsFromCSV(RoutedEventArgs e)
+        private void GetClientsFromCSV(object e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog
+            IsLoading = true;
+            var filePath = _dialogService.OpenFileDialog("CSV Files (*.csv)|*.csv|All files (*.*)|*.*", "Wybierz plik CSV");
+            if (filePath != null)
             {
-                Filter = "CSV Files (*.csv)|*.csv|All files (*.*)|*.*",
-                Title = "Wybierz plik CSV"
-            };
-
-            if (openFileDialog.ShowDialog() == true)
-            {
-                IsLoading = true;
-                string filePath = openFileDialog.FileName;
-
-                await Task.Run(() =>
+                try
                 {
                     var config = new CsvConfiguration(CultureInfo.InvariantCulture)
                     {
@@ -73,18 +63,26 @@ namespace ClientDatabaseApp.ViewModels
                     using (var csv = new CsvReader(reader, config))
                     {
                         var records = csv.GetRecords<Client>().ToList();
-                        App.Current.Dispatcher.Invoke(() =>
-                        {
-                            PreviewClients = new ObservableCollection<Client>(records);
-                        });
+                        PreviewClients = new ObservableCollection<Client>(records);
                     }
-                });
-
+                }
+                catch (Exception ex)
+                {
+                    _dialogService.ShowMessage($"Loading CSV file problem: {ex.Message}");
+                }
+                finally
+                {
+                    IsLoading = false;
+                }
+            }
+            else
+            {
                 IsLoading = false;
             }
         }
 
-        private async void AddToDatabase(RoutedEventArgs e)
+
+        private async void AddToDatabase(object e)
         {
             IsLoading = true;
 

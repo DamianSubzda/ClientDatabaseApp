@@ -103,6 +103,7 @@ namespace ClientDatabaseApp.ViewModels
             DateTextBox = DateTime.Now;
             AddClientToDatabaseCommand = new DelegateCommand<RichTextBox>(AddClientAsync);
             SaveRichTextContentCommand = new DelegateCommand<RichTextBox>(SaveRichTextContent);
+
             StatusItems = _comboboxStatus.GetStatusItems();
             SelectedStatus = StatusItems[0];
         }
@@ -112,9 +113,8 @@ namespace ClientDatabaseApp.ViewModels
             RichTextContent = RichTextBoxHelper.GetTextFromRichTextBox(richTextBox);
         }
 
-        private async void AddClientAsync(RichTextBox richTextBox)
+        public async void AddClientAsync(RichTextBox richTextBox)
         {
-
             SaveRichTextContent(richTextBox);
 
             if (string.IsNullOrEmpty(ClientNameTextBox))
